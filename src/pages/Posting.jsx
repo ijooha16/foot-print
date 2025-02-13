@@ -1,8 +1,5 @@
-
 const Posting = () => {
-  return (
-    <div>Posting</div>
-  )
-}
+  return <div>Posting</div>;
+};
 
-export default Posting
+export default Posting;
