@@ -1,12 +1,20 @@
 import { useState } from "react";
 
+
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
+
+  const handleSignin = async e => {
+    e.preventDefault();
+    
+  };
+
   return (
     <div>
       <h2>로그인 페이지</h2>
-      <form>
+      <form onSubmit={handleSignin}> 
         <label>아이디</label>
         <input
           type="email"
