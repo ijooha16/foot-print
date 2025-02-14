@@ -7,6 +7,7 @@ import MyPage from "../pages/MyPage.jsx";
 import Posting from "../pages/Posting.jsx";
 import SignIn from "../pages/SignIn.jsx";
 import SignUp from "../pages/SignUp.jsx";
+import Layout from "../components/layout/Layout.jsx";
 
 const Router = () => {
   const { isSignin } = useContext(AuthContext);

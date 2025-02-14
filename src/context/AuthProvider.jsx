@@ -16,6 +16,7 @@ export default function AuthProvider({ children }) {
       if (session) {
         setIsSignin(true);
         setUser(session.user);
+
       } else {
         setIsSignin(false);
         setUser(null);
