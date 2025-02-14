@@ -15,7 +15,7 @@ export default function AuthProvider({ children }) {
 
       if (session) {
         setIsLogin(true);
-        setAuthUser(session)
+        setAuthUser(session);
       } else {
         setIsLogin(false);
       }
@@ -26,7 +26,6 @@ export default function AuthProvider({ children }) {
     return () => subscription.unsubscribe();
   }, []); // DA의 빈 배열이 의미하는 것을 생각해보세요
 
-  
   return (
     <AuthContext.Provider value={{ isLogin, setIsLogin, authUser }}>
       {children}

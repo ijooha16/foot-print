@@ -26,8 +26,6 @@ const MyPageProvider = ({ children }) => {
 
         setUsers(usersData);
         setPosts(postsData);
-        
-        
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -36,9 +34,7 @@ const MyPageProvider = ({ children }) => {
     fetchData();
   }, []);
 
-
-
-  console.log(users, posts)
+  // console.log(users, posts)
 
   return (
     <MyPageContext.Provider value={{ users, posts }}>

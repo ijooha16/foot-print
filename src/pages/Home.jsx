@@ -1,12 +1,28 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import HomePostCard from "../components/HomePostCard";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { HomeContext } from "../context/HomeContext";
+import supabase from "../supabase/client";
 import AddPostButton from "../components/AddPostButton";
+import { AuthContext } from "../context/AuthProvider";
 
 const Home = () => {
   const { posts } = useContext(HomeContext);
+  const { isLogin, setIsLogin } = useContext(AuthContext);
+
+  //로그인 상태 확인
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      console.log("session", session);
+      setIsLogin(session?.user ?? null);
+    };
+    getSession();
+  });
+
   return (
     <>
       <StHomeMain>
@@ -15,9 +31,15 @@ const Home = () => {
           <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
             <h2>FootPrint</h2>
           </Link>
-          <Link to={"/login"}>
-            <StLoginBtn>로그인/회원가입</StLoginBtn>
-          </Link>
+          {isLogin ? (
+            <Link to={"/my-page"}>
+              <StLoginBtn>마이페이지</StLoginBtn>
+            </Link>
+          ) : (
+            <Link to={"/login"}>
+              <StLoginBtn>로그인/회원가입</StLoginBtn>
+            </Link>
+          )}
         </StHeader>
         <StCategory>
           <div>전체</div>
@@ -27,6 +49,7 @@ const Home = () => {
       </StHomeMain>
       {posts.map(post => {
         return (
+          // link (x) 게시글 상세 모달로 연결
           <Link
             to={`/posting?id=${post.post_id}`}
             key={post.uid}
@@ -36,7 +59,7 @@ const Home = () => {
           </Link>
         );
       })}
-      <AddPostButton />
+      {isLogin ? <AddPostButton /> : null}
     </>
   );
 };

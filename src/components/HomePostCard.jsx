@@ -31,6 +31,7 @@ const HomePostCard = ({ post }) => {
 
     fetchData();
   }, []);
+
   // console.log("users", users);
   supabase.from("users").insert({ users });
   supabase.from("comments").insert({ comments });
