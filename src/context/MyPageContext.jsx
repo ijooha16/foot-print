@@ -17,6 +17,7 @@ const MyPageProvider = ({ children }) => {
           { data: usersData, error: usersError },
           { data: postsData, error: postsError },
         ] = await Promise.all([
+          //아래 부분 유저 정보만 받아오게 수정 예정 !
           supabase.from("users").select("*"),
           supabase.from("posts").select("*"),
         ]);
@@ -33,8 +34,6 @@ const MyPageProvider = ({ children }) => {
 
     fetchData();
   }, []);
-
-  // console.log(users, posts)
 
   return (
     <MyPageContext.Provider value={{ users, posts }}>

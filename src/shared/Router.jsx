@@ -7,6 +7,7 @@ import MyPage from "../pages/MyPage.jsx";
 import Posting from "../pages/Posting.jsx";
 import SignIn from "../pages/SignIn.jsx";
 import SignUp from "../pages/SignUp.jsx";
+import Layout from "../components/layout/Layout.jsx";
 
 const Router = () => {
   const { isLogin } = useContext(AuthContext);
@@ -14,17 +15,13 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* 예시 */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={isLogin ? <Home /> : <SignIn />} />
-        <Route path="/signup" element={isLogin ? <Home /> : <SignUp />} />
-        {/* 예시 */}
-
-        <Route path="/" element={<Home />} />
-        <Route path="/my-page" element={<MyPage />} />
-        <Route path="/posting" element={<Posting />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/my-page" element={<MyPage />} />
+          <Route path="/posting" element={<Posting />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

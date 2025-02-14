@@ -10,8 +10,6 @@ const MyPage = () => {
   const { users, posts } = useContext(MyPageContext);
   // const { authUser } = useContext(AuthContext);
 
-  console.log(users, posts)
-  
   // const myInfo = users.find(
   //   u => u.uid === "0272c1b6-524c-4705-865c-c7d6866a9e40",
   // );
@@ -37,6 +35,9 @@ const MyPage = () => {
             <MypagePostCard data={data} />
           </Fragment>
         ))}
+        <div
+          style={{ backgroundColor: "gray", width: "100px", height: "6000px" }}
+        ></div>
       </MypagePostBox>
     </>
   );
@@ -72,6 +73,7 @@ const ProfileImg = styled.div`
 `;
 
 const MypageInfoBox = styled.div`
+  width: 300px;
   margin-left: 10px;
   position: relative;
   display: flex;
