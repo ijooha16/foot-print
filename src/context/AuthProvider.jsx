@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import supabase from "../supabase/client";
+import supabase from "../supabase/client.js";
 
 const AuthContext = createContext(null);
 
@@ -7,6 +7,7 @@ export default function AuthProvider({ children }) {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+  const [authUser, setAuthUser] = useState([]);
 
   useEffect(() => {
     const {
