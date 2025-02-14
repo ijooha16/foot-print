@@ -3,6 +3,7 @@ import styled from "styled-components";
 import HomePostCard from "../components/HomePostCard";
 import { useContext } from "react";
 import { HomeContext } from "../context/HomeContext";
+import AddPostButton from "../components/AddPostButton";
 
 const Home = () => {
   const { posts } = useContext(HomeContext);
@@ -35,6 +36,7 @@ const Home = () => {
           </Link>
         );
       })}
+      <AddPostButton />
     </>
   );
 };
