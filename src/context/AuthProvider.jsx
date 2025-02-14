@@ -1,10 +1,11 @@
 import { createContext, useState, useEffect } from "react";
-import supabase from "../supabase/client";
+import supabase from "../supabase/client.js";
 
 const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
   const [isLogin, setIsLogin] = useState(false);
+  const [authUser, setAuthUser] = useState([]);
 
   useEffect(() => {
     const {
@@ -14,6 +15,7 @@ export default function AuthProvider({ children }) {
 
       if (session) {
         setIsLogin(true);
+        setAuthUser(session)
       } else {
         setIsLogin(false);
       }
@@ -24,8 +26,9 @@ export default function AuthProvider({ children }) {
     return () => subscription.unsubscribe();
   }, []); // DA의 빈 배열이 의미하는 것을 생각해보세요
 
+  
   return (
-    <AuthContext.Provider value={{ isLogin, setIsLogin }}>
+    <AuthContext.Provider value={{ isLogin, setIsLogin, authUser }}>
       {children}
     </AuthContext.Provider>
   );
