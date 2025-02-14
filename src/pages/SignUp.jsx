@@ -61,7 +61,7 @@ const SignUp = () => {
           <input
             type="password"
             value={password}
-            placeholder="비밀번호"
+            placeholder="password"
             onChange={e => setPassword(e.target.value)}
             required
           />
