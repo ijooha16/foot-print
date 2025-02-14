@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import supabase from "../supabase/client";
 
-const HomeContext = createContext();
+export const HomeContext = createContext();
 
 export function HomeProvider({ children }) {
   // post data
@@ -19,7 +19,8 @@ export function HomeProvider({ children }) {
     };
     getPosts();
   }, []);
-  console.log("posts", posts);
+  //   console.log("posts", posts);
+
   //데이터 넣기
   supabase.from("posts").insert({ posts });
 
