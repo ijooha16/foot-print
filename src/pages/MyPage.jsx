@@ -1,49 +1,39 @@
-import { Fragment, useEffect, useState } from "react";
-import supabase from "../supabase/client";
+import { Fragment } from "react";
 import styled from "styled-components";
-import MypagePostCard from "../components/MypagePostCard";
-import EditIcon from '../assets/icon_edit_24.png'
+import MypagePostCard from "../components/MypagePostCard.jsx";
+import EditIcon from "../assets/icon_edit_24.png";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthProvider.jsx";
+import { MyPageContext } from "../context/MyPageContext.jsx";
 
 const MyPage = () => {
-  const [posts, setPosts] = useState([]);
+  const { users, posts } = useContext(MyPageContext);
+  // const { authUser } = useContext(AuthContext);
 
-  //데이터 갖다 쓰기
-  useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const { data, error } = await supabase.from("posts").select("*");
-        if (error) throw error;
-        setPosts(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getPosts();
-  }, []);
-
-  //데이터 넣기
-  supabase.from("posts").insert({ posts });
+  console.log(users, posts)
+  
+  // const myInfo = users.find(
+  //   u => u.uid === "0272c1b6-524c-4705-865c-c7d6866a9e40",
+  // );
+  // const myPost = posts.find(
+  //   post => post.uid === "0272c1b6-524c-4705-865c-c7d6866a9e40",
+  // );
 
   return (
     <>
-      MyPage {posts.map(e => e.title)}
       <ContentsBox direction="row">
         <ProfileImg>img</ProfileImg>
         <MypageInfoBox>
-          <TitleText>닉네임</TitleText>
-          <SubTitleText> MBTI </SubTitleText>
-          <NormalText> ijooha16@gmail.com </NormalText>
-          <NormalText>
-            {" "}
-            자기소개 어쩌구 저쩌구 ㅇ냔얼니ㅏㄹ다ㅜ핀아ㅓㄹ!
-          </NormalText>
-          <NormalText> blabla</NormalText>
+          <TitleText>{users.map(u => u.nick_name)}</TitleText>
+          <SubTitleText> {users.map(u => u.mbti)} </SubTitleText>
+          <NormalText> {users.map(u => u.email)}</NormalText>
+          <NormalText>{users.map(u => u.introduction)}</NormalText>
           <ProfileEditBtn></ProfileEditBtn>
         </MypageInfoBox>
       </ContentsBox>
       <MypagePostBox>
         {posts.map(data => (
-          <Fragment key={data.id}>
+          <Fragment key={data.post_id}>
             <MypagePostCard data={data} />
           </Fragment>
         ))}
@@ -109,7 +99,7 @@ const NormalText = styled.p`
   font-size: 16px;
 `;
 
-const ProfileEditBtn = styled.button`
+const ProfileEditBtn = styled.a`
   width: 24px;
   height: 24px;
   margin: 0;
@@ -121,6 +111,7 @@ const ProfileEditBtn = styled.button`
   background-image: url(${EditIcon});
   background-position: fit;
   background-color: transparent;
+  cursor: pointer;
 `;
 
 const MypagePostBox = styled.div`
