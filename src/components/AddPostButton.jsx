@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import AddBtn from "../assets/icon_add_white.png";
 
 const AddPostButton = () => {
   return (
@@ -9,7 +10,9 @@ const AddPostButton = () => {
         to={"/posting"}
         style={{ textDecoration: "none", color: "inherit" }}
       >
-        <StAddBtn>+</StAddBtn>
+        <StAddBtn>
+          <img src={AddBtn} />
+        </StAddBtn>
       </Link>
     </>
   );
