@@ -11,7 +11,7 @@ import Layout from "../components/layout/Layout.jsx";
 import PostingModal from "../pages/PostingModal.jsx";
 
 const Router = () => {
-  const { isLogin } = useContext(AuthContext);
+  const { isSignin } = useContext(AuthContext);
 
   return (
     <BrowserRouter>
