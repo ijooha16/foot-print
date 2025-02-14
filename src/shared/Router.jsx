@@ -10,7 +10,7 @@ import SignUp from "../pages/SignUp.jsx";
 import Layout from "../components/layout/Layout.jsx";
 
 const Router = () => {
-  const { isLogin } = useContext(AuthContext);
+  const { isSignin } = useContext(AuthContext);
 
   return (
     <BrowserRouter>
