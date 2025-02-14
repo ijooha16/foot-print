@@ -6,9 +6,7 @@ import { createContext, useReducer } from "react";
 const initialState = {};
 
 //reducer 함수
-const reducer = (state, action) => {
-  console.log();
-};
+const reducer = (state, action) => {};
 
 //context
 const PostContext = createContext();
