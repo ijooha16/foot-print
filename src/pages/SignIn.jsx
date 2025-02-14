@@ -1,8 +1,12 @@
+import { useState } from "react";
+
 const SignIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <div>
       <h2>로그인 페이지</h2>
-      <form onSubmit={handleSignin}>
+      <form>
         <label>아이디</label>
         <input
           type="email"
