@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import supabase from "../supabase/client";
+import { SearchInput } from "../components/SearchInput";
+import SigninLoginBtn from "../components/SigninLoginBtn";
 
 const Posting = () => {
   const [posts, setPosts] = useState([]);
@@ -82,10 +84,11 @@ const Posting = () => {
 
   return (
     <div>
-      <header>헤더</header>
+      <SearchInput></SearchInput>
+      <SigninLoginBtn></SigninLoginBtn>
       <div>
         <StFormBox onSubmit={handleSubmitPosting}>
-          <label>
+          <StInputLabelFlexCol>
             <span>제목</span>
             <input
               type="text"
@@ -94,47 +97,51 @@ const Posting = () => {
               onChange={handleChangeInput}
               placeholder="제목을 입력하세요"
             />
-          </label>
-          <div>
-            <label>여행지 선택</label>
-            <StLabelFlexRow>
-              <input
-                type="radio"
-                name="travelLocation"
-                value="국내"
-                checked={formData.travelLocation === "국내"}
-                onChange={handleChangeInput}
-              />
-              <span>국내</span>
-            </StLabelFlexRow>
-            <StLabelFlexRow>
-              <input
-                type="radio"
-                name="travelLocation"
-                value="국외"
-                checked={formData.travelLocation === "국외"}
-                onChange={handleChangeInput}
-              />
-              <span>국외</span>
-            </StLabelFlexRow>
-          </div>
-          <label>
+          </StInputLabelFlexCol>
+          <StInputRadioBox>
+            <p>여행지 선택</p>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name="travelLocation"
+                  value="국내"
+                  checked={formData.travelLocation === "국내"}
+                  onChange={handleChangeInput}
+                />
+                <span>국내</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="travelLocation"
+                  value="국외"
+                  checked={formData.travelLocation === "국외"}
+                  onChange={handleChangeInput}
+                />
+                <span>국외</span>
+              </label>
+            </div>
+          </StInputRadioBox>
+          <StInputFIle>
             <span>파일선택 </span>
             <input type="file" name="file" onChange={handleChangeInput} />
-          </label>
-          <div>
+          </StInputFIle>
+          <StInputLabelFlexCol>
+            <span>내용 입력</span>
             <textarea
               name="content"
               value={formData.content}
               onChange={handleChangeInput}
-              placeholder="내용 입력"
+              placeholder="내용을 입력하세요"
+              rows="10"
             ></textarea>
-          </div>
+          </StInputLabelFlexCol>
           <button type="submit">등록하기</button>
         </StFormBox>
       </div>
       {/* 작성완료게시글 */}
-      <div>
+      {/* <div>
         {posts.map(post => {
           return (
             <div key={post.post_id}>
@@ -145,7 +152,7 @@ const Posting = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
       <footer>푸터</footer>
     </div>
   );
@@ -159,28 +166,70 @@ const StFormBox = styled.form`
   flex-direction: column;
   align-items: baseline;
   > * {
-    border: 2px solid red;
     width: 100%;
     margin: 10px 0;
-    padding: 10px;
   }
-  label > span {
-    font-weight: 600;
-    /* width: 100%; */
-    background: red;
-    /* display: block; */
-    text-align: left;
+  > * + * {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
   }
-  label input {
-    width: 100%;
-    background: pink;
+  button {
+    margin: 30px auto;
+    width: fit-content;
+    padding: 10px 14px;
+    background: #0062ff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #fff;
+    transition: background-color 0.3s ease-in-out;
+    &:hover {
+      background: #003899;
+      cursor: pointer;
+    }
   }
 `;
 
-const StLabelFlexRow = styled.div`
+const StInputLabelFlexCol = styled.label`
   display: flex;
-  background: red;
-  align-items: center;
-  gap: 5px;
-  width: fit-content;
+  flex-direction: column;
+  gap: 10px;
+  span {
+    font-weight: 600;
+    text-align: left;
+  }
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    &:hover {
+      border: 1px solid #0062ff;
+    }
+  }
+`;
+
+const StInputFIle = styled.label``;
+const StInputRadioBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  > p {
+    font-weight: 600;
+  }
+  > div {
+    display: flex;
+    gap: 10px;
+    label {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  input {
+    margin: 0;
+    margin-right: 10px;
+  }
 `;
