@@ -2,54 +2,60 @@
   "hash": "f8f44a78",
   "configHash": "45f79a0d",
   "lockfileHash": "847eab2d",
-  "browserHash": "0f1ed3a4",
+  "browserHash": "03ac1011",
   "optimized": {
     "react": {
       "src": "../../node_modules/react/index.js",
       "file": "react.js",
-      "fileHash": "dc5e08f9",
+      "fileHash": "40104b2e",
       "needsInterop": true
     },
     "react-dom": {
       "src": "../../node_modules/react-dom/index.js",
       "file": "react-dom.js",
-      "fileHash": "5830306d",
+      "fileHash": "00f1efb3",
       "needsInterop": true
     },
     "react/jsx-dev-runtime": {
       "src": "../../node_modules/react/jsx-dev-runtime.js",
       "file": "react_jsx-dev-runtime.js",
-      "fileHash": "2f32679f",
+      "fileHash": "2ca833e5",
       "needsInterop": true
     },
     "react/jsx-runtime": {
       "src": "../../node_modules/react/jsx-runtime.js",
       "file": "react_jsx-runtime.js",
-      "fileHash": "36682bf7",
+      "fileHash": "19eaf460",
       "needsInterop": true
     },
     "@supabase/supabase-js": {
       "src": "../../node_modules/@supabase/supabase-js/dist/module/index.js",
       "file": "@supabase_supabase-js.js",
-      "fileHash": "c2d973a4",
+      "fileHash": "ed151ca2",
       "needsInterop": false
     },
     "react-dom/client": {
       "src": "../../node_modules/react-dom/client.js",
       "file": "react-dom_client.js",
-      "fileHash": "b2c5bdd4",
+      "fileHash": "0121c611",
       "needsInterop": true
     },
     "react-router-dom": {
       "src": "../../node_modules/react-router-dom/dist/index.mjs",
       "file": "react-router-dom.js",
-      "fileHash": "41e23be4",
+      "fileHash": "b13158cd",
       "needsInterop": false
     },
     "styled-components": {
       "src": "../../node_modules/styled-components/dist/styled-components.browser.esm.js",
       "file": "styled-components.js",
-      "fileHash": "b98d1283",
+      "fileHash": "dbe89185",
+      "needsInterop": false
+    },
+    "react-router": {
+      "src": "../../node_modules/react-router/dist/development/index.mjs",
+      "file": "react-router.js",
+      "fileHash": "c7a38177",
       "needsInterop": false
     }
   },
@@ -62,6 +68,9 @@
     },
     "chunk-7W32CK3N": {
       "file": "chunk-7W32CK3N.js"
+    },
+    "chunk-DFF67CX6": {
+      "file": "chunk-DFF67CX6.js"
     },
     "chunk-XVPNPNLI": {
       "file": "chunk-XVPNPNLI.js"
