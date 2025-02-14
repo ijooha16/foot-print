@@ -1,35 +1,85 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import supabase from "../supabase/client";
+import { Link } from "react-router-dom";
 
 const Home = () => {
+  const [posts, setPosts] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [
+          { data: postsData, error: postsError },
+          { data: usersData, error: usersError },
+          { data: commentsData, error: commentsError },
+        ] = await Promise.all([
+          supabase.from("posts").select("*"),
+          supabase.from("users").select("*"),
+          supabase.from("comments").select("*"),
+        ]);
+
+        if (postsError) throw postsError;
+        if (usersError) throw usersError;
+        if (commentsError) throw commentsError;
+
+        setPosts(postsData);
+        setUsers(usersData);
+        setComments(commentsData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  supabase.from("posts").insert({ posts });
+  supabase.from("users").insert({ users });
+  supabase.from("comments").insert({ comments });
+
+  console.log("posts", posts);
+  console.log("users", users);
+  console.log("comments", comments);
+
   return (
     <StHomeMain>
       <StHeader>
         <StSearchInput placeholder="검색창" />
         <h2>FootPrint</h2>
-        <StLoginBtn>로그인/회원가입</StLoginBtn>
+        <Link to={"/login"}>
+          <StLoginBtn>로그인/회원가입</StLoginBtn>
+        </Link>
       </StHeader>
       <StCategory>
         <div>전체</div>
         <div>국내</div>
         <div>해외</div>
       </StCategory>
-      {/* supabase에서 card 값 가져오기 */}
+      {/* postCard */}
+      {/* {posts.map(post => { */}
       <StHomeCard>
         <StCardTop>
           <StProfileImg />
-          <StCardTextWrap>
-            <StNickName>NickName</StNickName>
-            <StMbti>MBTI</StMbti>
-          </StCardTextWrap>
-          <img />
+          {users.map(user => (
+            <StCardTextWrap key={user.id}>
+              <StNickName>{user.nick_name}</StNickName>
+              <StMbti>{user.mbti}</StMbti>
+            </StCardTextWrap>
+          ))}
         </StCardTop>
         <StPostImg />
         <StIcons>
-          <div>comment icon</div>
-          <div>heart icon</div>
+          <img src="../assets/icon_comment.png" alt="comment img" />
+          <img src="../assets/icon_heart_fill.png" alt="heart img" />
         </StIcons>
-        <StComents>conmments</StComents>{" "}
+        {comments.map(e => (
+          <StComents key={e.id}>{e.text}</StComents>
+        ))}
       </StHomeCard>
+      ;{/* })} */}
     </StHomeMain>
   );
 };
@@ -56,6 +106,7 @@ const StSearchInput = styled.input`
 const StLoginBtn = styled.button`
   width: 150px;
   height: 20px;
+  cursor: pointer;
 `;
 
 const StCategory = styled.div`
@@ -89,6 +140,8 @@ const StMbti = styled.h6`
   margin-top: 0px;
   margin-bottom: 10px;
 `;
+
+// img 변경해야 함
 const StProfileImg = styled.div`
   width: 70px;
   height: 70px;
@@ -97,6 +150,7 @@ const StProfileImg = styled.div`
   margin: 10px;
 `;
 
+// img 변경해야 함
 const StPostImg = styled.div`
   margin: auto;
   width: 450px;
