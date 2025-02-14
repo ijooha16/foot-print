@@ -6,7 +6,9 @@ export const HomeContext = createContext();
 export function HomeProvider({ children }) {
   // post data
   const [posts, setPosts] = useState([]);
+  const [isSignin, setIsSignin] = useState(false);
 
+  //post 가져오는 로직
   useEffect(() => {
     const getPosts = async () => {
       try {
@@ -19,7 +21,18 @@ export function HomeProvider({ children }) {
     };
     getPosts();
   }, []);
-  //   console.log("posts", posts);
+
+  //session 가져오는 로직
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      setIsSignin(session?.user ?? null);
+    };
+    getSession();
+  }, []);
 
   //데이터 넣기
   supabase.from("posts").insert({ posts });
