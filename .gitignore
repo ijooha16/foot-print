@@ -26,6 +26,4 @@ dist-ssr
 yarn.lock
 .env
 package.json
-.env
 package-lock.json
-yarn.lock
