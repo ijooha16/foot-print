@@ -1,40 +1,11 @@
-import React, { useEffect, useState } from "react";
-import supabase from "../supabase/client";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import CommentIcon from "../assets/icon_comment.png";
 import HeartIcon from "../assets/icon_heart_fill.png";
+import { HomeContext } from "../context/HomeContext";
 
 const HomePostCard = ({ post }) => {
-  const [users, setUsers] = useState([]);
-  const [comments, setComments] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [
-          { data: usersData, error: usersError },
-          { data: commentsData, error: commentsError },
-        ] = await Promise.all([
-          supabase.from("users").select("*"),
-          supabase.from("comments").select("*"),
-        ]);
-
-        if (usersError) throw usersError;
-        if (commentsError) throw commentsError;
-
-        setUsers(usersData);
-        setComments(commentsData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // console.log("users", users);
-  supabase.from("users").insert({ users });
-  supabase.from("comments").insert({ comments });
+  const { users, comments } = useContext(HomeContext);
 
   // card 내 user 정보 나타내기
   const setUserProfile = post => {
