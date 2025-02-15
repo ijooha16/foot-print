@@ -1,130 +1,115 @@
+import { useContext, useState } from "react";
 import styled from "styled-components";
-import closeIco from "../assets/icon_add.png";
-const showModal = () => {
-  return (
-    // <>
-    <PostModalBg>
-      <PostModal>
-        <TitleArea>
-          <h1>게시글 제목</h1>
-          <button>닫기</button>
-        </TitleArea>
-        <FlexArea>
-          <Post>
-            <img src="https://item.kakaocdn.net/do/218bdb82c9a7456ee2080fe14a4642927154249a3890514a43687a85e6b6cc82"></img>
-            <p>작성자</p>
-            <p>mpti : </p>
-            <button>...</button>
+import { HomeContext } from "../context/HomeContext";
+import Comments from "../components/Comment";
+import CommentsAPI from "../supabase/dao/commentDao";
 
-            <Icons>
-              <p>댓글</p>
-              <button>하트</button>
-            </Icons>
-            <p>아무튼 게시글 내용임 </p>
-          </Post>
-          <Comment>
-            <UserCommentDiv>
-              <UserComment>
-                <ProfileCommentImg src="https://item.kakaocdn.net/do/218bdb82c9a7456ee2080fe14a4642927154249a3890514a43687a85e6b6cc82"></ProfileCommentImg>
-                <p>닉네임</p>
-                <p>댓글이에요</p>
-              </UserComment>
-              <UserComment>
-                <ProfileCommentImg src="https://item.kakaocdn.net/do/218bdb82c9a7456ee2080fe14a4642927154249a3890514a43687a85e6b6cc82"></ProfileCommentImg>
-                <p>닉네임</p>
-                <p>댓글이에요</p>
-              </UserComment>
-            </UserCommentDiv>
-            <CommentInputDiv>
-              <form>
-                <CommentInput type="text"></CommentInput>
-                <button type="submit">댓글작성</button>
-              </form>
-            </CommentInputDiv>
-          </Comment>
-        </FlexArea>
+const ShowModal = ({ post, closeModal }) => {
+  const { users, comments } = useContext(HomeContext);
+  const [formData, setFormData] = useState({
+    uid: sessionStorage.getItem("id"),
+    content: "",
+    post_id: post.post_id,
+  });
+  if (!post) return null;
+  const handleSubmitComment = async e => {
+    e.preventDefault();
+
+    if (!formData.content) {
+      alert("댓글 내용을 입력해주세요!");
+      return;
+    } else CommentsAPI.insertComment(formData, post.post_id);
+  };
+
+  const handleChangeInput = e => {
+    const content = e.target.value;
+    console.log(content);
+    setFormData({
+      uid: sessionStorage.getItem("id"),
+      content: content,
+      post_id: post.post_id,
+    });
+  };
+
+  return (
+    <EntireModal key={post.uid}>
+      <PostModal>
+        <Post>
+          <PostTitle>{post.title}</PostTitle>
+          <p>{users.nickname}</p>
+          <button>...</button>
+          <img src="https://item.kakaocdn.net/do/218bdb82c9a7456ee2080fe14a4642927154249a3890514a43687a85e6b6cc82"></img>
+          <Icons>
+            <p>{comments.content}</p>
+            <button>하트</button>
+          </Icons>
+          <p>{post.content}</p>
+        </Post>
+        <Comment>
+          <CloseBtn onClick={closeModal}>&times;</CloseBtn>
+          <UserCommentScrollBox>
+            <Comments post_id={post.post_id} />
+          </UserCommentScrollBox>
+          <CommentInputDiv>
+            <form>
+              <input type="text" onChange={handleChangeInput}></input>
+              <button type="submit" onClick={handleSubmitComment}>
+                댓글등록
+              </button>
+            </form>
+          </CommentInputDiv>
+        </Comment>
       </PostModal>
-    </PostModalBg>
+    </EntireModal>
   );
 };
 
-export default showModal;
+export default ShowModal;
 
-const PostModalBg = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+// styled-commponents
+const EntireModal = styled.div`
+  display: block;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const FlexArea = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  height: calc(100% - 30px);
-  border-bottom: 1px solid #000;
-  > div {
-    height: 100%;
-  }
-`;
-const PostModal = styled.div`
-  width: 80%;
-  height: 80%;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.768);
+  z-index: 2;
 `;
 
-const TitleArea = styled.div`
+const PostModal = styled.div`
   position: relative;
-  h1 {
-    font-size: 20px;
-    font-weight: 600;
-    border-bottom: 1px solid #000;
-    text-align: center;
-    padding-bottom: 10px;
-  }
-  button {
-    font-size: 0;
-    position: absolute;
-    top: -5px;
-    right: 0;
-    width: 30px;
-    height: 30px;
-    background-image: url(${closeIco});
-    background-size: cover;
-    background-position: center;
-    background-color: transparent;
-    border: none;
-    transform: rotate(45deg);
-    &:hover {
-      cursor: pointer;
-    }
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 65%;
+  min-height: 500px;
+  background-color: #ffffff;
+  display: flex;
+  grid-template-columns: 1.5fr 1fr;
+  border-radius: 20px;
+  @media (max-width: 700px) {
+    flex-direction: column;
+    overflow-y: scroll;
+    height: 80%;
   }
 `;
 
 const Post = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 60%;
-  padding-right: 10px;
+  display: grid;
+  justify-content: center;
 
-  grid-template-columns: 1fr;
-  h1 {
-    font-weight: 600;
-    font-size: 18px;
-  }
-  p {
-    font-weight: 600;
-  }
-  img {
-    width: fit-content;
-  }
+  height: 100%;
+  padding: 20px;
+`;
+
+const PostTitle = styled.div`
+  padding: 10px;
+  text-align: center;
+  font-size: larger;
+  font-weight: 800;
 `;
 
 const Icons = styled.div`
@@ -132,16 +117,88 @@ const Icons = styled.div`
 `;
 
 const Comment = styled.div`
-  flex: 1;
-  position: relative;
-  border-left: 1px solid #000;
+  background-color: #cee0ff;
+  border-radius: 0 20px 20px 0;
+  width: 100%;
+  height: 100%;
+  @media (max-width: 700px) {
+    border-radius: 0;
+    padding: 10px 0;
+  }
+`;
+
+const CloseBtn = styled.span`
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 20px;
+  font-size: larger;
+  cursor: pointer;
+  @media (max-width: 700px) {
+    position: absolute;
+    top: 15px;
+    right: 0px;
+  }
+`;
+
+const UserCommentScrollBox = styled.div`
+  height: 70%;
+  width: 95%;
+  margin: 0 auto;
+  overflow: hidden;
+  overflow-y: scroll;
+  padding-right: 20px;
+  /* 스크롤바 스타일 */
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #004ecc;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #0062ff;
+    cursor: pointer;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  @media (max-width: 700px) {
+    padding: 10px 0;
+  }
 `;
 
 const UserComment = styled.div`
   display: flex;
   width: 80%;
-  height: 500px;
-  margin-bottom: 0%;
+  width: 100%;
+  gap: 15px;
+  border-bottom: 1px solid #9bc0ff;
+  padding-bottom: 10px;
+  /* height: 1000px; */
+
+  + div {
+    margin-top: 10px;
+  }
+  + div:last-child {
+    border-bottom: 0px;
+  }
+  img {
+    border-radius: 100%;
+  }
+  div {
+    p:nth-child(1) {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+  }
 `;
 
 const ProfileCommentImg = styled.img`
@@ -149,27 +206,23 @@ const ProfileCommentImg = styled.img`
   height: 50px;
 `;
 
-const UserCommentDiv = styled.div`
-  padding: 10px;
-  height: 80%;
-  overflow-y: scroll;
-`;
-const CommentInput = styled.input``;
-
 const CommentInputDiv = styled.div`
   height: 20%;
   background: #cee0ff;
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: -webkit-fill-available;
   padding: 10px;
+  border-radius: 20px;
   form {
-    background: #ccc;
     width: 100%;
     height: 100%;
     input {
+      border-radius: 10px 10px 0 0;
       width: 100%;
       height: calc(100% - 40px);
+      border: none;
+      padding: 20px;
     }
     button {
       background: #003899;
@@ -179,11 +232,17 @@ const CommentInputDiv = styled.div`
       border-radius: 0px 0px 6px 6px;
       font-size: 14px;
       color: #fff;
+      border-radius: 0 0 10px 10px;
       transition: background-color 0.3s ease-in-out;
       &:hover {
         background: #0062ff;
         cursor: pointer;
       }
     }
+  }
+  @media (max-width: 700px) {
+    position: static;
+    border-radius: 0;
+    height: auto;
   }
 `;
