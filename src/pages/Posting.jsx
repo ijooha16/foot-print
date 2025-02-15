@@ -3,9 +3,13 @@ import styled from "styled-components";
 import supabase from "../supabase/client";
 import { SearchInput } from "../components/SearchInput";
 import SigninLoginBtn from "../components/SigninLoginBtn";
+import AddIcon from "../assets/icon_add_black.png";
 
 const Posting = () => {
   const [posts, setPosts] = useState([]);
+
+  //데이터 베이스에서 유저 이름 가져오기
+  const nick_name = '사용자 닉네임'
 
   //데이터 갖다 쓰기
   useEffect(() => {
@@ -84,22 +88,19 @@ const Posting = () => {
 
   return (
     <div>
-      <SearchInput></SearchInput>
-      <SigninLoginBtn></SigninLoginBtn>
       <div>
         <StFormBox onSubmit={handleSubmitPosting}>
-          <StInputLabelFlexCol>
-            <span>제목</span>
+          <StInputContainer>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChangeInput}
-              placeholder="제목을 입력하세요"
+              placeholder="제목을 입력해주세요"
             />
-          </StInputLabelFlexCol>
+          </StInputContainer>
           <StInputRadioBox>
-            <p>여행지 선택</p>
+            <p>어디로 여행 다녀오셨나요?</p>
             <div>
               <label>
                 <input
@@ -124,19 +125,28 @@ const Posting = () => {
             </div>
           </StInputRadioBox>
           <StInputFIle>
-            <span>파일선택 </span>
-            <input type="file" name="file" onChange={handleChangeInput} />
+            <UploadLabel htmlFor="fileUpload">
+              {/* 아래 image는 업로드한 이미지를 의미합니다! 이미지를 추가하면 박스가 이미지로 바뀌어요.
+              추후 수정 부탁드립니다. */}
+              {/* {image ? <PreviewImage src={image} alt="Preview" /> : <PlusIcon />} */}
+              <PlusIcon />
+            </UploadLabel>
+            <input
+              type="file"
+              id="fileUpload"
+              name="file"
+              onChange={handleChangeInput}
+            />
           </StInputFIle>
-          <StInputLabelFlexCol>
-            <span>내용 입력</span>
+          <StInputContainer>
             <textarea
               name="content"
               value={formData.content}
               onChange={handleChangeInput}
-              placeholder="내용을 입력하세요"
-              rows="10"
+              placeholder={`${nick_name}님의 이야기를 들려주세요!`}
+              rows="2"
             ></textarea>
-          </StInputLabelFlexCol>
+          </StInputContainer>
           <button type="submit">등록하기</button>
         </StFormBox>
       </div>
@@ -166,55 +176,84 @@ const StFormBox = styled.form`
   flex-direction: column;
   align-items: baseline;
   > * {
-    width: 100%;
-    margin: 10px 0;
-  }
-  > * + * {
-    border-top: 1px solid #ccc;
-    padding-top: 10px;
+    width: 700px;
+    margin: 30px 0;
   }
   button {
     margin: 30px auto;
-    width: fit-content;
-    padding: 10px 14px;
+    width: 100px;
+    height: 46px;
+    padding: 12px 14px;
     background: #0062ff;
     border: none;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: 23px;
+    font-size: 16px;
+    font-weight: 700;
     color: #fff;
     transition: background-color 0.3s ease-in-out;
     &:hover {
-      background: #003899;
+      background: #0057e3;
       cursor: pointer;
     }
   }
 `;
 
-const StInputLabelFlexCol = styled.label`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  span {
-    font-weight: 600;
-    text-align: left;
-  }
+const StInputContainer = styled.label`
   input,
   textarea {
     width: 100%;
-    padding: 10px;
+    padding: 20px 24px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 20px;
+    box-sizing: content-box !important;
     &:hover {
-      border: 1px solid #0062ff;
+      outline: 2px solid #cee0ff;
     }
   }
 `;
 
-const StInputFIle = styled.label``;
+const StInputFIle = styled.div`
+  input {
+    display: none;
+  }
+`;
+
+const UploadLabel = styled.label`
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  background-color: #f8f8f8;
+
+  &:hover {
+    border-color: #DEDEDE;
+    background-color: #eee;
+  }
+`;
+
+const PlusIcon = styled.div`
+  width: 40px;
+  height: 40px;
+  background: url(${AddIcon}) no-repeat center;
+  background-size: contain;
+`;
+
+const PreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+`;
+
 const StInputRadioBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   > p {
     font-weight: 600;
   }

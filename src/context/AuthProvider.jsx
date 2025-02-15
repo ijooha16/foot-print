@@ -13,8 +13,8 @@ export default function AuthProvider({ children }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_, session) => {
       if (session) {
-        setIsLogin(true);
-        setAuthUser(session);
+        setIsSignin(true);
+        setUser(session.user);
       } else {
         setIsSignin(false);
         setUser(null);
