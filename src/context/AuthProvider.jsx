@@ -4,7 +4,7 @@ import supabase from "../supabase/client.js";
 const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
-  const [isSignin, setISignin] = useState(false);
+  const [isSignin, setIsSignin] = useState(false);
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [authUser, setAuthUser] = useState([]);
@@ -14,10 +14,10 @@ export default function AuthProvider({ children }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_, session) => {
       if (session) {
-        setISignin(true);
+        setIsSignin(true);
         setUser(session.user);
       } else {
-        setISignin(false);
+        setIsSignin(false);
         setUser(null);
       }
     });
