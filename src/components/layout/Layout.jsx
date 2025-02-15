@@ -6,7 +6,8 @@ import supabase from "../../supabase/client";
 import { AuthContext } from "../../context/AuthProvider";
 
 const Layout = () => {
-  const { isLogin, setIsLogin } = useContext(AuthContext);
+  const { setIsSignin } = useContext(AuthContext);
+  const isSignin = true;
   const [scrolled, setScrolled] = useState(false);
   //로그인 상태 확인
   useEffect(() => {
@@ -14,8 +15,8 @@ const Layout = () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      console.log("session", session);
-      setIsLogin(session?.user ?? null);
+      // console.log("session", session);
+      setIsSignin(session?.user ?? null);
     };
     getSession();
   });
@@ -38,7 +39,7 @@ const Layout = () => {
         <Logo scrolled={scrolled} href="/">
           FootPrint
         </Logo>
-        {isLogin ? (
+        {isSignin ? (
           <>
             <Link
               to={"/my-page"}
