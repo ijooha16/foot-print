@@ -1,13 +1,18 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import HomePostCard from "../components/HomePostCard";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { HomeContext } from "../context/HomeContext";
 import AddPostButton from "../components/AddPostButton";
+import ShowModal from "./PostingModal";
 
 const Home = () => {
-  const { posts, isLogin } = useContext(HomeContext);
+  const { posts } = useContext(HomeContext);
+  const isSignin = true;
+  const [selectedPost, setSelectedPost] = useState(null);
 
+  const showModal = post => {
+    setSelectedPost(post);
+  };
   return (
     <>
       <StHomeMain>
@@ -18,18 +23,21 @@ const Home = () => {
         </StCategory>
       </StHomeMain>
       {posts.map(post => {
+        // console.log("post", post);
+
         return (
-          // link (x) 게시글 상세 모달로 연결
-          <Link
-            to={`/posting?id=${post.post_id}`}
-            key={post.uid}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
+          <MoveModal key={post.uid} onClick={() => showModal(post)}>
             <HomePostCard post={post} />
-          </Link>
+          </MoveModal>
         );
       })}
-      {isLogin ? <AddPostButton /> : null}
+      {isSignin ? <AddPostButton /> : null}
+      {selectedPost && (
+        <ShowModal
+          post={selectedPost}
+          closeModal={() => setSelectedPost(null)}
+        />
+      )}
     </>
   );
 };
@@ -46,4 +54,8 @@ const StCategory = styled.div`
   justify-content: space-evenly;
   align-items: center;
   margin: 50px;
+`;
+
+const MoveModal = styled.div`
+  cursor: pointer;
 `;
