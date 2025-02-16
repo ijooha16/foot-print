@@ -21,7 +21,7 @@ export const SearchInput = () => {
         post.title.includes(keyword) ||
         post.content.includes(keyword) ||
         post.users?.nickname.includes(keyword) ||
-        post.users?.mbti.includes(keyword)
+        post.users?.mbti.includes(keyword.toUpperCase())
       );
     });
     setPosts(filterPosts);
