@@ -10,20 +10,34 @@ const Posting = () => {
   const [posts, setPosts] = useState([]);
 
   //데이터 베이스에서 유저 이름 가져오기
+
   const nick_name = "사용자 닉네임";
+
+  //데이터 가져오기
+  const getPosts = async () => {
+    try {
+      const { data, error } = await supabase.from("posts").select("*");
+      if (error) throw error;
+      setPosts(data);
+      //uid가 노출되면 안댐
+    } catch (error) {
+      console.log("데이터 가져오기 오류 : ", error);
+    }
+  };
+
+  //로그인 사용자 정보 가져오기
+  const getUser = async () => {
+    const { data: user, error } = await supabase.from("posts").select("*");
+    if (error) {
+      console.log("로그인 사용자 정보 가져오기 오류 : ", error);
+      return null;
+    }
+    return user;
+  };
+  getUser();
 
   //데이터 갖다 쓰기
   useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const { data, error } = await supabase.from("posts").select("*");
-        if (error) throw error;
-        setPosts(data);
-        //uid가 노출되면 안댐
-      } catch (error) {
-        console.log("데이터 가져오기 오류 : ", error);
-      }
-    };
     getPosts();
   }, []);
   // console.log(posts);
@@ -179,6 +193,9 @@ const StFormBox = styled.form`
   gap: 40px;
   > * {
     width: 700px;
+  }
+  button {
+    width: 100px;
   }
 `;
 
