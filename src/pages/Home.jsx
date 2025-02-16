@@ -6,20 +6,45 @@ import AddPostButton from "../components/AddPostButton";
 import ShowModal from "./PostingModal";
 
 const Home = () => {
-  const { posts } = useContext(HomeContext);
+  const { posts, setPosts } = useContext(HomeContext);
   const isSignin = true;
   const [selectedPost, setSelectedPost] = useState(null);
 
   const showModal = post => {
     setSelectedPost(post);
   };
+  const showAllPosts = () => {
+    setPosts(posts);
+    return;
+  };
+
+  const showInPosts = () => {
+    const filterInPost = posts.filter(post => {
+      return post.travel_location === "국내";
+    });
+    setPosts(filterInPost);
+    return;
+  };
+
+  const showOutPosts = () => {
+    const filterOutPost = posts.filter(post => {
+      return post.travel_location === "국외";
+    });
+    setPosts(filterOutPost);
+    console.log("filterOutPost", filterOutPost);
+
+    return;
+  };
+
+  console.log("posts", posts);
+
   return (
     <>
       <StHomeMain>
         <StCategory>
-          <div>전체</div>
-          <div>국내</div>
-          <div>해외</div>
+          <div onClick={showAllPosts}>전체</div>
+          <div onClick={showInPosts}>국내</div>
+          <div onClick={showOutPosts}>국외</div>
         </StCategory>
       </StHomeMain>
       {posts.map(post => {
@@ -31,7 +56,7 @@ const Home = () => {
           </MoveModal>
         );
       })}
-      {isSignin ? <AddPostButton /> : null}
+      {isSignin === true ? <AddPostButton /> : null}
       {selectedPost && (
         <ShowModal
           post={selectedPost}
