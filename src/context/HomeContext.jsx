@@ -4,23 +4,43 @@ import supabase from "../supabase/client";
 export const HomeContext = createContext();
 
 export function HomeProvider({ children }) {
-  // post data
   const [posts, setPosts] = useState([]);
   const [isSignin, setIsSignin] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [comments, setComments] = useState([]);
 
-  //post 가져오는 로직
   useEffect(() => {
-    const getPosts = async () => {
+    const fetchData = async () => {
       try {
-        const { data, error } = await supabase.from("posts").select("*");
-        if (error) throw error;
-        setPosts(data);
+        const [
+          { data: postsData, error: postsError },
+          { data: usersData, error: usersError },
+          { data: commentsData, error: commentsError },
+        ] = await Promise.all([
+          supabase.from("posts").select("*, users(nickname, mbti)"),
+          supabase.from("users").select("*"),
+          supabase.from("comments").select("*"),
+        ]);
+
+        if (postsError) throw postsError;
+        if (usersError) throw usersError;
+        if (commentsError) throw commentsError;
+
+        setPosts(postsData);
+        setUsers(usersData);
+        setComments(commentsData);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching data:", error);
       }
     };
-    getPosts();
+
+    fetchData();
   }, []);
+
+  // console.log("users", users);
+  supabase.from("posts").insert({ posts });
+  supabase.from("users").insert({ users });
+  supabase.from("comments").insert({ comments });
 
   //session 가져오는 로직
   useEffect(() => {
@@ -41,6 +61,11 @@ export function HomeProvider({ children }) {
     <HomeContext.Provider
       value={{
         posts,
+        setPosts,
+        users,
+        comments,
+        isSignin,
+        setIsSignin,
       }}
     >
       {children}
