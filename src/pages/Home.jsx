@@ -46,7 +46,7 @@ const Home = () => {
         <StCategory onClick={() => showPosts("in")}>국내</StCategory>
         <StCategory onClick={() => showPosts("out")}>국외</StCategory>
       </StCategoryContainer>
-      <div>
+      <StCardWrap>
         {changePosts.map((post, index) => {
           return (
             <MoveModal
@@ -57,7 +57,7 @@ const Home = () => {
             </MoveModal>
           );
         })}
-      </div>
+      </StCardWrap>
       {isSignin === true ? <AddPostButton /> : null}
       {selectedPost && (
         <ShowModal
@@ -71,11 +71,26 @@ const Home = () => {
 
 export default Home;
 
+const StCardWrap = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @media (max-width: 800px) {
+    width: 100%;
+    padding: 0 20px;
+    > * {
+      width: 100%;
+    }
+  }
+`;
 const StCategoryContainer = styled.div`
   width: 300px;
   margin-bottom: 80px;
   display: flex;
   justify-content: space-between;
+  padding: 10px 0;
 `;
 
 const StCategory = styled.div`

@@ -77,6 +77,11 @@ const PostModal = styled.div`
   display: flex;
   grid-template-columns: 1.5fr 1fr;
   border-radius: 20px;
+  @media (max-width: 700px) {
+    flex-direction: column;
+    overflow-y: scroll;
+    height: 80%;
+  }
 `;
 
 const Post = styled.div`
@@ -103,6 +108,10 @@ const Comment = styled.div`
   border-radius: 0 20px 20px 0;
   width: 100%;
   height: 100%;
+  @media (max-width: 700px) {
+    border-radius: 0;
+    padding: 10px 0;
+  }
 `;
 
 const CloseBtn = styled.span`
@@ -111,6 +120,11 @@ const CloseBtn = styled.span`
   margin: 10px 20px;
   font-size: larger;
   cursor: pointer;
+  @media (max-width: 700px) {
+    position: absolute;
+    top: 15px;
+    right: 0px;
+  }
 `;
 
 const UserCommentScrollBox = styled.div`
@@ -143,6 +157,9 @@ const UserCommentScrollBox = styled.div`
     border: 2px solid transparent;
     background-clip: padding-box;
   }
+  @media (max-width: 700px) {
+    padding: 10px 0;
+  }
 `;
 const UserComment = styled.div`
   display: flex;
@@ -151,7 +168,7 @@ const UserComment = styled.div`
   gap: 15px;
   border-bottom: 1px solid #9bc0ff;
   padding-bottom: 10px;
-  height: 1000px;
+  /* height: 1000px; */
 
   + div {
     margin-top: 10px;
@@ -208,5 +225,10 @@ const CommentInputDiv = styled.div`
         cursor: pointer;
       }
     }
+  }
+  @media (max-width: 700px) {
+    position: static;
+    border-radius: 0;
+    height: auto;
   }
 `;
