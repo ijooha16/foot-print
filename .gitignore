@@ -27,4 +27,6 @@ yarn.lock
 package.json
 .env
 package.json
+package-lock.json
 node_modules
+yarn.lock

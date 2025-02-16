@@ -1,59 +1,63 @@
 import styled from "styled-components";
 import HomePostCard from "../components/HomePostCard";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { HomeContext } from "../context/HomeContext";
 import AddPostButton from "../components/AddPostButton";
 import ShowModal from "./PostingModal";
 
 const Home = () => {
-  const { posts, setPosts } = useContext(HomeContext);
-  // const isSignin = false;
+  const { posts, changePosts, setChangePosts } = useContext(HomeContext);
+  const isSignin = true;
   const [selectedPost, setSelectedPost] = useState(null);
+
+  useEffect(() => {
+    setChangePosts(posts);
+  }, [posts]);
+
+  const showPosts = where => {
+    if (where === "all") {
+      setChangePosts([...posts]);
+      return;
+    }
+    if (where === "in") {
+      const filterInPost = posts.filter(post => {
+        return post.travel_location === "국내";
+      });
+      setChangePosts(filterInPost);
+      return;
+    }
+    if (where === "out") {
+      const filterOutPost = posts.filter(post => {
+        return post.travel_location === "국외";
+      });
+      setChangePosts(filterOutPost);
+      return;
+    }
+  };
 
   const showModal = post => {
     setSelectedPost(post);
   };
-  const showAllPosts = () => {
-    setPosts(posts);
-    return;
-  };
-
-  const showInPosts = () => {
-    const filterInPost = posts.filter(post => {
-      return post.travel_location === "국내";
-    });
-    setPosts(filterInPost);
-    return;
-  };
-
-  const showOutPosts = () => {
-    const filterOutPost = posts.filter(post => {
-      return post.travel_location === "국외";
-    });
-    setPosts(filterOutPost);
-    console.log("filterOutPost", filterOutPost);
-
-    return;
-  };
-
-  console.log("posts", posts);
 
   return (
     <>
       <StCategoryContainer>
-        <StCategory onClick={showAllPosts}>전체</StCategory>
-        <StCategory onClick={showInPosts}>국내</StCategory>
-        <StCategory onClick={showOutPosts}>해외</StCategory>
+        <StCategory onClick={() => showPosts("all")}>전체</StCategory>
+        <StCategory onClick={() => showPosts("in")}>국내</StCategory>
+        <StCategory onClick={() => showPosts("out")}>국외</StCategory>
       </StCategoryContainer>
-      {posts.map(post => {
-        // console.log("post", post);
-
-        return (
-          <MoveModal key={post.uid} onClick={() => showModal(post)}>
-            <HomePostCard post={post} />
-          </MoveModal>
-        );
-      })}
+      <div>
+        {changePosts.map((post, index) => {
+          return (
+            <MoveModal
+              key={`${post.uid}-${index}`}
+              onClick={() => showModal(post)}
+            >
+              <HomePostCard post={post} />
+            </MoveModal>
+          );
+        })}
+      </div>
       {isSignin === true ? <AddPostButton /> : null}
       {selectedPost && (
         <ShowModal

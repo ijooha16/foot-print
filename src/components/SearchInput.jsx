@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { HomeContext } from "../context/HomeContext";
 
 export const SearchInput = () => {
-  const { posts, setPosts } = useContext(HomeContext);
+  const { posts, setChangePosts } = useContext(HomeContext);
   const [searchInput, setSearchInput] = useState("");
 
   const handleSearch = e => {
@@ -16,7 +16,7 @@ export const SearchInput = () => {
     // 검색창 필터링
     const keyword = searchInput;
 
-    const filterPosts = posts.filter(post => {
+    const searchPosts = posts.filter(post => {
       return (
         post.title.includes(keyword) ||
         post.content.includes(keyword) ||
@@ -24,7 +24,8 @@ export const SearchInput = () => {
         post.users?.mbti.includes(keyword.toUpperCase())
       );
     });
-    setPosts(filterPosts);
+
+    setChangePosts(searchPosts);
 
     if (e.key === "Enter") return;
     setSearchInput("");
@@ -75,7 +76,7 @@ const StSearchForm = styled.form`
   button {
     min-width: 24px;
     min-height: 24px;
-    background: url(${searchIco});
+    background: url(${searchIco}) center / 95%;
     border: none;
     cursor: pointer;
   }
