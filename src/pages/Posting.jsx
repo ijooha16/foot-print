@@ -63,7 +63,7 @@ const Posting = () => {
         .insert([
           {
             // post_id: crypto.randomUUID(),
-            uid: "5889f782-2266-420e-a94a-cc7b7eddd725",
+            uid: "23d8414d-5bbd-47c8-9c08-cd9630c3fa9f",
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
@@ -149,8 +149,8 @@ const Posting = () => {
               rows="2"
             ></textarea>
           </StInputContainer>
+          <StBtn type="submit">등록하기</StBtn>
         </StFormBox>
-        <StBtn type="submit">등록하기</StBtn>
       </ContentsBox>
       {/* 작성완료게시글 */}
       {/* <div>
