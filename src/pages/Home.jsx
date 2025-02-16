@@ -51,7 +51,12 @@ const Home = () => {
           return (
             <MoveModal
               key={`${post.uid}-${index}`}
-              onClick={() => showModal(post)}
+              onClick={e => {
+                if (e.target.classList.contains("heart")) {
+                  return;
+                }
+                showModal(post);
+              }}
             >
               <HomePostCard post={post} />
             </MoveModal>
