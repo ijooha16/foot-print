@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../supabase/client";
 import styled from "styled-components";
+import { ContentsBox, StBtn, LoginTxt, FormBox, SignupBtn } from "../shared/styleGuide";
+
+
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -42,10 +45,10 @@ const SignUp = () => {
   console.log(nickname);
 
   return (
-    <>
-      <h1>create account</h1>
-      <h4>가입을 통해 친구들과 여행 게시글을 공유해보세요!</h4>
-      <SignupBox>
+    <ContentsBox>
+      <LoginTxt>create account</LoginTxt>
+      <StTxt>가입을 통해 친구들과 여행 게시글을 공유해보세요!</StTxt>
+      <FormBox>
         <form
           onSubmit={handleSignup}
           style={{ display: "flex", flexDirection: "column", gap: "5px" }}
@@ -80,21 +83,15 @@ const SignUp = () => {
             required
           />
         </form>
-        <button type="submit">가입</button>
-      </SignupBox>
-    </>
+        <StBtn type="submit">가입</StBtn>
+      </FormBox>
+    </ContentsBox>
   );
 };
 
 export default SignUp;
 
-const SignupBox = styled.div`
-  background-color: lightgrey;
-  padding: 60px 40px;
-  margin-bottom: 60px;
-  gap: 40px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
+const StTxt = styled.div`
+  font-size: 16px;
+  color: #8B8B8B;
+`

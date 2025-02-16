@@ -3,6 +3,7 @@ css 초기화
 */
 * {
   box-sizing: border-box;
+  scrollbar-width: none;
 }
 html,
 body,
@@ -132,4 +133,7 @@ table {
 #root {
   margin: 0 auto;
   padding: 2rem;
+  
 }
+
+

@@ -7,7 +7,6 @@ export default function AuthProvider({ children }) {
   const [isSignin, setIsSignin] = useState(false);
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
-  const [authUser, setAuthUser] = useState([]);
 
   useEffect(() => {
     const {

@@ -40,13 +40,11 @@ const Home = () => {
 
   return (
     <>
-      <StHomeMain>
-        <StCategory>
-          <div onClick={showAllPosts}>전체</div>
-          <div onClick={showInPosts}>국내</div>
-          <div onClick={showOutPosts}>국외</div>
-        </StCategory>
-      </StHomeMain>
+      <StCategoryContainer>
+        <StCategory onClick={showAllPosts}>전체</StCategory>
+        <StCategory onClick={showInPosts}>국내</StCategory>
+        <StCategory onClick={showOutPosts}>해외</StCategory>
+      </StCategoryContainer>
       {posts.map(post => {
         // console.log("post", post);
 
@@ -69,16 +67,27 @@ const Home = () => {
 
 export default Home;
 
-// styled-components
-const StHomeMain = styled.div`
-  width: 100%;
+const StCategoryContainer = styled.div`
+  width: 300px;
+  margin-bottom: 80px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const StCategory = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 50px;
+  font-size: 18px;
+  color: #8b8b8b;
+  cursor: pointer;
+
+  &:hover {
+    color: #121212;
+    transition:
+      transform 0.3s ease,
+      color 0.3s ease,
+      font-weight 0.3s ease;
+    transform: scale(1.3);
+    font-weight: 700;
+  }
 `;
 
 const MoveModal = styled.div`

@@ -9,6 +9,7 @@ const Layout = () => {
   const { setIsSignin } = useContext(AuthContext);
   const isSignin = true;
   const [scrolled, setScrolled] = useState(false);
+
   //로그인 상태 확인
   useEffect(() => {
     const getSession = async () => {
@@ -41,20 +42,24 @@ const Layout = () => {
         </Logo>
         {isSignin ? (
           <>
-            <Link
-              to={"/my-page"}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <StLoginBtn>마이페이지</StLoginBtn>
-            </Link>
-            <StLoginBtn>로그아웃</StLoginBtn>
+            <StMyBtnContainer>
+              <Link
+                to={"/my-page"}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <StBtn>마이페이지</StBtn>
+              </Link>
+              <StBtn>로그아웃</StBtn>
+            </StMyBtnContainer>
           </>
         ) : (
           <Link
             to={"/sign-in"}
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <StLoginBtn>로그인 / 회원가입</StLoginBtn>
+            <StMyBtnContainer>
+              <StBtn>로그인 / 회원가입</StBtn>
+            </StMyBtnContainer>
           </Link>
         )}
       </HeaderContainer>
@@ -83,7 +88,6 @@ const HeaderContainer = styled.div`
   width: 100vw;
   height: ${props => (props.scrolled ? "140px" : "300px")};
   position: fixed;
-  margin-bottom: 80px;
   box-sizing: border-box;
   padding: 0 60px;
   display: flex;
@@ -96,6 +100,7 @@ const HeaderContainer = styled.div`
     props.scrolled ? "0px 4px 30px rgba(0, 0, 0, 0.1)" : "none"};
   transition: all 0.5s ease-in-out;
   z-index: 2;
+
 `;
 
 const Logo = styled.a`
@@ -106,19 +111,25 @@ const Logo = styled.a`
   transition: all 0.5s ease-in-out;
 `;
 
-const StLoginBtn = styled.button`
+const StBtn = styled.button`
+  padding: 0 16px;
   cursor: pointer;
-  display: flex;
-  text-align: center;
-  width: 100%;
-  max-width: 260px;
-  height: 40px;
+  text-align: right;
   border-radius: 30px;
-  background: #f1f1f3;
+  color: #8b8b8b;
+  background: transparent;
   overflow: hidden;
   position: relative;
   border: none;
-  padding: 10px 20px;
   font-size: 16px;
   outline: none;
+`;
+
+const StMyBtnContainer = styled.div`
+  padding: 0;
+  padding-right: 16px;
+  width: 280px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
 `;
