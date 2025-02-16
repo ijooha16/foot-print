@@ -10,6 +10,8 @@ const Layout = () => {
   const isSignin = false;
   const [scrolled, setScrolled] = useState(false);
 
+  
+
   //로그인 상태 확인
   useEffect(() => {
     const getSession = async () => {
