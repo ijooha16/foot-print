@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/AuthProvider";
 
 const Layout = () => {
   const { setIsSignin } = useContext(AuthContext);
-  const isSignin = true;
+  const isSignin = false;
   const [scrolled, setScrolled] = useState(false);
 
   //로그인 상태 확인
@@ -86,7 +86,7 @@ export default Layout;
 //푸터
 const FooterContainer = styled.footer`
   padding: 30px 60px;
-  background: #dedede;
+  background: #cee0ff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,6 +122,9 @@ const FooterContainer = styled.footer`
     color: #fff;
     text-decoration: none;
   }
+  p {
+    color: #005eff;
+  }
   p:last-child {
     font-size: 12px;
     color: #fff;
@@ -135,8 +138,8 @@ const ContentsContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   margin-top: ${props => (props.scrolled ? "140px" : "300px")};
-  margin-left: calc((100vw - 920px) / 2);
-  margin-right: calc((100vw - 920px) / 2);
+  /* margin-left: calc((100vw - 920px) / 2);
+  margin-right: calc((100vw - 920px) / 2); */
   transition: all 0.5s ease-in-out;
 `;
 
@@ -156,6 +159,20 @@ const HeaderContainer = styled.div`
     props.scrolled ? "0px 4px 30px rgba(0, 0, 0, 0.1)" : "none"};
   transition: all 0.5s ease-in-out;
   z-index: 2;
+  @media (max-width: 800px) {
+    flex-direction: column;
+    padding: 20px;
+    height: fit-content;
+    gap: 20px;
+
+    form {
+      margin: 0;
+    }
+    div {
+      width: 100%;
+      justify-content: center;
+    }
+  }
 `;
 
 const Logo = styled.a`
@@ -182,8 +199,6 @@ const StBtn = styled.button`
 
 const StMyBtnContainer = styled.div`
   padding: 0;
-  padding-right: 16px;
-  width: 280px;
   display: flex;
   justify-content: flex-end;
   gap: 20px;

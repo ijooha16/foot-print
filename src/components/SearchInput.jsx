@@ -52,7 +52,6 @@ const StSearchForm = styled.form`
   width: 220px;
   height: 46px;
   padding: 0 14px;
-  margin-right: 60px;
   display: flex;
   align-items: center;
 

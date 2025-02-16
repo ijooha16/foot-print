@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../supabase/client";
-import styled from "styled-components";
+// import styled from "styled-components";
 import {
   ContentsBox,
   StBtn,

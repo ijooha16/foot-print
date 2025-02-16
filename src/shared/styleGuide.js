@@ -14,6 +14,14 @@ export const ContentsBox = styled.div`
   flex-direction: ${props => props.direction || "column"};
   justify-content: center;
   align-items: center;
+  @media (max-width: 800px) {
+    max-width: 100%;
+    width: 100%;
+    > * {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
 `;
 
 export const StBtn = styled.button`
@@ -38,13 +46,14 @@ export const LoginTxt = styled.h1`
   font-weight: 700;
   font-size: 20px;
   color: #121212;
-`
+  text-align: center;
+`;
 
 export const FormBox = styled.form`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   input {
     margin: 10px 0;
@@ -52,13 +61,12 @@ align-items: center;
 
     width: 220px;
     height: 40px;
-    border: 2px solid #DEDEDE;
+    border: 2px solid #dedede;
     border-radius: 12px;
 
     &:hover {
       outline: 2px solid #cee0ff;
     }
-    
   }
 
   button {
@@ -67,8 +75,8 @@ align-items: center;
 `;
 
 export const SignupBtn = styled.button`
-border: none;
-background-color: transparent;
-color: #8B8B8B;
-cursor: pointer;
-`
+  border: none;
+  background-color: transparent;
+  color: #8b8b8b;
+  cursor: pointer;
+`;

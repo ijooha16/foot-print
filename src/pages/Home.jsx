@@ -124,6 +124,7 @@ const Home = () => {
         <StCategory onClick={() => showPosts("in")}>국내</StCategory>
         <StCategory onClick={() => showPosts("out")}>국외</StCategory>
       </StCategoryContainer>
+<<<<<<< HEAD
 
       <PostContainer>
         {displayedPosts.map((post, index) => (
@@ -141,6 +142,20 @@ const Home = () => {
         <div id="loadMore" style={{ height: "20px" }}></div>
       )}
 
+=======
+      <StCardWrap>
+        {changePosts.map((post, index) => {
+          return (
+            <MoveModal
+              key={`${post.uid}-${index}`}
+              onClick={() => showModal(post)}
+            >
+              <HomePostCard post={post} />
+            </MoveModal>
+          );
+        })}
+      </StCardWrap>
+>>>>>>> 0d91b16 (style : 반응형 수정)
       {isSignin === true ? <AddPostButton /> : null}
       {selectedPost && (
         <ShowModal
@@ -154,12 +169,29 @@ const Home = () => {
 
 export default Home;
 
+<<<<<<< HEAD
 const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
+=======
+const StCardWrap = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @media (max-width: 800px) {
+    width: 100%;
+    padding: 0 20px;
+    > * {
+      width: 100%;
+    }
+  }
+`;
+>>>>>>> 0d91b16 (style : 반응형 수정)
 const StCategoryContainer = styled.div`
   width: 300px;
   margin-bottom: 80px;
