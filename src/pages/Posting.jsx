@@ -198,6 +198,9 @@ const StFormBox = styled.form`
   button {
     width: 100px;
   }
+  button {
+    width: 100px;
+  }
 `;
 
 const StInputContainer = styled.label`
