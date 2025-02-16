@@ -1,15 +1,32 @@
 import styled from "styled-components";
 import searchIco from "../assets/icon_search.png";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { HomeContext } from "../context/HomeContext";
 
 export const SearchInput = () => {
+  const { posts, setPosts } = useContext(HomeContext);
   const [searchInput, setSearchInput] = useState("");
+
   const handleSearch = e => {
     e.preventDefault();
     if (!searchInput) {
       alert("검색어를 입력하세요");
       return;
     }
+    // 검색창 필터링
+    const keyword = searchInput;
+
+    const filterPosts = posts.filter(post => {
+      return (
+        post.title.includes(keyword) ||
+        post.content.includes(keyword) ||
+        post.users?.nickname.includes(keyword) ||
+        post.users?.mbti.includes(keyword)
+      );
+    });
+    setPosts(filterPosts);
+
+    if (e.key === "Enter") return;
     setSearchInput("");
 
     //검색페이지 이동 로직 작성하기
