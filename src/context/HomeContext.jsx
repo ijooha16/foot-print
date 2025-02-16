@@ -9,6 +9,7 @@ export function HomeProvider({ children }) {
   const [users, setUsers] = useState([]);
   const [comments, setComments] = useState([]);
   const [changePosts, setChangePosts] = useState([...posts]);
+  const [likes, setLikes] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,19 +18,23 @@ export function HomeProvider({ children }) {
           { data: postsData, error: postsError },
           { data: usersData, error: usersError },
           { data: commentsData, error: commentsError },
+          { data: likesData, error: likesError },
         ] = await Promise.all([
           supabase.from("posts").select("*, users(nickname, mbti)"),
           supabase.from("users").select("*"),
           supabase.from("comments").select("*"),
+          supabase.from("likes").select("*"),
         ]);
 
         if (postsError) throw postsError;
         if (usersError) throw usersError;
         if (commentsError) throw commentsError;
+        if (likesError) throw likesError;
 
         setPosts(postsData);
         setUsers(usersData);
         setComments(commentsData);
+        setLikes(likesData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -38,10 +43,11 @@ export function HomeProvider({ children }) {
     fetchData();
   }, []);
 
-  // console.log("users", users);
+  //데이터 넣기
   supabase.from("posts").insert({ posts });
   supabase.from("users").insert({ users });
   supabase.from("comments").insert({ comments });
+  supabase.from("likes").insert({ likes });
 
   //session 가져오는 로직
   useEffect(() => {
@@ -55,9 +61,6 @@ export function HomeProvider({ children }) {
     getSession();
   }, []);
 
-  //데이터 넣기
-  supabase.from("posts").insert({ posts });
-
   return (
     <HomeContext.Provider
       value={{
@@ -69,6 +72,8 @@ export function HomeProvider({ children }) {
         setIsSignin,
         changePosts,
         setChangePosts,
+        likes,
+        setLikes,
       }}
     >
       {children}
