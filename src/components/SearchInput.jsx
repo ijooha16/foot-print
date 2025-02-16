@@ -76,7 +76,7 @@ const StSearchForm = styled.form`
   button {
     min-width: 24px;
     min-height: 24px;
-    background: url(${searchIco});
+    background: url(${searchIco}) center / 95%;
     border: none;
     cursor: pointer;
   }

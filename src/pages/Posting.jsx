@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import supabase from "../supabase/client";
-import { SearchInput } from "../components/SearchInput";
-import SigninLoginBtn from "../components/SigninLoginBtn";
+// import { SearchInput } from "../components/SearchInput";
+// import SigninLoginBtn from "../components/SigninLoginBtn";
 import AddIcon from "../assets/icon_add_black.png";
 import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
 
@@ -10,20 +10,34 @@ const Posting = () => {
   const [posts, setPosts] = useState([]);
 
   //데이터 베이스에서 유저 이름 가져오기
+
   const nick_name = "사용자 닉네임";
+
+  //데이터 가져오기
+  const getPosts = async () => {
+    try {
+      const { data, error } = await supabase.from("posts").select("*");
+      if (error) throw error;
+      setPosts(data);
+      //uid가 노출되면 안댐
+    } catch (error) {
+      console.log("데이터 가져오기 오류 : ", error);
+    }
+  };
+
+  //로그인 사용자 정보 가져오기
+  const getUser = async () => {
+    const { data: user, error } = await supabase.from("posts").select("*");
+    if (error) {
+      console.log("로그인 사용자 정보 가져오기 오류 : ", error);
+      return null;
+    }
+    return user;
+  };
+  getUser();
 
   //데이터 갖다 쓰기
   useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const { data, error } = await supabase.from("posts").select("*");
-        if (error) throw error;
-        setPosts(data);
-        //uid가 노출되면 안댐
-      } catch (error) {
-        console.log("데이터 가져오기 오류 : ", error);
-      }
-    };
     getPosts();
   }, []);
   // console.log(posts);
@@ -63,7 +77,7 @@ const Posting = () => {
         .insert([
           {
             // post_id: crypto.randomUUID(),
-            uid: "5889f782-2266-420e-a94a-cc7b7eddd725",
+            uid: "23d8414d-5bbd-47c8-9c08-cd9630c3fa9f",
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
@@ -149,8 +163,8 @@ const Posting = () => {
               rows="2"
             ></textarea>
           </StInputContainer>
+          <StBtn type="submit">등록하기</StBtn>
         </StFormBox>
-        <StBtn type="submit">등록하기</StBtn>
       </ContentsBox>
       {/* 작성완료게시글 */}
       {/* <div>
@@ -165,7 +179,6 @@ const Posting = () => {
           );
         })}
       </div> */}
-      <footer>푸터</footer>
     </>
   );
 };
@@ -180,6 +193,9 @@ const StFormBox = styled.form`
   gap: 40px;
   > * {
     width: 700px;
+  }
+  button {
+    width: 100px;
   }
 `;
 
@@ -228,12 +244,12 @@ const PlusIcon = styled.div`
   background-size: contain;
 `;
 
-const PreviewImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-`;
+// const PreviewImage = styled.img`
+//   width: 100%;
+//   height: 100%;
+//   object-fit: cover;
+//   border-radius: 10px;
+// `;
 
 const StInputRadioBox = styled.div`
   display: flex;
