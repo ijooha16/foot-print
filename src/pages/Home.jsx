@@ -1,33 +1,66 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import HomePostCard from "../components/HomePostCard";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { HomeContext } from "../context/HomeContext";
 import AddPostButton from "../components/AddPostButton";
+import ShowModal from "./PostingModal";
 
 const Home = () => {
-  const { posts, isLogin } = useContext(HomeContext);
+  const { posts, setPosts } = useContext(HomeContext);
+  const isSignin = true;
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const showModal = post => {
+    setSelectedPost(post);
+  };
+  const showAllPosts = () => {
+    setPosts(posts);
+    return;
+  };
+
+  const showInPosts = () => {
+    const filterInPost = posts.filter(post => {
+      return post.travel_location === "국내";
+    });
+    setPosts(filterInPost);
+    return;
+  };
+
+  const showOutPosts = () => {
+    const filterOutPost = posts.filter(post => {
+      return post.travel_location === "국외";
+    });
+    setPosts(filterOutPost);
+    console.log("filterOutPost", filterOutPost);
+
+    return;
+  };
+
+  console.log("posts", posts);
 
   return (
     <>
       <StCategoryContainer>
-        <StCategory>전체</StCategory>
-        <StCategory>국내</StCategory>
-        <StCategory>해외</StCategory>
+        <StCategory onClick={showAllPosts}>전체</StCategory>
+        <StCategory onClick={showInPosts}>국내</StCategory>
+        <StCategory onClick={showOutPosts}>해외</StCategory>
       </StCategoryContainer>
       {posts.map(post => {
+        // console.log("post", post);
+
         return (
-          // link (x) 게시글 상세 모달로 연결
-          <Link
-            to={`/posting?id=${post.post_id}`}
-            key={post.uid}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
+          <MoveModal key={post.uid} onClick={() => showModal(post)}>
             <HomePostCard post={post} />
-          </Link>
+          </MoveModal>
         );
       })}
-      {isLogin ? <AddPostButton /> : null}
+      {isSignin === true ? <AddPostButton /> : null}
+      {selectedPost && (
+        <ShowModal
+          post={selectedPost}
+          closeModal={() => setSelectedPost(null)}
+        />
+      )}
     </>
   );
 };
@@ -48,8 +81,15 @@ const StCategory = styled.div`
 
   &:hover {
     color: #121212;
-    transition: transform 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      color 0.3s ease,
+      font-weight 0.3s ease;
     transform: scale(1.3);
     font-weight: 700;
   }
+`;
+
+const MoveModal = styled.div`
+  cursor: pointer;
 `;
