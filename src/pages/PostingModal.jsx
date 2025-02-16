@@ -48,25 +48,14 @@ const ShowModal = ({ post, closeModal }) => {
         <Comment>
           <CloseBtn onClick={closeModal}>&times;</CloseBtn>
           <UserCommentScrollBox>
-            <UserComment>
-              <ProfileCommentImg src="https://item.kakaocdn.net/do/218bdb82c9a7456ee2080fe14a4642927154249a3890514a43687a85e6b6cc82"></ProfileCommentImg>
-              <div>
-                <p>닉네임{users.nickname}</p>
-                <p>댓글이에요</p>
-              </div>
-            </UserComment>
-            <UserComment>
-              <ProfileCommentImg src="https://item.kakaocdn.net/do/218bdb82c9a7456ee2080fe14a4642927154249a3890514a43687a85e6b6cc82"></ProfileCommentImg>
-              <div>
-                <p>닉네임{users.nickname}</p>
-                <p>댓글이에요</p>
-              </div>
-            </UserComment>
+            <Comments post_id={post.post_id} />
           </UserCommentScrollBox>
           <CommentInputDiv>
             <form>
-              <input type="text"></input>
-              <button type="submit">댓글등록</button>
+              <input type="text" onChange={handleChangeInput}></input>
+              <button type="submit" onClick={handleSubmitComment}>
+                댓글등록
+              </button>
             </form>
           </CommentInputDiv>
         </Comment>
@@ -128,25 +117,14 @@ const Icons = styled.div`
 `;
 
 const Comment = styled.div`
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  display: grid;
-  margin-left: -20%;
->>>>>>> 2dcce72 (style : PostingModal 스타일 수정)
-=======
->>>>>>> 1add125 (ui : 팝업, 푸터 수정)
   background-color: #cee0ff;
   border-radius: 0 20px 20px 0;
   width: 100%;
   height: 100%;
-<<<<<<< HEAD
   @media (max-width: 700px) {
     border-radius: 0;
     padding: 10px 0;
   }
-=======
->>>>>>> 1add125 (ui : 팝업, 푸터 수정)
 `;
 
 const CloseBtn = styled.span`
@@ -155,7 +133,6 @@ const CloseBtn = styled.span`
   margin: 10px 20px;
   font-size: larger;
   cursor: pointer;
-<<<<<<< HEAD
   @media (max-width: 700px) {
     position: absolute;
     top: 15px;
@@ -196,57 +173,16 @@ const UserCommentScrollBox = styled.div`
   @media (max-width: 700px) {
     padding: 10px 0;
   }
-=======
->>>>>>> 2dcce72 (style : PostingModal 스타일 수정)
 `;
 
-const UserCommentScrollBox = styled.div`
-  height: 70%;
-  width: 95%;
-  margin: 0 auto;
-  overflow: hidden;
-  overflow-y: scroll;
-  padding-right: 20px;
-  /* 스크롤바 스타일 */
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #004ecc;
-    border-radius: 10px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #0062ff;
-    cursor: pointer;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-  }
-`;
 const UserComment = styled.div`
   display: flex;
   width: 80%;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1add125 (ui : 팝업, 푸터 수정)
   width: 100%;
   gap: 15px;
   border-bottom: 1px solid #9bc0ff;
   padding-bottom: 10px;
-<<<<<<< HEAD
   /* height: 1000px; */
-=======
-  height: 1000px;
->>>>>>> 1add125 (ui : 팝업, 푸터 수정)
 
   + div {
     margin-top: 10px;
@@ -263,12 +199,6 @@ const UserComment = styled.div`
       margin-bottom: 10px;
     }
   }
-<<<<<<< HEAD
-=======
-  height: 50px;
->>>>>>> 2dcce72 (style : PostingModal 스타일 수정)
-=======
->>>>>>> 1add125 (ui : 팝업, 푸터 수정)
 `;
 
 const ProfileCommentImg = styled.img`
@@ -281,15 +211,7 @@ const CommentInputDiv = styled.div`
   background: #cee0ff;
   position: absolute;
   bottom: 0;
-<<<<<<< HEAD
-<<<<<<< HEAD
   width: -webkit-fill-available;
-=======
-  width: 10%;
->>>>>>> 2dcce72 (style : PostingModal 스타일 수정)
-=======
-  width: -webkit-fill-available;
->>>>>>> 1add125 (ui : 팝업, 푸터 수정)
   padding: 10px;
   border-radius: 20px;
   form {

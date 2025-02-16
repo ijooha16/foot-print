@@ -18,7 +18,7 @@ const MyPageProvider = ({ children }) => {
           { data: postsData, error: postsError },
         ] = await Promise.all([
           //아래 부분 유저 정보만 받아오게 수정 예정 !
-          supabase.from("users").select("*"),
+          supabase.from("users").selects("*"),
           supabase.from("posts").select("*"),
         ]);
 
