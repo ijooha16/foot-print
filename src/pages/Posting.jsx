@@ -4,6 +4,7 @@ import supabase from "../supabase/client";
 import { SearchInput } from "../components/SearchInput";
 import SigninLoginBtn from "../components/SigninLoginBtn";
 import AddIcon from "../assets/icon_add_black.png";
+import { StBtn } from "../shared/styleGuide";
 
 const Posting = () => {
   const [posts, setPosts] = useState([]);
@@ -147,7 +148,7 @@ const Posting = () => {
               rows="2"
             ></textarea>
           </StInputContainer>
-          <button type="submit">등록하기</button>
+          <StBtn type="submit">등록하기</StBtn>
         </StFormBox>
       </div>
       {/* 작성완료게시글 */}
@@ -179,23 +180,7 @@ const StFormBox = styled.form`
     width: 700px;
     margin: 30px 0;
   }
-  button {
-    margin: 30px auto;
-    width: 100px;
-    height: 46px;
-    padding: 12px 14px;
-    background: #0062ff;
-    border: none;
-    border-radius: 23px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
-    transition: background-color 0.3s ease-in-out;
-    &:hover {
-      background: #0057e3;
-      cursor: pointer;
-    }
-  }
+
 `;
 
 const StInputContainer = styled.label`
