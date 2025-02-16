@@ -4,7 +4,7 @@ import supabase from "../supabase/client";
 import { SearchInput } from "../components/SearchInput";
 import SigninLoginBtn from "../components/SigninLoginBtn";
 import AddIcon from "../assets/icon_add_black.png";
-import { StBtn } from "../shared/styleGuide";
+import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
 
 const Posting = () => {
   const [posts, setPosts] = useState([]);
@@ -88,8 +88,9 @@ const Posting = () => {
   };
 
   return (
-    <div>
-      <div>
+    <>
+      <LoginTxt>게시글 작성하기</LoginTxt>
+      <ContentsBox>
         <StFormBox onSubmit={handleSubmitPosting}>
           <StInputContainer>
             <input
@@ -148,9 +149,9 @@ const Posting = () => {
               rows="2"
             ></textarea>
           </StInputContainer>
-          <StBtn type="submit">등록하기</StBtn>
         </StFormBox>
-      </div>
+          <StBtn type="submit">등록하기</StBtn>
+      </ContentsBox>
       {/* 작성완료게시글 */}
       {/* <div>
         {posts.map(post => {
@@ -165,7 +166,7 @@ const Posting = () => {
         })}
       </div> */}
       <footer>푸터</footer>
-    </div>
+    </>
   );
 };
 
@@ -176,9 +177,9 @@ const StFormBox = styled.form`
   display: flex;
   flex-direction: column;
   align-items: baseline;
+  gap: 40px;
   > * {
     width: 700px;
-    margin: 30px 0;
   }
 
 `;
