@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import supabase from "../supabase/client";
-import { SearchInput } from "../components/SearchInput";
-import SigninLoginBtn from "../components/SigninLoginBtn";
+// import { SearchInput } from "../components/SearchInput";
+// import SigninLoginBtn from "../components/SigninLoginBtn";
 import AddIcon from "../assets/icon_add_black.png";
 import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
 
@@ -10,7 +10,7 @@ const Posting = () => {
   const [posts, setPosts] = useState([]);
 
   //데이터 베이스에서 유저 이름 가져오기
-  const nick_name = '사용자 닉네임'
+  const nick_name = "사용자 닉네임";
 
   //데이터 갖다 쓰기
   useEffect(() => {
@@ -150,7 +150,7 @@ const Posting = () => {
             ></textarea>
           </StInputContainer>
         </StFormBox>
-          <StBtn type="submit">등록하기</StBtn>
+        <StBtn type="submit">등록하기</StBtn>
       </ContentsBox>
       {/* 작성완료게시글 */}
       {/* <div>
@@ -165,7 +165,6 @@ const Posting = () => {
           );
         })}
       </div> */}
-      <footer>푸터</footer>
     </>
   );
 };
@@ -181,7 +180,6 @@ const StFormBox = styled.form`
   > * {
     width: 700px;
   }
-
 `;
 
 const StInputContainer = styled.label`
@@ -217,7 +215,7 @@ const UploadLabel = styled.label`
   background-color: #f8f8f8;
 
   &:hover {
-    border-color: #DEDEDE;
+    border-color: #dedede;
     background-color: #eee;
   }
 `;
@@ -229,12 +227,12 @@ const PlusIcon = styled.div`
   background-size: contain;
 `;
 
-const PreviewImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-`;
+// const PreviewImage = styled.img`
+//   width: 100%;
+//   height: 100%;
+//   object-fit: cover;
+//   border-radius: 10px;
+// `;
 
 const StInputRadioBox = styled.div`
   display: flex;
