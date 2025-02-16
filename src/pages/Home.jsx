@@ -40,6 +40,31 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    setChangePosts(posts);
+  }, [posts]);
+
+  const showPosts = where => {
+    if (where === "all") {
+      setChangePosts([...posts]);
+      return;
+    }
+    if (where === "in") {
+      const filterInPost = posts.filter(post => {
+        return post.travel_location === "국내";
+      });
+      setChangePosts(filterInPost);
+      return;
+    }
+    if (where === "out") {
+      const filterOutPost = posts.filter(post => {
+        return post.travel_location === "국외";
+      });
+      setChangePosts(filterOutPost);
+      return;
+    }
+  };
+
   const showModal = post => {
     setSelectedPost(post);
   };

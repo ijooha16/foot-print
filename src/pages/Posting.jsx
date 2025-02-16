@@ -149,8 +149,13 @@ const Posting = () => {
               rows="2"
             ></textarea>
           </StInputContainer>
+<<<<<<< HEAD
           <StBtn type="submit">등록하기</StBtn>
         </StFormBox>
+=======
+        </StFormBox>
+        <StBtn type="submit">등록하기</StBtn>
+>>>>>>> 4932564 (update : 전체/국내/국외 필터링)
       </ContentsBox>
       {/* 작성완료게시글 */}
       {/* <div>
