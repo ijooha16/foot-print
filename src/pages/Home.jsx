@@ -10,13 +10,11 @@ const Home = () => {
 
   return (
     <>
-      <StHomeMain>
-        <StCategory>
-          <div>전체</div>
-          <div>국내</div>
-          <div>해외</div>
-        </StCategory>
-      </StHomeMain>
+      <StCategoryContainer>
+        <StCategory>전체</StCategory>
+        <StCategory>국내</StCategory>
+        <StCategory>해외</StCategory>
+      </StCategoryContainer>
       {posts.map(post => {
         return (
           // link (x) 게시글 상세 모달로 연결
@@ -36,14 +34,22 @@ const Home = () => {
 
 export default Home;
 
-// styled-components
-const StHomeMain = styled.div`
-  width: 100%;
+const StCategoryContainer = styled.div`
+  width: 300px;
+  margin-bottom: 80px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const StCategory = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 50px;
+  font-size: 18px;
+  color: #8b8b8b;
+  cursor: pointer;
+
+  &:hover {
+    color: #121212;
+    transition: transform 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+    transform: scale(1.3);
+    font-weight: 700;
+  }
 `;

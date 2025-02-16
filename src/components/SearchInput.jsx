@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import searchIco from "../assets/icon_search.png";
+import searchIco from "../assets/icon_search_24.png";
 import { useState } from "react";
 
 export const SearchInput = () => {
@@ -16,53 +16,50 @@ export const SearchInput = () => {
   };
   return (
     <StSearchForm onSubmit={handleSearch}>
+      <button type="submit"></button>
+
       <input
         type="text"
-        placeholder="검색어 입력"
+        placeholder="검색어를 입력해주세요!"
         value={searchInput}
         onChange={e => {
           setSearchInput(e.target.value);
         }}
       />
-      <button type="submit">검색</button>
     </StSearchForm>
   );
 };
 
 const StSearchForm = styled.form`
+  width: 220px;
+  height: 46px;
+  padding: 0 14px;
+  margin-right: 60px;
   display: flex;
   align-items: center;
-  width: 100%;
-  max-width: 260px;
-  height: 40px;
+
   border-radius: 30px;
   background: #f1f1f3;
-  overflow: hidden;
   position: relative;
 
   input {
     flex: 1;
     border: none;
-    padding: 10px 20px;
     font-size: 16px;
     background: transparent;
     outline: none;
-    padding-left: 40px;
+    margin-left: 10px;
+
+    ::placeholder {
+      color: #DEDEDE;
+    }
   }
 
   button {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    background: url(${searchIco}) center / 60% no-repeat;
-
+    min-width: 24px;
+    min-height: 24px;
+    background: url(${searchIco});
     border: none;
-    font-size: 0;
-    transition: background-color 0.3s ease-in-out;
-    &:hover {
-      cursor: pointer;
-    }
+    cursor: pointer;
   }
 `;
