@@ -66,11 +66,67 @@ const Layout = () => {
       <ContentsContainer>
         <Outlet />
       </ContentsContainer>
+      <FooterContainer>
+        <Link to="/">FootPrint</Link>
+        <p>10조 여행보내조</p>
+        <ul>
+          <li>윤주하 : 영어이름 Judy</li>
+          <li>김진채 : 커피, 우유를 못 먹어요☕️🥛💦</li>
+          <li>문정빈 : 아침마다 새벽수영</li>
+          <li>민정현 : 하루에 커피 3잔</li>
+          <li>강혜린 : 마라탕쳐돌이</li>
+        </ul>
+        <p>© 2025 FootPrint. All rights reserved.</p>
+      </FooterContainer>
     </>
   );
 };
 
 export default Layout;
+//푸터
+const FooterContainer = styled.footer`
+  padding: 30px 60px;
+  background: #dedede;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  ul {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    li {
+      line-height: 2;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      opacity: 50%;
+
+      &::before,
+      &::after {
+        content: "";
+        width: 5px;
+        height: 5px;
+        background: #999;
+        border-radius: 100%;
+        display: block;
+        margin: 0 10px;
+      }
+    }
+  }
+
+  a {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    text-decoration: none;
+  }
+  p:last-child {
+    font-size: 12px;
+    color: #fff;
+  }
+`;
 
 const ContentsContainer = styled.div`
   display: flex;
@@ -100,7 +156,6 @@ const HeaderContainer = styled.div`
     props.scrolled ? "0px 4px 30px rgba(0, 0, 0, 0.1)" : "none"};
   transition: all 0.5s ease-in-out;
   z-index: 2;
-
 `;
 
 const Logo = styled.a`
