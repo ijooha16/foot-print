@@ -8,6 +8,7 @@ export function HomeProvider({ children }) {
   const [isSignin, setIsSignin] = useState(false);
   const [users, setUsers] = useState([]);
   const [comments, setComments] = useState([]);
+  const [changePosts, setChangePosts] = useState([...posts]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +67,8 @@ export function HomeProvider({ children }) {
         comments,
         isSignin,
         setIsSignin,
+        changePosts,
+        setChangePosts,
       }}
     >
       {children}
