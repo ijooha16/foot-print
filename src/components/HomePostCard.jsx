@@ -1,30 +1,46 @@
-import React, { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import CommentIcon from "../assets/icon_comment.png";
 import HeartIcon from "../assets/icon_heart_fill.png";
 import { HomeContext } from "../context/HomeContext";
+import supabase from "../supabase/client";
 
 const HomePostCard = ({ post }) => {
   const { users, comments } = useContext(HomeContext);
+  const [imageList, setImageList] = useState([]);
+
+  // 스토리지-버킷에서 이미지 가져오기
+  useEffect(() => {
+    const fetchImageList = async () => {
+      const { data, error } = await supabase.storage
+        .from("img_bucket") // 버킷명
+        .list("uploads"); // 버킷 내 파일명
+
+      setImageList(data);
+    };
+    fetchImageList();
+  }, []);
 
   // card 내 user 정보 나타내기
   const setUserProfile = post => {
-    const a = users.find(user => post.uid === user.uid);
-    if (!a) return null;
+    const postWriter = users.find(user => post.uid === user.uid);
+    if (!postWriter) return null;
 
     return (
-      <StCardTextWrap key={a.uid}>
-        <StNickName>{a.nickname}</StNickName>
-        <StMbti>{a.mbti}</StMbti>
+      <StCardTextWrap key={postWriter.uid}>
+        <StNickName>{postWriter.nickname}</StNickName>
+        <StMbti>{postWriter.mbti}</StMbti>
       </StCardTextWrap>
     );
   };
 
   // comments 나타내기
   const setComment = post => {
-    const b = comments.find(comment => post.post_id === comment.post_id);
-    if (!b) return null;
-    return <div key={b.post_id}>{b.content}</div>;
+    const postComment = comments.find(
+      comment => post.post_id === comment.post_id,
+    );
+    if (!postComment) return null;
+    return <div key={postComment.post_id}>{postComment.content}</div>;
   };
 
   return (
