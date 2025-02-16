@@ -7,7 +7,7 @@ import ShowModal from "./PostingModal";
 
 const Home = () => {
   const { posts, setPosts } = useContext(HomeContext);
-  const isSignin = true;
+  // const isSignin = false;
   const [selectedPost, setSelectedPost] = useState(null);
 
   const showModal = post => {

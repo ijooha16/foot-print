@@ -10,7 +10,7 @@ const Posting = () => {
   const [posts, setPosts] = useState([]);
 
   //데이터 베이스에서 유저 이름 가져오기
-  const nick_name = '사용자 닉네임'
+  const nick_name = "사용자 닉네임";
 
   //데이터 갖다 쓰기
   useEffect(() => {
@@ -63,7 +63,7 @@ const Posting = () => {
         .insert([
           {
             // post_id: crypto.randomUUID(),
-            uid: "5889f782-2266-420e-a94a-cc7b7eddd725",
+            uid: "02990eba-0d58-42f5-8a50-5c15531847b2",
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
@@ -149,8 +149,8 @@ const Posting = () => {
               rows="2"
             ></textarea>
           </StInputContainer>
-        </StFormBox>
           <StBtn type="submit">등록하기</StBtn>
+        </StFormBox>
       </ContentsBox>
       {/* 작성완료게시글 */}
       {/* <div>
@@ -181,7 +181,6 @@ const StFormBox = styled.form`
   > * {
     width: 700px;
   }
-
 `;
 
 const StInputContainer = styled.label`
@@ -217,7 +216,7 @@ const UploadLabel = styled.label`
   background-color: #f8f8f8;
 
   &:hover {
-    border-color: #DEDEDE;
+    border-color: #dedede;
     background-color: #eee;
   }
 `;
