@@ -47,16 +47,13 @@ const ShowModal = ({ post, closeModal }) => {
         </Post>
         <Comment>
           <CloseBtn onClick={closeModal}>&times;</CloseBtn>
-          <UserCommentScrollBox>
-            <Comments post_id={post.post_id} />
-          </UserCommentScrollBox>
+          <UserComment>
+            <ProfileCommentImg src="https://item.kakaocdn.net/do/218bdb82c9a7456ee2080fe14a4642927154249a3890514a43687a85e6b6cc82"></ProfileCommentImg>
+            <p>{users.nickname}</p>
+            <p>댓글이에요</p>
+          </UserComment>
           <CommentInputDiv>
-            <form>
-              <input type="text" onChange={handleChangeInput}></input>
-              <button type="submit" onClick={handleSubmitComment}>
-                댓글등록
-              </button>
-            </form>
+            <input type="text"></input>
           </CommentInputDiv>
         </Comment>
       </PostModal>
@@ -117,6 +114,11 @@ const Icons = styled.div`
 `;
 
 const Comment = styled.div`
+<<<<<<< HEAD
+=======
+  display: grid;
+  margin-left: -20%;
+>>>>>>> 2dcce72 (style : PostingModal 스타일 수정)
   background-color: #cee0ff;
   border-radius: 0 20px 20px 0;
   width: 100%;
@@ -133,6 +135,7 @@ const CloseBtn = styled.span`
   margin: 10px 20px;
   font-size: larger;
   cursor: pointer;
+<<<<<<< HEAD
   @media (max-width: 700px) {
     position: absolute;
     top: 15px;
@@ -173,11 +176,14 @@ const UserCommentScrollBox = styled.div`
   @media (max-width: 700px) {
     padding: 10px 0;
   }
+=======
+>>>>>>> 2dcce72 (style : PostingModal 스타일 수정)
 `;
 
 const UserComment = styled.div`
   display: flex;
   width: 80%;
+<<<<<<< HEAD
   width: 100%;
   gap: 15px;
   border-bottom: 1px solid #9bc0ff;
@@ -199,6 +205,9 @@ const UserComment = styled.div`
       margin-bottom: 10px;
     }
   }
+=======
+  height: 50px;
+>>>>>>> 2dcce72 (style : PostingModal 스타일 수정)
 `;
 
 const ProfileCommentImg = styled.img`
@@ -211,7 +220,11 @@ const CommentInputDiv = styled.div`
   background: #cee0ff;
   position: absolute;
   bottom: 0;
+<<<<<<< HEAD
   width: -webkit-fill-available;
+=======
+  width: 10%;
+>>>>>>> 2dcce72 (style : PostingModal 스타일 수정)
   padding: 10px;
   border-radius: 20px;
   form {

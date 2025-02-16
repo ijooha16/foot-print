@@ -4,7 +4,6 @@ import supabase from "../supabase/client";
 export const HomeContext = createContext();
 
 export function HomeProvider({ children }) {
-  // post data
   const [posts, setPosts] = useState([]);
   const [isSignin, setIsSignin] = useState(false);
   const [users, setUsers] = useState([]);
