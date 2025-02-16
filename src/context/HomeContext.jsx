@@ -17,7 +17,7 @@ export function HomeProvider({ children }) {
           { data: usersData, error: usersError },
           { data: commentsData, error: commentsError },
         ] = await Promise.all([
-          supabase.from("posts").select("*"),
+          supabase.from("posts").select("*, users(nickname, mbti)"),
           supabase.from("users").select("*"),
           supabase.from("comments").select("*"),
         ]);
@@ -61,6 +61,7 @@ export function HomeProvider({ children }) {
     <HomeContext.Provider
       value={{
         posts,
+        setPosts,
         users,
         comments,
         isSignin,
