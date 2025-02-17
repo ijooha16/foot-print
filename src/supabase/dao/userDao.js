@@ -10,7 +10,7 @@ const UsersAPI = {
       const { data, error } = await supabase
         .from("users")
         .update({
-          nickname: formData.nickname,
+          nick_name: formData.nick_name,
           mbti: formData.mbti,
           introduction: formData.introduction,
           link: formData.link,
@@ -34,7 +34,7 @@ const UsersAPI = {
 
       const { data, error } = await supabase
         .from("users")
-        .select("profile_img, nickname")
+        .select("profile_img, nick_name")
         .eq("uid", userId);
 
       if (error) throw error;
