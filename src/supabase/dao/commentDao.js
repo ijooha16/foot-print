@@ -7,7 +7,14 @@ const CommentsAPI = {
     try {
       const { data, error } = await supabase
         .from("comments")
-        .select("*")
+        .select(
+          `
+            uid,
+            content,
+            comment_id,
+            users!inner(nickname,profile_img)
+            `,
+        )
         .eq("post_id", post_id);
 
       if (error) throw error;
@@ -43,12 +50,12 @@ const CommentsAPI = {
   },
 
   // 댓글 수정
-  updateComment: async (formData, comment_id) => {
+  updateComment: async (content, comment_id) => {
     try {
       const { data, error } = await supabase
         .from("comments")
         .update({
-          content: formData.content,
+          content: content,
         })
         .eq("comment_id", comment_id);
 

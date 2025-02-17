@@ -62,7 +62,6 @@ const PostsAPI = {
         .from("posts")
         .delete()
         .eq("post_id", post_id);
-
       if (error) throw error;
       return true;
     } catch (error) {

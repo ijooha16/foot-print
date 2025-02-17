@@ -1,13 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import supabase from "../supabase/client";
-// import { SearchInput } from "../components/SearchInput";
-// import SigninLoginBtn from "../components/SigninLoginBtn";
 import AddIcon from "../assets/icon_add_black.png";
 import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { loadFile, uploadFile } from "../supabase/dao/ImgDao";
-// import { AuthContext } from "../context/AuthProvider";
+
+import { uploadFile } from "../supabase/dao/ImgDao";
+
 
 const Posting = () => {
   //페이지 이동후 스크롤 위치
@@ -82,7 +80,6 @@ const Posting = () => {
     setSelectedFile(file);
 
     const { name, value, type, files } = e.target;
-
     setFormData(prev => ({
       ...prev,
       [name]: type === "file" ? files[0] : value,
@@ -118,17 +115,20 @@ const Posting = () => {
     }
 
     try {
-      const imgUrl = await uploadFile(formData.file);
-      // console.log("imgUrl : ", imgUrl);
+
+      const file_path = await uploadFile(formData.file);
       const { data, error } = await supabase
         .from("posts")
         .insert([
           {
-            uid: userId,
+
+            // post_id: crypto.randomUUID(),
+            uid: sessionStorage.getItem("id"),
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
-            img_list: imgUrl,
+            img_list: JSON.stringify({ img: `${file_path.publicUrl}` }),
+
           },
         ])
         .select();
