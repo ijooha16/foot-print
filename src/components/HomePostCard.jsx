@@ -6,7 +6,6 @@ import { HomeContext } from "../context/HomeContext";
 
 const HomePostCard = ({ post }) => {
   const { users, comments } = useContext(HomeContext);
-  const post_id = post.post_id;
 
   // card 내 user 정보 나타내기
   const setUserProfile = post => {

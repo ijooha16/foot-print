@@ -42,7 +42,7 @@ const Home = () => {
       setPage(prev => prev + 1);
     }
 
-    setLoading(false);
+    setTimeout(() => setLoading(false), 500);
   };
 
   //스크롤 감지
@@ -50,7 +50,8 @@ const Home = () => {
     observer.current = new IntersectionObserver(entries => {
       if (
         entries[0].isIntersecting &&
-        displayedPosts.length < changePosts.length
+        displayedPosts.length < changePosts.length &&
+        !loading
       ) {
         fetchPosts();
       }
@@ -62,7 +63,7 @@ const Home = () => {
     }
 
     return () => observer.current?.disconnect();
-  }, [displayedPosts, changePosts]);
+  }, [displayedPosts, changePosts, loading]);
 
   useEffect(() => {
     setChangePosts(posts);
