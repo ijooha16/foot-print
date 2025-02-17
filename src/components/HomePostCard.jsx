@@ -40,8 +40,6 @@ const HomePostCard = ({ post }) => {
   // 2. 현재 로그인한 사용자의 uid(getsession)와 posts의 uid를 비교
   // 3. 값이 없다면 빈하트(추가 가능), 있다면 빨간하트(삭제 가능)
 
-  console.log(img_path.publicUrl)
-  
   return (
     <>
       <StHomeCard>

@@ -70,30 +70,7 @@ const Home = () => {
 
     return () => observer.current?.disconnect();
   }, [displayedPosts, changePosts, loading]);
-
-  // const showPosts = where => {
-  //   setSelectedCategory(where);
-
-  //   if (where === "all") {
-  //     setChangePosts([...posts]);
-  //     return;
-  //   }
-  //   if (where === "in") {
-  //     const filterInPost = posts.filter(post => {
-  //       return post.travel_location === "국내";
-  //     });
-  //     setChangePosts(filterInPost);
-  //     return;
-  //   }
-  //   if (where === "out") {
-  //     const filterOutPost = posts.filter(post => {
-  //       return post.travel_location === "국외";
-  //     });
-  //     setChangePosts(filterOutPost);
-  //     return;
-  //   }
-  // };
-
+  
   useEffect(() => {
     if (selectedCategory === "all") {
       setChangePosts([...posts]);
@@ -113,7 +90,7 @@ const Home = () => {
       setChangePosts(filterOutPost);
       return;
     }
-  }, [posts]);
+  }, [posts, selectedCategory]);
 
   return (
     <>
