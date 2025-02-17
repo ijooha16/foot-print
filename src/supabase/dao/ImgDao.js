@@ -14,7 +14,8 @@ async function uploadFile(file) {
     alert("업로드 실패");
   } else {
     alert("업로드 성공");
-    loadFile(data.fullPath);
+    console.log(data);
+    return await loadFile(data.path);
   }
 }
 
@@ -22,6 +23,7 @@ async function loadFile(file_path) {
   const { data } = supabase.storage
     .from("img_bucket/uploads")
     .getPublicUrl(file_path);
+  console.log(data);
   return data;
 }
 

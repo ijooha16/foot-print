@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import supabase from "../supabase/client";
-// import { SearchInput } from "../components/SearchInput";
-// import SigninLoginBtn from "../components/SigninLoginBtn";
 import AddIcon from "../assets/icon_add_black.png";
 import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
 import styled from "styled-components";
+import { uploadFile } from "../supabase/dao/ImgDao";
 
 const Posting = () => {
   const [posts, setPosts] = useState([]);
@@ -56,6 +55,7 @@ const Posting = () => {
   //인풋값 입력
   const handleChangeInput = e => {
     const { name, value, type, files } = e.target;
+    console.log(name, value, type, files);
     setFormData(prev => ({
       ...prev,
       [name]: type === "file" ? files[0] : value,
@@ -72,6 +72,7 @@ const Posting = () => {
       return;
     }
     try {
+      const file_path = await uploadFile(formData.file);
       const { data, error } = await supabase
         .from("posts")
         .insert([
@@ -81,7 +82,7 @@ const Posting = () => {
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
-            img_list: JSON.stringify({ img: "imgTEST" }),
+            img_list: JSON.stringify({ img: `${file_path.publicUrl}` }),
           },
         ])
         .select();
