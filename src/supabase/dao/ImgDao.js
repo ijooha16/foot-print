@@ -14,8 +14,7 @@ async function uploadFile(file) {
     alert("업로드 실패");
   } else {
     alert("업로드 성공");
-    console.log(data);
-    console.log(loadFile(data.path));
+    loadFile(data.fullPath);
   }
 }
 
@@ -26,4 +25,4 @@ async function loadFile(file_path) {
   return data;
 }
 
-export { uploadFile };
+export { uploadFile, loadFile };

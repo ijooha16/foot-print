@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import CommentsDao from "../supabase/dao/commentDao";
-import UsersDao from "../supabase/dao/userDao";
-import supabase from "../supabase/client";
 import styled from "styled-components";
 
 export default function Comments({ post_id }) {
@@ -10,16 +8,16 @@ export default function Comments({ post_id }) {
     async function loadComments() {
       const data = await CommentsDao.getComments(post_id);
       if (data) setComments(data);
+      console.log(data[0].users);
     }
     loadComments();
   }, [post_id]);
-
   return (
     <div>
       {comments.map(comment => (
         <UserComment key={comment.comment_id}>
-          <ProfileCommentImg src={comment.profile_img} />
-          <p>닉네임{comment.nickname}</p>
+          <ProfileCommentImg src={comment.users.profile_img} />
+          <p>{comment.users.nickname}</p>
           <p>{comment.content}</p>
         </UserComment>
       ))}
