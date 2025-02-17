@@ -6,12 +6,13 @@ import { useContext } from "react";
 import { MyPageContext } from "../context/MyPageContext.jsx";
 import supabase from "../supabase/client.js";
 import AddPostButton from "../components/AddPostButton.jsx";
-
+import ShowModal from "./PostingModal";
 
 const MyPage = () => {
   const { posts, users } = useContext(MyPageContext);
   const getSession = sessionStorage.getItem("id");
   const [profileImg, setProfileImg] = useState("");
+  const [selectedPost, setSelectedPost] = useState(null);
 
   // useEffect로 유저 정보 가져오기 실행
   useEffect(() => {
@@ -45,7 +46,7 @@ const MyPage = () => {
   return (
     <>
       <ContentsBox direction="row">
-        <AddPostButton/>
+        <AddPostButton />
         <ProfileImg img_url={profileImg}></ProfileImg>
         <MypageInfoBox>
           <TitleText>{myInfo.nickname || "닉네임을 설정해주세요!"}</TitleText>
@@ -56,17 +57,29 @@ const MyPage = () => {
         </MypageInfoBox>
       </ContentsBox>
       <MypagePostBox>
-        {myPost.map(data => (
-          <Fragment key={data.post_id}>
-            <MypagePostCard data={data} />
-          </Fragment>
+        {myPost.map(post => (
+          <MoveModal key={post.post_id} onClick={() => setSelectedPost(post)}>
+            <Fragment key={post.post_id}>
+              <MypagePostCard post={post} />
+            </Fragment>
+          </MoveModal>
         ))}
+        {selectedPost && (
+          <ShowModal
+            post={selectedPost}
+            closeModal={() => setSelectedPost(null)}
+          />
+        )}
       </MypagePostBox>
     </>
   );
 };
 
 export default MyPage;
+
+const MoveModal = styled.div`
+  cursor: pointer;
+`;
 
 const ContentsBox = styled.div`
   width: ${props => (props.modal ? "920px" : "800px")};
@@ -96,7 +109,7 @@ const ProfileImg = styled.div`
   background-image: url(${props => props.img_url});
   background-size: cover;
   background-repeat: no-repeat;
-  `;
+`;
 
 const MypageInfoBox = styled.div`
   /* width: 300px; */

@@ -29,8 +29,6 @@ const HeartIcon = ({ post_id }) => {
     fetchData();
   }, [post_id]);
 
-  console.log(getSession)
-  
   // like 추가
   // 1. 하트 이미지 클릭 시 likes 테이블에 값 추가 <-> 삭제
   const addLike = async (e) => {

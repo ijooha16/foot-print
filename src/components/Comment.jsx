@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import CommentsDao from "../supabase/dao/commentDao";
-import UsersDao from "../supabase/dao/userDao";
-import supabase from "../supabase/client";
 import styled from "styled-components";
+import CommentsAPI from "../supabase/dao/commentDao";
+import supabase from "../supabase/client";
 
 export default function Comments({ post_id }) {
   const [comments, setComments] = useState([]);
@@ -10,31 +10,62 @@ export default function Comments({ post_id }) {
     async function loadComments() {
       const data = await CommentsDao.getComments(post_id);
       if (data) setComments(data);
+      console.log(data);
     }
     loadComments();
-  }, [post_id]);
+  }, [post_id, comments]);
+
+  const deleteComments = async comment_id => {
+    try {
+      const { error } = await supabase
+        .from("comments")
+        .delete()
+        .eq("comment_id", comment_id);
+
+      if (error) throw error;
+      setComments(comments.filter(c => c.comment_id !== comment_id));
+
+      return true; // 삭제 성공 시 true 반환
+    } catch (error) {
+      console.error("댓글 삭제 오류:", error.message);
+      return false;
+    }
+  };
 
   return (
     <div>
       {comments.map(comment => (
         <UserComment key={comment.comment_id}>
-          <ProfileCommentImg src={comment.profile_img} />
-          <p>닉네임{comment.nickname}</p>
+          <ProfileCommentImg src={comment.users.profile_img} />
+          <p>{comment.users.nickname}</p>
           <p>{comment.content}</p>
+          <ButtonDiv>
+            <button onClick={() => {}}>수정</button>
+            <button
+              onClick={() => {
+                deleteComments(comment.comment_id);
+              }}
+            >
+              삭제
+            </button>
+          </ButtonDiv>
         </UserComment>
       ))}
     </div>
   );
 }
 
+const ButtonDiv = styled.div`
+  margin-left: auto;
+`;
+
 const UserComment = styled.div`
   display: flex;
   width: 80%;
-  width: 100%;
   gap: 15px;
   border-bottom: 1px solid #9bc0ff;
   padding-bottom: 10px;
-  height: 1000px;
+  height: 100%;
 
   + div {
     margin-top: 10px;

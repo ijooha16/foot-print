@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { HomeContext } from "../context/HomeContext";
 import Comments from "../components/Comment";
 import CommentsAPI from "../supabase/dao/commentDao";
+import PostsAPI from "../supabase/dao/postDao";
+import HeartIcon from "../components/HeartIcon";
 
 const ShowModal = ({ post, closeModal }) => {
   const { users, comments } = useContext(HomeContext);
@@ -11,6 +13,7 @@ const ShowModal = ({ post, closeModal }) => {
     content: "",
     post_id: post.post_id,
   });
+  const img_path = JSON.parse(post.img_list);
   if (!post) return null;
   const handleSubmitComment = async e => {
     e.preventDefault();
@@ -31,17 +34,28 @@ const ShowModal = ({ post, closeModal }) => {
     });
   };
 
+  const modifyPost = async () => {
+    console.log();
+  };
+
+  const deletePost = async () => {
+    await PostsAPI.deletePost(post.post_id);
+  };
+
   return (
     <EntireModal key={post.uid}>
       <PostModal>
         <Post>
           <PostTitle>{post.title}</PostTitle>
           <p>{users.nickname}</p>
-          <button>...</button>
-          <img src="https://item.kakaocdn.net/do/218bdb82c9a7456ee2080fe14a4642927154249a3890514a43687a85e6b6cc82"></img>
+          <ButtonDiv>
+            <button onClick={modifyPost}>수정</button>
+            <button onClick={deletePost}>삭제</button>
+          </ButtonDiv>
+          <ModalImg src={img_path.publicUrl}></ModalImg>
           <Icons>
             <p>{comments.content}</p>
-            <button>하트</button>
+            <HeartIcon />
           </Icons>
           <p>{post.content}</p>
         </Post>
@@ -67,6 +81,14 @@ const ShowModal = ({ post, closeModal }) => {
 export default ShowModal;
 
 // styled-commponents
+
+const ButtonDiv = styled.div`
+  margin-left: auto;
+`;
+
+const ModalImg = styled.img`
+  width: 400px;
+`;
 const EntireModal = styled.div`
   display: block;
   position: fixed;
@@ -173,37 +195,6 @@ const UserCommentScrollBox = styled.div`
   @media (max-width: 700px) {
     padding: 10px 0;
   }
-`;
-
-const UserComment = styled.div`
-  display: flex;
-  width: 80%;
-  width: 100%;
-  gap: 15px;
-  border-bottom: 1px solid #9bc0ff;
-  padding-bottom: 10px;
-  /* height: 1000px; */
-
-  + div {
-    margin-top: 10px;
-  }
-  + div:last-child {
-    border-bottom: 0px;
-  }
-  img {
-    border-radius: 100%;
-  }
-  div {
-    p:nth-child(1) {
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-  }
-`;
-
-const ProfileCommentImg = styled.img`
-  width: 50px;
-  height: 50px;
 `;
 
 const CommentInputDiv = styled.div`
