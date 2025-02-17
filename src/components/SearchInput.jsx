@@ -49,7 +49,7 @@ export const SearchInput = () => {
 };
 
 const StSearchForm = styled.form`
-  width: 220px;
+  width: 280px;
   height: 46px;
   padding: 0 14px;
   display: flex;
@@ -73,10 +73,11 @@ const StSearchForm = styled.form`
   }
 
   button {
-    min-width: 24px;
-    min-height: 24px;
-    background: url(${searchIco}) center / 95%;
-    border: none;
-    cursor: pointer;
-  }
+  min-width: 24px;
+  min-height: 24px;
+  background: url(${searchIco}) no-repeat center;
+  background-size: 24px 24px; /* 배경 이미지 크기 조정 */
+  border: none;
+  cursor: pointer;
+}
 `;
