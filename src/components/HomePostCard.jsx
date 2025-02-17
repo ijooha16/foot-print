@@ -36,7 +36,7 @@ const HomePostCard = ({ post }) => {
 
   // like 추가
   // 1. 하트 이미지 클릭 시 likes 테이블에 값 추가 <-> 삭제
-  // 2. 현재 로그인한 사용자의 uid와 likes의 uid를 비교
+  // 2. 현재 로그인한 사용자의 uid(session 배열)와 posts의 uid를 비교
   // 3. 값이 없다면 빈하트(추가 가능), 있다면 빨간하트(삭제 가능)
 
   return (

@@ -15,7 +15,6 @@ export const SearchInput = () => {
     }
     // 검색창 필터링
     const keyword = searchInput;
-
     const searchPosts = posts.filter(post => {
       return (
         post.title.includes(keyword) ||
