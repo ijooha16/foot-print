@@ -9,8 +9,6 @@ const Layout = () => {
   const [scrolled, setScrolled] = useState(false);
   const { isSignin, setIsSignin } = useContext(AuthContext);
 
-  //로그인 상태 확인
-
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 1); // 100px 이상이면 true, 아니면 false

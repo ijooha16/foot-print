@@ -5,7 +5,7 @@ import HeartIcon from "../assets/icon_heart_empty_24.png";
 import { HomeContext } from "../context/HomeContext";
 
 const HomePostCard = ({ post }) => {
-  const { posts, users, comments } = useContext(HomeContext);
+  const { posts, users, comments, changePosts } = useContext(HomeContext);
   // post의 이미지 가져오기
   const img_path = JSON.parse(post.img_list);
 
@@ -34,30 +34,28 @@ const HomePostCard = ({ post }) => {
 
   return (
     <>
-      {posts.map(post => (
-        <StHomeCard key={post.post_id}>
-          <StCardTop>
-            <StProfileImg src={post.users.profile_img} />
-            <div>{setUserProfile(post)}</div>
-          </StCardTop>
-          <StPostImg src={img_path.img} />
-          <StIcons>
-            <img
-              src={CommentIcon}
-              alt="comment-img"
-              style={{ width: "34px", height: "34px" }}
-            />
-            <img
-              src={HeartIcon}
-              alt="heart-img"
-              className="heart"
-              style={{ width: "34px", height: "34px" }}
-              // onClick={removeLike()}
-            />
-          </StIcons>
-          <StComents>{setComment(post)}</StComents>
-        </StHomeCard>
-      ))}
+      <StHomeCard key={post.post_id}>
+        <StCardTop>
+          <StProfileImg src={post.users.profile_img} />
+          <div>{setUserProfile(post)}</div>
+        </StCardTop>
+        <StPostImg src={img_path.img} />
+        <StIcons>
+          <img
+            src={CommentIcon}
+            alt="comment-img"
+            style={{ width: "34px", height: "34px" }}
+          />
+          <img
+            src={HeartIcon}
+            alt="heart-img"
+            className="heart"
+            style={{ width: "34px", height: "34px" }}
+            // onClick={removeLike()}
+          />
+        </StIcons>
+        <StComents>{setComment(post)}</StComents>
+      </StHomeCard>
     </>
   );
 };

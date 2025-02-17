@@ -48,7 +48,7 @@ const Home = () => {
       setPage(prev => prev + 1);
     }
 
-    setLoading(false);
+    setTimeout(() => setLoading(false), 500);
   };
 
   //스크롤 감지
@@ -56,7 +56,8 @@ const Home = () => {
     observer.current = new IntersectionObserver(entries => {
       if (
         entries[0].isIntersecting &&
-        displayedPosts.length < changePosts.length
+        displayedPosts.length < changePosts.length &&
+        !loading
       ) {
         fetchPosts();
       }
@@ -68,11 +69,7 @@ const Home = () => {
     }
 
     return () => observer.current?.disconnect();
-  }, [displayedPosts, changePosts]);
-
-  useEffect(() => {
-    setChangePosts(posts);
-  }, [posts]);
+  }, [displayedPosts, changePosts, loading]);
 
   const showPosts = where => {
     setSelectedCategory(where);
@@ -96,6 +93,8 @@ const Home = () => {
       return;
     }
   };
+
+  console.log("changePosts", changePosts);
   return (
     <>
       <StCategoryContainer>
@@ -122,12 +121,7 @@ const Home = () => {
         {displayedPosts.map((post, index) => (
           <MoveModal
             key={`${post.uid}-${index}`}
-            onClick={e => {
-              if (e.target.classList.contains("heart")) {
-                return;
-              }
-              setSelectedPost(post);
-            }}
+            onClick={() => setSelectedPost(post)}
           >
             <HomePostCard post={post} />
           </MoveModal>
@@ -137,7 +131,7 @@ const Home = () => {
       {displayedPosts.length < changePosts.length && (
         <div id="loadMore" style={{ height: "20px" }}></div>
       )}
-      {isSignin ? <AddPostButton /> : null}
+      {isSignin === true ? <AddPostButton /> : null}
       {selectedPost && (
         <ShowModal
           post={selectedPost}
@@ -154,6 +148,13 @@ const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 800px) {
+    width: 100%;
+    padding: 0 20px;
+    > * {
+      width: 100%;
+    }
+  }
 `;
 
 const StCategoryContainer = styled.div`
