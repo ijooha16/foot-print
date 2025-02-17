@@ -16,8 +16,6 @@ const Home = () => {
   const postLimit = 5; // 한 번에 불러올 개수
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-
-
   //초기화
   useEffect(() => {
     setChangePosts(posts);
@@ -72,7 +70,7 @@ const Home = () => {
 
   const showPosts = where => {
     setSelectedCategory(where);
-    
+
     if (where === "all") {
       setChangePosts([...posts]);
       return;
@@ -96,9 +94,24 @@ const Home = () => {
   return (
     <>
       <StCategoryContainer>
-        <StCategory selected={selectedCategory === "all"} onClick={() => showPosts("all")}>전체</StCategory>
-        <StCategory selected={selectedCategory === "in"} onClick={() => showPosts("in")}>국내</StCategory>
-        <StCategory selected={selectedCategory === "out"} onClick={() => showPosts("out")}>국외</StCategory>
+        <StCategory
+          selected={selectedCategory === "all"}
+          onClick={() => showPosts("all")}
+        >
+          전체
+        </StCategory>
+        <StCategory
+          selected={selectedCategory === "in"}
+          onClick={() => showPosts("in")}
+        >
+          국내
+        </StCategory>
+        <StCategory
+          selected={selectedCategory === "out"}
+          onClick={() => showPosts("out")}
+        >
+          국외
+        </StCategory>
       </StCategoryContainer>
       <PostContainer>
         {displayedPosts.map((post, index) => (
@@ -131,6 +144,13 @@ const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 800px) {
+    width: 100%;
+    padding: 0 20px;
+    > * {
+      width: 100%;
+    }
+  }
 `;
 
 const StCategoryContainer = styled.div`
@@ -142,9 +162,9 @@ const StCategoryContainer = styled.div`
 `;
 
 const StCategory = styled.div`
-  font-size: 18px; 
-  font-weight: ${props => props.selected ? '700' : '400'} ;
-  color: ${props => props.selected ? '#121212' : '#8b8b8b'};
+  font-size: 18px;
+  font-weight: ${props => (props.selected ? "700" : "400")};
+  color: ${props => (props.selected ? "#121212" : "#8b8b8b")};
   cursor: pointer;
   transform: ${props => (props.selected ? "scale(1.3)" : "scale(1)")};
 
