@@ -9,9 +9,10 @@ import SignIn from "../pages/SignIn.jsx";
 import SignUp from "../pages/SignUp.jsx";
 import Layout from "../components/layout/Layout.jsx";
 import PostingModal from "../pages/PostingModal.jsx";
+import Qwer from "../pages/Qwer.jsx";
 
 const Router = () => {
-  const { isSignin } = useContext(AuthContext);
+  //const { isSignin } = useContext(AuthContext);
 
   return (
     <BrowserRouter>
@@ -23,6 +24,7 @@ const Router = () => {
           <Route path="/posting" element={<Posting />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/qwer" element={<Qwer />} />
         </Route>
       </Routes>
     </BrowserRouter>
