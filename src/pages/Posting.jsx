@@ -25,16 +25,16 @@ const Posting = () => {
     }
   };
 
-  //로그인 사용자 정보 가져오기
-  const getUser = async () => {
-    const { data: user, error } = await supabase.from("posts").select("*");
-    if (error) {
-      console.log("로그인 사용자 정보 가져오기 오류 : ", error);
-      return null;
-    }
-    return user;
-  };
-  getUser();
+  // 로그인 사용자 정보 가져오기
+  // const getUser = async () => {
+  //   const { data: user, error } = await supabase.from("posts").select("*");
+  //   if (error) {
+  //     console.log("로그인 사용자 정보 가져오기 오류 : ", error);
+  //     return null;
+  //   }
+  //   return user;
+  // };
+  // getUser();
 
   //데이터 갖다 쓰기
   useEffect(() => {
@@ -72,19 +72,17 @@ const Posting = () => {
       return;
     }
     try {
-      const { data, error } = await supabase
-        .from("posts")
-        .insert([
-          {
-            // post_id: crypto.randomUUID(),
-            uid: "23d8414d-5bbd-47c8-9c08-cd9630c3fa9f",
-            title: formData.title,
-            travel_location: formData.travelLocation,
-            content: formData.content,
-            img_list: JSON.stringify({ img: "imgTEST" }),
-          },
-        ])
-        .select();
+      const { data, error } = await supabase.from("posts").insert([
+        {
+          // post_id: crypto.randomUUID(),
+          uid: sessionStorage.getItem("id"),
+          title: formData.title,
+          travel_location: formData.travelLocation,
+          content: formData.content,
+          img_list: JSON.stringify({ img: "imgTEST" }),
+        },
+      ]);
+
       //ui 노출
       console.log("완료버튼누른후 data : ", data);
       setPosts(prevPosts => [...prevPosts, data[0]]);
