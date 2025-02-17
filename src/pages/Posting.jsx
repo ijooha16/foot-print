@@ -5,9 +5,11 @@ import supabase from "../supabase/client";
 import AddIcon from "../assets/icon_add_black.png";
 import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Posting = () => {
   const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
 
   //데이터 베이스에서 유저 이름 가져오기
 
@@ -42,11 +44,7 @@ const Posting = () => {
   }, []);
   // console.log(posts);
 
-  //데이터 넣기
-  supabase.from("posts").insert({ posts });
-
   const [formData, setFormData] = useState({
-    post_id: "",
     title: "",
     travelLocation: "",
     file: null,
@@ -71,22 +69,38 @@ const Posting = () => {
       alert("제목과 내용을 모두 입력해주세요!");
       return;
     }
-    try {
-      const { data, error } = await supabase.from("posts").insert([
-        {
-          // post_id: crypto.randomUUID(),
-          uid: sessionStorage.getItem("id"),
-          title: formData.title,
-          travel_location: formData.travelLocation,
-          content: formData.content,
-          img_list: JSON.stringify({ img: "imgTEST" }),
-        },
-      ]);
 
-      //ui 노출
-      console.log("완료버튼누른후 data : ", data);
-      setPosts(prevPosts => [...prevPosts, data[0]]);
+    //여행지 선택 안했을때
+    if (!formData.travelLocation) {
+      alert("여행지를 선택해주세요!");
+      return;
+    }
+    if (!formData.file) {
+      alert("이미지를 업로드 해주세요!");
+      return;
+    }
+    try {
+      const { data, error } = await supabase
+        .from("posts")
+        .insert([
+          {
+            // post_id: crypto.randomUUID(),
+
+            uid: sessionStorage.getItem("id"),
+            title: formData.title,
+            travel_location: formData.travelLocation,
+            content: formData.content,
+            img_list: JSON.stringify({ img: "imgTEST" }),
+          },
+        ])
+        .select();
+
       if (error) throw error;
+      console.log("완료버튼누른후 data : ", data);
+
+      if (data) {
+        setPosts(prevPosts => [...prevPosts, data[0]]);
+      }
       alert("게시글 등록 완료");
       setFormData({
         title: "",
@@ -94,8 +108,11 @@ const Posting = () => {
         file: null,
         content: "",
       });
+      navigate("/");
     } catch (error) {
       console.log("게시글 등록 오류 : ", error);
+      const uid = sessionStorage.getItem("id");
+      console.log("uid : ", uid);
     }
   };
 
