@@ -1,9 +1,24 @@
 import styled from "styled-components";
-import { Outlet } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link, Outlet } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { SearchInput } from "../SearchInput";
+import supabase from "../../supabase/client";
+import { AuthContext } from "../../context/AuthProvider";
 
 const Layout = () => {
+  const { isLogin, setIsLogin } = useContext(AuthContext);
   const [scrolled, setScrolled] = useState(false);
+  //로그인 상태 확인
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      console.log("session", session);
+      setIsLogin(session?.user ?? null);
+    };
+    getSession();
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,11 +34,28 @@ const Layout = () => {
   return (
     <>
       <HeaderContainer scrolled={scrolled}>
-        <div>검색창</div>
+        <SearchInput />
         <Logo scrolled={scrolled} href="/">
           FootPrint
         </Logo>
-        <div>로그인 / 회원가입</div>
+        {isLogin ? (
+          <>
+            <Link
+              to={"/my-page"}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <StLoginBtn>마이페이지</StLoginBtn>
+            </Link>
+            <StLoginBtn>로그아웃</StLoginBtn>
+          </>
+        ) : (
+          <Link
+            to={"/sign-in"}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <StLoginBtn>로그인 / 회원가입</StLoginBtn>
+          </Link>
+        )}
       </HeaderContainer>
       <ContentsContainer>
         <Outlet />
@@ -71,4 +103,21 @@ const Logo = styled.a`
   color: #0062ff;
   text-decoration: none;
   transition: all 0.5s ease-in-out;
+`;
+
+const StLoginBtn = styled.button`
+  cursor: pointer;
+  display: flex;
+  text-align: center;
+  width: 100%;
+  max-width: 260px;
+  height: 40px;
+  border-radius: 30px;
+  background: #f1f1f3;
+  overflow: hidden;
+  position: relative;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  outline: none;
 `;
