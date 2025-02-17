@@ -8,16 +8,12 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
 
-  const getSession = sessionStorage.getItem("id");
-  console.log("getSession", getSession);
-
   useEffect(() => {
-    if (getSession) {
-      setIsSignin(true);
-    } else {
-      setIsSignin(false);
-    }
-  }, [getSession]);
+    const getSession = sessionStorage.getItem("id");
+    console.log("getSession", !!getSession);
+
+    setIsSignin(!!getSession);
+  }, []);
 
   useEffect(() => {
     const {
