@@ -7,24 +7,25 @@ import MyPage from "../pages/MyPage.jsx";
 import Posting from "../pages/Posting.jsx";
 import SignIn from "../pages/SignIn.jsx";
 import SignUp from "../pages/SignUp.jsx";
+import Layout from "../components/layout/Layout.jsx";
+import ProfileModal from "../pages/ProfileModal.jsx";
+import PostingModal from "../pages/PostingModal.jsx";
 
 const Router = () => {
-  const { isLogin } = useContext(AuthContext);
+  const { isSignin } = useContext(AuthContext);
 
   return (
     <BrowserRouter>
       <Routes>
-        {/* 예시 */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={isLogin ? <Home /> : <SignIn />} />
-        <Route path="/signup" element={isLogin ? <Home /> : <SignUp />} />
-        {/* 예시 */}
-
-        <Route path="/" element={<Home />} />
-        <Route path="/my-page" element={<MyPage />} />
-        <Route path="/posting" element={<Posting />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/test" element={<PostingModal />} />
+          <Route path="/my-page" element={<MyPage />} />
+          <Route path="/posting" element={<Posting />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/profile" element={<ProfileModal />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
