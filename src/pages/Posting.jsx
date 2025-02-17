@@ -8,6 +8,17 @@ import styled from "styled-components";
 
 const Posting = () => {
   const [posts, setPosts] = useState([]);
+  //데이터 넣기
+  supabase.from("posts").insert({ posts });
+
+  const [formData, setFormData] = useState({
+    post_id: "",
+    title: "",
+    travelLocation: "",
+    file: null,
+    content: "",
+  });
+  const [selectedFile, setSelectedFile] = useState(null);
 
   //데이터 베이스에서 유저 이름 가져오기
 
@@ -42,19 +53,11 @@ const Posting = () => {
   }, []);
   // console.log(posts);
 
-  //데이터 넣기
-  supabase.from("posts").insert({ posts });
-
-  const [formData, setFormData] = useState({
-    post_id: "",
-    title: "",
-    travelLocation: "",
-    file: null,
-    content: "",
-  });
-
   //인풋값 입력
   const handleChangeInput = e => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+
     const { name, value, type, files } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -77,7 +80,7 @@ const Posting = () => {
         .insert([
           {
             // post_id: crypto.randomUUID(),
-            uid: "23d8414d-5bbd-47c8-9c08-cd9630c3fa9f",
+            uid: sessionStorage.getItem("id"),
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
@@ -144,14 +147,17 @@ const Posting = () => {
             <UploadLabel htmlFor="fileUpload">
               {/* 아래 image는 업로드한 이미지를 의미합니다! 이미지를 추가하면 박스가 이미지로 바뀌어요.
               추후 수정 부탁드립니다. */}
-              {/* {image ? <PreviewImage src={image} alt="Preview" /> : <PlusIcon />} */}
-              <PlusIcon />
+              {selectedFile ? (
+                <PreviewImage img={selectedFile} alt="Preview" />
+              ) : (
+                <PlusIcon />
+              )}
             </UploadLabel>
             <input
               type="file"
               id="fileUpload"
               name="file"
-              onChange={handleChangeInput}
+              onChange={e => handleChangeInput(e)}
             />
           </StInputFIle>
           <StInputContainer>
@@ -244,12 +250,13 @@ const PlusIcon = styled.div`
   background-size: contain;
 `;
 
-// const PreviewImage = styled.img`
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover;
-//   border-radius: 10px;
-// `;
+const PreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  background-image: url(${props => props.img});
+`;
 
 const StInputRadioBox = styled.div`
   display: flex;
