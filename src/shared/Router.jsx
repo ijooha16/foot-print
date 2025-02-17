@@ -24,7 +24,6 @@ const Router = () => {
           <Route path="/posting" element={<Posting />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/qwer" element={<Qwer />} />
         </Route>
       </Routes>
     </BrowserRouter>
