@@ -5,7 +5,7 @@ const MypagePostCard = ({ data }) => {
   const imgUrl = JSON.parse(data.img_list);
 
   return (
-    <PostBox style={{ backgroundImage: `url(${imgUrl.img})` }}>
+    <PostBox style={{ backgroundImage: `url(${imgUrl.publicUrl})` }}>
       <Title>{data.title}</Title>
     </PostBox>
   );

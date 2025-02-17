@@ -21,6 +21,7 @@ const Layout = () => {
   }, []);
 
   const handleLogout = () => {
+    supabase.auth.signOut();
     sessionStorage.clear();
     setIsSignin(false);
   };

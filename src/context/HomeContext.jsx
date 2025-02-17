@@ -18,7 +18,7 @@ export function HomeProvider({ children }) {
           { data: usersData, error: usersError },
           { data: commentsData, error: commentsError },
         ] = await Promise.all([
-          supabase.from("posts").select("*, users(nickname, mbti)"),
+          supabase.from("posts").select("*, users(nickname, mbti, profile_img)"),
           supabase.from("users").select("*"),
           supabase.from("comments").select("*"),
         ]);
