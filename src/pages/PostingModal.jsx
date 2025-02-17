@@ -55,7 +55,7 @@ const ShowModal = ({ post, closeModal }) => {
           <ModalImg src={img_path.publicUrl}></ModalImg>
           <Icons>
             <p>{comments.content}</p>
-            <HeartIcon />
+            <HeartIcon post_id={post.post_id} />
           </Icons>
           <p>{post.content}</p>
         </Post>
