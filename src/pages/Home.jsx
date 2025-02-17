@@ -4,10 +4,10 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { HomeContext } from "../context/HomeContext";
 import AddPostButton from "../components/AddPostButton";
 import ShowModal from "./PostingModal";
+import { AuthContext } from "../context/AuthProvider";
 
 const Home = () => {
   const { posts, changePosts, setChangePosts } = useContext(HomeContext);
-  const isSignin = true;
   const [selectedPost, setSelectedPost] = useState(null);
   const [displayedPosts, setDisplayedPosts] = useState([]);
   const [page, setPage] = useState(1);
@@ -15,6 +15,12 @@ const Home = () => {
   const observer = useRef(null);
   const postLimit = 5; // 한 번에 불러올 개수
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const { isSignin, setIsSignin, getSession } = useContext(AuthContext);
+
+  // 새로고침
+  useEffect(() => {
+    setIsSignin(!!getSession);
+  }, []);
 
   //초기화
   useEffect(() => {
@@ -42,7 +48,7 @@ const Home = () => {
       setPage(prev => prev + 1);
     }
 
-    setLoading(false);
+    setTimeout(() => setLoading(false), 500);
   };
 
   //스크롤 감지
@@ -50,7 +56,8 @@ const Home = () => {
     observer.current = new IntersectionObserver(entries => {
       if (
         entries[0].isIntersecting &&
-        displayedPosts.length < changePosts.length
+        displayedPosts.length < changePosts.length &&
+        !loading
       ) {
         fetchPosts();
       }
@@ -62,53 +69,70 @@ const Home = () => {
     }
 
     return () => observer.current?.disconnect();
-  }, [displayedPosts, changePosts]);
+  }, [displayedPosts, changePosts, loading]);
+
+  // const showPosts = where => {
+  //   setSelectedCategory(where);
+
+  //   if (where === "all") {
+  //     setChangePosts([...posts]);
+  //     return;
+  //   }
+  //   if (where === "in") {
+  //     const filterInPost = posts.filter(post => {
+  //       return post.travel_location === "국내";
+  //     });
+  //     setChangePosts(filterInPost);
+  //     return;
+  //   }
+  //   if (where === "out") {
+  //     const filterOutPost = posts.filter(post => {
+  //       return post.travel_location === "국외";
+  //     });
+  //     setChangePosts(filterOutPost);
+  //     return;
+  //   }
+  // };
 
   useEffect(() => {
-    setChangePosts(posts);
-  }, [posts]);
-
-  const showPosts = where => {
-    setSelectedCategory(where);
-
-    if (where === "all") {
+    if (selectedCategory === "all") {
       setChangePosts([...posts]);
       return;
     }
-    if (where === "in") {
+    if (selectedCategory === "in") {
       const filterInPost = posts.filter(post => {
         return post.travel_location === "국내";
       });
       setChangePosts(filterInPost);
       return;
     }
-    if (where === "out") {
+    if (selectedCategory === "out") {
       const filterOutPost = posts.filter(post => {
         return post.travel_location === "국외";
       });
       setChangePosts(filterOutPost);
       return;
     }
-  };
+  }, [posts]);
 
   return (
     <>
       <StCategoryContainer>
         <StCategory
           selected={selectedCategory === "all"}
-          onClick={() => showPosts("all")}
+          onClick={() => setSelectedCategory("all")}
         >
           전체
         </StCategory>
         <StCategory
           selected={selectedCategory === "in"}
-          onClick={() => showPosts("in")}
+          onClick={() => setSelectedCategory("in")}
         >
           국내
         </StCategory>
         <StCategory
           selected={selectedCategory === "out"}
-          onClick={() => showPosts("out")}
+          onClick={() => setSelectedCategory("out")}
         >
           국외
         </StCategory>
