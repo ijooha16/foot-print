@@ -20,7 +20,9 @@ export function HomeProvider({ children }) {
           { data: commentsData, error: commentsError },
           { data: likesData, error: likesError },
         ] = await Promise.all([
-          supabase.from("posts").select("*, users(nickname, mbti)"),
+          supabase
+            .from("posts")
+            .select("*, users(nickname, mbti, profile_img)"),
           supabase.from("users").select("*"),
           supabase.from("comments").select("*"),
           supabase.from("likes").select("*"),

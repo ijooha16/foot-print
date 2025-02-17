@@ -9,6 +9,7 @@ export default function AuthProvider({ children }) {
   const [userProfile, setUserProfile] = useState(null);
 
   const getSession = sessionStorage.getItem("id");
+  console.log("getSession", getSession);
 
   useEffect(() => {
     if (getSession) {
