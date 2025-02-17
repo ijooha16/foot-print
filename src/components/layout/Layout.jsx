@@ -6,16 +6,18 @@ import supabase from "../../supabase/client";
 import { AuthContext } from "../../context/AuthProvider";
 
 const Layout = () => {
-  const { isLogin, setIsLogin } = useContext(AuthContext);
+  const { setIsSignin } = useContext(AuthContext);
+  const isSignin = false;
   const [scrolled, setScrolled] = useState(false);
+
   //로그인 상태 확인
   useEffect(() => {
     const getSession = async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      console.log("session", session);
-      setIsLogin(session?.user ?? null);
+      // console.log("session", session);
+      setIsSignin(session?.user ?? null);
     };
     getSession();
   });
@@ -38,33 +40,96 @@ const Layout = () => {
         <Logo scrolled={scrolled} href="/">
           FootPrint
         </Logo>
-        {isLogin ? (
+        {isSignin ? (
           <>
-            <Link
-              to={"/my-page"}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <StLoginBtn>마이페이지</StLoginBtn>
-            </Link>
-            <StLoginBtn>로그아웃</StLoginBtn>
+            <StMyBtnContainer>
+              <Link
+                to={"/my-page"}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <StBtn>마이페이지</StBtn>
+              </Link>
+              <StBtn>로그아웃</StBtn>
+            </StMyBtnContainer>
           </>
         ) : (
           <Link
             to={"/sign-in"}
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <StLoginBtn>로그인 / 회원가입</StLoginBtn>
+            <StMyBtnContainer>
+              <StBtn>로그인 / 회원가입</StBtn>
+            </StMyBtnContainer>
           </Link>
         )}
       </HeaderContainer>
       <ContentsContainer>
         <Outlet />
       </ContentsContainer>
+      <FooterContainer>
+        <Link to="/">FootPrint</Link>
+        <p>10조 여행보내조</p>
+        <ul>
+          <li>윤주하 : 영어이름 Judy</li>
+          <li>김진채 : 커피, 우유를 못 먹어요☕️🥛💦</li>
+          <li>문정빈 : 아침마다 새벽수영</li>
+          <li>민정현 : 하루에 커피 3잔</li>
+          <li>강혜린 : 마라탕쳐돌이</li>
+        </ul>
+        <p>© 2025 FootPrint. All rights reserved.</p>
+      </FooterContainer>
     </>
   );
 };
 
 export default Layout;
+//푸터
+const FooterContainer = styled.footer`
+  padding: 30px 60px;
+  background: #cee0ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  ul {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    li {
+      line-height: 2;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      opacity: 50%;
+
+      &::before,
+      &::after {
+        content: "";
+        width: 5px;
+        height: 5px;
+        background: #999;
+        border-radius: 100%;
+        display: block;
+        margin: 0 10px;
+      }
+    }
+  }
+
+  a {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    text-decoration: none;
+  }
+  p {
+    color: #005eff;
+  }
+  p:last-child {
+    font-size: 12px;
+    color: #fff;
+  }
+`;
 
 const ContentsContainer = styled.div`
   display: flex;
@@ -73,8 +138,8 @@ const ContentsContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   margin-top: ${props => (props.scrolled ? "140px" : "300px")};
-  margin-left: calc((100vw - 920px) / 2);
-  margin-right: calc((100vw - 920px) / 2);
+  /* margin-left: calc((100vw - 920px) / 2);
+  margin-right: calc((100vw - 920px) / 2); */
   transition: all 0.5s ease-in-out;
 `;
 
@@ -82,7 +147,6 @@ const HeaderContainer = styled.div`
   width: 100vw;
   height: ${props => (props.scrolled ? "140px" : "300px")};
   position: fixed;
-  margin-bottom: 80px;
   box-sizing: border-box;
   padding: 0 60px;
   display: flex;
@@ -95,6 +159,20 @@ const HeaderContainer = styled.div`
     props.scrolled ? "0px 4px 30px rgba(0, 0, 0, 0.1)" : "none"};
   transition: all 0.5s ease-in-out;
   z-index: 2;
+  @media (max-width: 800px) {
+    flex-direction: column;
+    padding: 20px;
+    height: fit-content;
+    gap: 20px;
+
+    form {
+      margin: 0;
+    }
+    div {
+      width: 100%;
+      justify-content: center;
+    }
+  }
 `;
 
 const Logo = styled.a`
@@ -105,19 +183,23 @@ const Logo = styled.a`
   transition: all 0.5s ease-in-out;
 `;
 
-const StLoginBtn = styled.button`
+const StBtn = styled.button`
+  padding: 0 16px;
   cursor: pointer;
-  display: flex;
-  text-align: center;
-  width: 100%;
-  max-width: 260px;
-  height: 40px;
+  text-align: right;
   border-radius: 30px;
-  background: #f1f1f3;
+  color: #8b8b8b;
+  background: transparent;
   overflow: hidden;
   position: relative;
   border: none;
-  padding: 10px 20px;
   font-size: 16px;
   outline: none;
+`;
+
+const StMyBtnContainer = styled.div`
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
 `;

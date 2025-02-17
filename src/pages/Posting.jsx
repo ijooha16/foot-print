@@ -1,24 +1,43 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import supabase from "../supabase/client";
-import { SearchInput } from "../components/SearchInput";
-import SigninLoginBtn from "../components/SigninLoginBtn";
+// import { SearchInput } from "../components/SearchInput";
+// import SigninLoginBtn from "../components/SigninLoginBtn";
+import AddIcon from "../assets/icon_add_black.png";
+import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
+import styled from "styled-components";
 
 const Posting = () => {
   const [posts, setPosts] = useState([]);
 
+  //데이터 베이스에서 유저 이름 가져오기
+
+  const nick_name = "사용자 닉네임";
+
+  //데이터 가져오기
+  const getPosts = async () => {
+    try {
+      const { data, error } = await supabase.from("posts").select("*");
+      if (error) throw error;
+      setPosts(data);
+      //uid가 노출되면 안댐
+    } catch (error) {
+      console.log("데이터 가져오기 오류 : ", error);
+    }
+  };
+
+  //로그인 사용자 정보 가져오기
+  const getUser = async () => {
+    const { data: user, error } = await supabase.from("posts").select("*");
+    if (error) {
+      console.log("로그인 사용자 정보 가져오기 오류 : ", error);
+      return null;
+    }
+    return user;
+  };
+  getUser();
+
   //데이터 갖다 쓰기
   useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const { data, error } = await supabase.from("posts").select("*");
-        if (error) throw error;
-        setPosts(data);
-        //uid가 노출되면 안댐
-      } catch (error) {
-        console.log("데이터 가져오기 오류 : ", error);
-      }
-    };
     getPosts();
   }, []);
   // console.log(posts);
@@ -58,7 +77,7 @@ const Posting = () => {
         .insert([
           {
             // post_id: crypto.randomUUID(),
-            uid: "5889f782-2266-420e-a94a-cc7b7eddd725",
+            uid: "23d8414d-5bbd-47c8-9c08-cd9630c3fa9f",
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
@@ -83,23 +102,21 @@ const Posting = () => {
   };
 
   return (
-    <div>
-      <SearchInput></SearchInput>
-      <SigninLoginBtn></SigninLoginBtn>
-      <div>
+    <>
+      <LoginTxt>게시글 작성하기</LoginTxt>
+      <ContentsBox>
         <StFormBox onSubmit={handleSubmitPosting}>
-          <StInputLabelFlexCol>
-            <span>제목</span>
+          <StInputContainer>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChangeInput}
-              placeholder="제목을 입력하세요"
+              placeholder="제목을 입력해주세요"
             />
-          </StInputLabelFlexCol>
+          </StInputContainer>
           <StInputRadioBox>
-            <p>여행지 선택</p>
+            <p>어디로 여행 다녀오셨나요?</p>
             <div>
               <label>
                 <input
@@ -124,22 +141,31 @@ const Posting = () => {
             </div>
           </StInputRadioBox>
           <StInputFIle>
-            <span>파일선택 </span>
-            <input type="file" name="file" onChange={handleChangeInput} />
+            <UploadLabel htmlFor="fileUpload">
+              {/* 아래 image는 업로드한 이미지를 의미합니다! 이미지를 추가하면 박스가 이미지로 바뀌어요.
+              추후 수정 부탁드립니다. */}
+              {/* {image ? <PreviewImage src={image} alt="Preview" /> : <PlusIcon />} */}
+              <PlusIcon />
+            </UploadLabel>
+            <input
+              type="file"
+              id="fileUpload"
+              name="file"
+              onChange={handleChangeInput}
+            />
           </StInputFIle>
-          <StInputLabelFlexCol>
-            <span>내용 입력</span>
+          <StInputContainer>
             <textarea
               name="content"
               value={formData.content}
               onChange={handleChangeInput}
-              placeholder="내용을 입력하세요"
-              rows="10"
+              placeholder={`${nick_name}님의 이야기를 들려주세요!`}
+              rows="2"
             ></textarea>
-          </StInputLabelFlexCol>
-          <button type="submit">등록하기</button>
+          </StInputContainer>
+          <StBtn type="submit">등록하기</StBtn>
         </StFormBox>
-      </div>
+      </ContentsBox>
       {/* 작성완료게시글 */}
       {/* <div>
         {posts.map(post => {
@@ -153,8 +179,7 @@ const Posting = () => {
           );
         })}
       </div> */}
-      <footer>푸터</footer>
-    </div>
+    </>
   );
 };
 
@@ -165,56 +190,71 @@ const StFormBox = styled.form`
   display: flex;
   flex-direction: column;
   align-items: baseline;
+  gap: 40px;
+  width: 100%;
   > * {
     width: 100%;
-    margin: 10px 0;
-  }
-  > * + * {
-    border-top: 1px solid #ccc;
-    padding-top: 10px;
   }
   button {
-    margin: 30px auto;
-    width: fit-content;
-    padding: 10px 14px;
-    background: #0062ff;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    color: #fff;
-    transition: background-color 0.3s ease-in-out;
-    &:hover {
-      background: #003899;
-      cursor: pointer;
-    }
+    width: 100px;
   }
 `;
 
-const StInputLabelFlexCol = styled.label`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  span {
-    font-weight: 600;
-    text-align: left;
-  }
+const StInputContainer = styled.label`
   input,
   textarea {
     width: 100%;
-    padding: 10px;
+    padding: 20px 24px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 20px;
     &:hover {
-      border: 1px solid #0062ff;
+      outline: 2px solid #cee0ff;
     }
   }
 `;
 
-const StInputFIle = styled.label``;
+const StInputFIle = styled.div`
+  input {
+    display: none;
+  }
+`;
+
+const UploadLabel = styled.label`
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  background-color: #f8f8f8;
+
+  &:hover {
+    border-color: #dedede;
+    background-color: #eee;
+  }
+`;
+
+const PlusIcon = styled.div`
+  width: 40px;
+  height: 40px;
+  background: url(${AddIcon}) no-repeat center;
+  background-size: contain;
+`;
+
+// const PreviewImage = styled.img`
+//   width: 100%;
+//   height: 100%;
+//   object-fit: cover;
+//   border-radius: 10px;
+// `;
+
 const StInputRadioBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   > p {
     font-weight: 600;
   }

@@ -7,7 +7,6 @@ export default function AuthProvider({ children }) {
   const [isSignin, setIsSignin] = useState(false);
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
-  const [authUser, setAuthUser] = useState([]);
 
   useEffect(() => {
     const {
@@ -41,7 +40,7 @@ export default function AuthProvider({ children }) {
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{ isSignin, user, userProfile }}>
+    <AuthContext.Provider value={{ isSignin, setIsSignin, user, userProfile }}>
       {children}
     </AuthContext.Provider>
   );

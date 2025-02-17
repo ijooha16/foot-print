@@ -1,59 +1,46 @@
-import React, { useEffect, useState } from "react";
-import supabase from "../supabase/client";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import CommentIcon from "../assets/icon_comment.png";
 import HeartIcon from "../assets/icon_heart_fill.png";
+import { HomeContext } from "../context/HomeContext";
+import supabase from "../supabase/client";
 
 const HomePostCard = ({ post }) => {
-  const [users, setUsers] = useState([]);
-  const [comments, setComments] = useState([]);
+  const { users, comments } = useContext(HomeContext);
+  const [imageList, setImageList] = useState([]);
 
+  // 스토리지-버킷에서 이미지 가져오기
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [
-          { data: usersData, error: usersError },
-          { data: commentsData, error: commentsError },
-        ] = await Promise.all([
-          supabase.from("users").select("*"),
-          supabase.from("comments").select("*"),
-        ]);
+    const fetchImageList = async () => {
+      const { data, error } = await supabase.storage
+        .from("img_bucket") // 버킷명
+        .list("uploads"); // 버킷 내 파일명
 
-        if (usersError) throw usersError;
-        if (commentsError) throw commentsError;
-
-        setUsers(usersData);
-        setComments(commentsData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      setImageList(data);
     };
-
-    fetchData();
+    fetchImageList();
   }, []);
-
-  // console.log("users", users);
-  supabase.from("users").insert({ users });
-  supabase.from("comments").insert({ comments });
 
   // card 내 user 정보 나타내기
   const setUserProfile = post => {
-    const a = users.find(user => post.uid === user.uid);
-    if (!a) return null;
+    const postWriter = users.find(user => post.uid === user.uid);
+    if (!postWriter) return null;
 
     return (
-      <StCardTextWrap key={a.uid}>
-        <StNickName>{a.nickname}</StNickName>
-        <StMbti>{a.mbti}</StMbti>
+      <StCardTextWrap key={postWriter.uid}>
+        <StNickName>{postWriter.nickname}</StNickName>
+        <StMbti>{postWriter.mbti}</StMbti>
       </StCardTextWrap>
     );
   };
 
   // comments 나타내기
   const setComment = post => {
-    const b = comments.find(comment => post.post_id === comment.post_id);
-    if (!b) return null;
-    return <div key={b.post_id}>{b.content}</div>;
+    const postComment = comments.find(
+      comment => post.post_id === comment.post_id,
+    );
+    if (!postComment) return null;
+    return <div key={postComment.post_id}>{postComment.content}</div>;
   };
 
   return (
@@ -65,8 +52,16 @@ const HomePostCard = ({ post }) => {
         </StCardTop>
         <StPostImg />
         <StIcons>
-          <img src={CommentIcon} alt="comment img" />
-          <img src={HeartIcon} alt="heart img" />
+          <img
+            src={CommentIcon}
+            alt="comment img"
+            style={{ width: "34px", height: "34px" }}
+          />
+          <img
+            src={HeartIcon}
+            alt="heart img"
+            style={{ width: "34px", height: "34px" }}
+          />
         </StIcons>
         <StComents>{setComment(post)}</StComents>
       </StHomeCard>
@@ -78,55 +73,74 @@ export default HomePostCard;
 
 // styled-components
 const StHomeCard = styled.div`
-  margin: 40px auto;
-  padding-bottom: 30px;
-  width: 500px;
-  border: 1px solid black;
-  border-radius: 20px;
+  width: 700px;
+  margin-bottom: 60px;
+  padding: 40px 30px;
+  border-radius: 40px;
+  background-color: #f1f1f3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 20px;
+  @media (max-width: 800px) {
+    width: 100%;
+    > * {
+      width: 100% !important;
+    }
+  }
 `;
 
 const StCardTop = styled.div`
   display: flex;
+  gap: 20px;
 `;
 
 const StCardTextWrap = styled.div`
-  display: block;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
 `;
 
 const StNickName = styled.h4`
-  margin-top: 20px;
-  margin-bottom: 5px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #121212;
 `;
 const StMbti = styled.h6`
-  margin-top: 0px;
-  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #8b8b8b;
 `;
 
 // img 변경해야 함
 const StProfileImg = styled.div`
-  width: 70px;
-  height: 70px;
-  border: 1px solid black;
-  border-radius: 70%;
-  margin: 10px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: white;
 `;
 
 // img 변경해야 함
 const StPostImg = styled.div`
-  margin: auto;
-  width: 450px;
-  height: 450px;
-  border: 1px solid black;
+  width: 640px;
+  height: 520px;
+  background-color: white;
 `;
 
 const StIcons = styled.div`
+  margin: 0 16px;
   display: flex;
-  margin: 20px 25px;
-  gap: 10px;
+  gap: 16px;
 `;
 
 const StComents = styled.div`
   display: flex;
   justify-content: flex-start;
-  margin: 20px 25px;
+  margin: 0 20px;
+  font-size: 20px;
+  color: #8b8b8b;
+  max-width: 760px;
 `;

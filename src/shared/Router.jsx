@@ -24,6 +24,7 @@ const Router = () => {
           <Route path="/posting" element={<Posting />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/profile" element={<ProfileModal />} />
         </Route>
       </Routes>
     </BrowserRouter>

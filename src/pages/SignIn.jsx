@@ -2,6 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../supabase/client";
 import styled from "styled-components";
+import {
+  ContentsBox,
+  StBtn,
+  LoginTxt,
+  FormBox,
+  SignupBtn,
+} from "../shared/styleGuide";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +24,9 @@ const SignIn = () => {
       });
       if (error) throw error;
       alert("로그인 되었습니다.");
+      let user = await supabase.auth.getUserIdentities();
+      console.log(user.data.identities[0].id);
+      sessionStorage.setItem("id", user.data.identities[0].id);
       navigate("/");
     } catch (error) {
       alert("로그인 오류");
@@ -29,43 +39,28 @@ const SignIn = () => {
   };
 
   return (
-    <>
-      <h1>Log-In</h1>
-      <SigninBox>
-        <form onSubmit={handleSignin}>
-          <input
-            type="email"
-            value={email}
-            placeholder="아이디"
-            onChange={e => setEmail(e.target.value)}
-            required
-          />
-
-          <input
-            type="password"
-            value={password}
-            placeholder="비밀번호"
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">로그인</button>
-        </form>
-        <h4>회원이 아니신가요?</h4>
-        <button onClick={navigateToSignUp}>회원가입</button>
-      </SigninBox>
-    </>
+    <ContentsBox>
+      <LoginTxt>Log-In</LoginTxt>
+      <FormBox onSubmit={handleSignin}>
+        <input
+          type="email"
+          value={email}
+          placeholder="아이디"
+          onChange={e => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          value={password}
+          placeholder="비밀번호"
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
+        <StBtn type="submit">로그인</StBtn>
+      </FormBox>
+      <SignupBtn onClick={navigateToSignUp}>회원가입</SignupBtn>
+    </ContentsBox>
   );
 };
 
 export default SignIn;
-
-const SigninBox = styled.div`
-  background-color: rgb(0, 94, 255);
-  padding: 60px 40px;
-  margin-bottom: 60px;
-  gap: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
