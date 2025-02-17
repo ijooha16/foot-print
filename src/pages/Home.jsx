@@ -15,7 +15,12 @@ const Home = () => {
   const observer = useRef(null);
   const postLimit = 5; // 한 번에 불러올 개수
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const { isSignin } = useContext(AuthContext);
+  const { isSignin, setIsSignin, getSession } = useContext(AuthContext);
+
+  // 새로고침
+  useEffect(() => {
+    setIsSignin(!!getSession);
+  }, []);
 
   //초기화
   useEffect(() => {
@@ -91,7 +96,6 @@ const Home = () => {
       return;
     }
   };
-
   return (
     <>
       <StCategoryContainer>
@@ -118,7 +122,12 @@ const Home = () => {
         {displayedPosts.map((post, index) => (
           <MoveModal
             key={`${post.uid}-${index}`}
-            onClick={() => setSelectedPost(post)}
+            onClick={e => {
+              if (e.target.classList.contains("heart")) {
+                return;
+              }
+              setSelectedPost(post);
+            }}
           >
             <HomePostCard post={post} />
           </MoveModal>
