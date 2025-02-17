@@ -2,9 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../supabase/client";
 import styled from "styled-components";
-import { ContentsBox, StBtn, LoginTxt, FormBox, SignupBtn } from "../shared/styleGuide";
-
-
+import {
+  ContentsBox,
+  StBtn,
+  LoginTxt,
+  FormBox,
+  // SignupBtn,
+} from "../shared/styleGuide";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -93,5 +97,6 @@ export default SignUp;
 
 const StTxt = styled.div`
   font-size: 16px;
-  color: #8B8B8B;
-`
+  color: #8b8b8b;
+  text-align: center;
+`;

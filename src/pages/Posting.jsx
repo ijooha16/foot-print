@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import supabase from "../supabase/client";
 // import { SearchInput } from "../components/SearchInput";
 // import SigninLoginBtn from "../components/SigninLoginBtn";
 import AddIcon from "../assets/icon_add_black.png";
 import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
+import styled from "styled-components";
 
 const Posting = () => {
   const [posts, setPosts] = useState([]);
@@ -191,8 +191,9 @@ const StFormBox = styled.form`
   flex-direction: column;
   align-items: baseline;
   gap: 40px;
+  width: 100%;
   > * {
-    width: 700px;
+    width: 100%;
   }
   button {
     width: 100px;
@@ -206,7 +207,6 @@ const StInputContainer = styled.label`
     padding: 20px 24px;
     border: 1px solid #ccc;
     border-radius: 20px;
-    box-sizing: content-box !important;
     &:hover {
       outline: 2px solid #cee0ff;
     }
