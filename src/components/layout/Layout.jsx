@@ -10,8 +10,6 @@ const Layout = () => {
   const isSignin = false;
   const [scrolled, setScrolled] = useState(false);
 
-  
-
   //로그인 상태 확인
   useEffect(() => {
     const getSession = async () => {
@@ -201,6 +199,8 @@ const StBtn = styled.button`
 
 const StMyBtnContainer = styled.div`
   padding: 0;
+  padding-right: 16px;
+  width: 280px;
   display: flex;
   justify-content: flex-end;
   gap: 20px;

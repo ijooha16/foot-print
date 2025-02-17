@@ -14,35 +14,9 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const observer = useRef(null);
   const postLimit = 5; // 한 번에 불러올 개수
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
-  useEffect(() => {
-    setChangePosts(posts);
-  }, [posts]);
 
-  const showPosts = where => {
-    if (where === "all") {
-      setChangePosts([...posts]);
-      return;
-    }
-    if (where === "in") {
-      const filterInPost = posts.filter(post => {
-        return post.travel_location === "국내";
-      });
-      setChangePosts(filterInPost);
-      return;
-    }
-    if (where === "out") {
-      const filterOutPost = posts.filter(post => {
-        return post.travel_location === "국외";
-      });
-      setChangePosts(filterOutPost);
-      return;
-    }
-  };
-
-  const showModal = post => {
-    setSelectedPost(post);
-  };
 
   //초기화
   useEffect(() => {
@@ -92,42 +66,54 @@ const Home = () => {
     return () => observer.current?.disconnect();
   }, [displayedPosts, changePosts]);
 
+  useEffect(() => {
+    setChangePosts(posts);
+  }, [posts]);
+
+  const showPosts = where => {
+    setSelectedCategory(where);
+    
+    if (where === "all") {
+      setChangePosts([...posts]);
+      return;
+    }
+    if (where === "in") {
+      const filterInPost = posts.filter(post => {
+        return post.travel_location === "국내";
+      });
+      setChangePosts(filterInPost);
+      return;
+    }
+    if (where === "out") {
+      const filterOutPost = posts.filter(post => {
+        return post.travel_location === "국외";
+      });
+      setChangePosts(filterOutPost);
+      return;
+    }
+  };
+
   return (
     <>
       <StCategoryContainer>
-        <StCategory onClick={() => showPosts("all")}>전체</StCategory>
-        <StCategory onClick={() => showPosts("in")}>국내</StCategory>
-        <StCategory onClick={() => showPosts("out")}>국외</StCategory>
+        <StCategory selected={selectedCategory === "all"} onClick={() => showPosts("all")}>전체</StCategory>
+        <StCategory selected={selectedCategory === "in"} onClick={() => showPosts("in")}>국내</StCategory>
+        <StCategory selected={selectedCategory === "out"} onClick={() => showPosts("out")}>국외</StCategory>
       </StCategoryContainer>
-
       <PostContainer>
         {displayedPosts.map((post, index) => (
           <MoveModal
             key={`${post.uid}-${index}`}
-            onClick={() => showModal(post)}
+            onClick={() => setSelectedPost(post)}
           >
             <HomePostCard post={post} />
           </MoveModal>
         ))}
       </PostContainer>
-
       {loading && <Loading>로딩 중...</Loading>}
       {displayedPosts.length < changePosts.length && (
         <div id="loadMore" style={{ height: "20px" }}></div>
       )}
-
-      <StCardWrap>
-        {changePosts.map((post, index) => {
-          return (
-            <MoveModal
-              key={`${post.uid}-${index}`}
-              onClick={() => showModal(post)}
-            >
-              <HomePostCard post={post} />
-            </MoveModal>
-          );
-        })}
-      </StCardWrap>
       {isSignin === true ? <AddPostButton /> : null}
       {selectedPost && (
         <ShowModal
@@ -147,13 +133,6 @@ const PostContainer = styled.div`
   align-items: center;
 `;
 
-const StCardWrap = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 const StCategoryContainer = styled.div`
   width: 300px;
   margin-bottom: 80px;
@@ -163,9 +142,11 @@ const StCategoryContainer = styled.div`
 `;
 
 const StCategory = styled.div`
-  font-size: 18px;
-  color: #8b8b8b;
+  font-size: 18px; 
+  font-weight: ${props => props.selected ? '700' : '400'} ;
+  color: ${props => props.selected ? '#121212' : '#8b8b8b'};
   cursor: pointer;
+  transform: ${props => (props.selected ? "scale(1.3)" : "scale(1)")};
 
   &:hover {
     color: #121212;
