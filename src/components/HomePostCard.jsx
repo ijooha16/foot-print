@@ -5,7 +5,7 @@ import HeartIcon from "../assets/icon_heart_empty_24.png";
 import { HomeContext } from "../context/HomeContext";
 
 const HomePostCard = ({ post }) => {
-  const { posts, users, comments, likes } = useContext(HomeContext);
+  const { users, comments } = useContext(HomeContext);
   // const [imageList, setImageList] = useState([]);
 
   // card 내 user 정보 나타내기
@@ -30,9 +30,6 @@ const HomePostCard = ({ post }) => {
     if (!postComment) return null;
     return <div key={postComment.post_id}>{postComment.content}</div>;
   };
-
-  console.log("posts", posts);
-  console.log("likes", likes);
 
   // like 추가
   // 1. 하트 이미지 클릭 시 likes 테이블에 값 추가 <-> 삭제
