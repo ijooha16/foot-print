@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../supabase/client";
-// import styled from "styled-components";
+import styled from "styled-components";
 import {
   ContentsBox,
   StBtn,
@@ -24,6 +24,9 @@ const SignIn = () => {
       });
       if (error) throw error;
       alert("로그인 되었습니다.");
+      let user = await supabase.auth.getUserIdentities();
+      console.log(user.data.identities[0].id);
+      sessionStorage.setItem("id", user.data.identities[0].id);
       navigate("/");
     } catch (error) {
       alert(error.message);

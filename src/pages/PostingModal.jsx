@@ -1,12 +1,36 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { HomeContext } from "../context/HomeContext";
+import Comments from "../components/Comment";
+import CommentsAPI from "../supabase/dao/commentDao";
 
 const ShowModal = ({ post, closeModal }) => {
   const { users, comments } = useContext(HomeContext);
-
-  console.log("post", post);
+  const [formData, setFormData] = useState({
+    uid: sessionStorage.getItem("id"),
+    content: "",
+    post_id: post.post_id,
+  });
   if (!post) return null;
+  const handleSubmitComment = async e => {
+    e.preventDefault();
+
+    if (!formData.content) {
+      alert("댓글 내용을 입력해주세요!");
+      return;
+    } else CommentsAPI.insertComment(formData, post.post_id);
+  };
+
+  const handleChangeInput = e => {
+    const content = e.target.value;
+    console.log(content);
+    setFormData({
+      uid: sessionStorage.getItem("id"),
+      content: content,
+      post_id: post.post_id,
+    });
+  };
+
   return (
     <EntireModal key={post.uid}>
       <PostModal>
@@ -24,25 +48,14 @@ const ShowModal = ({ post, closeModal }) => {
         <Comment>
           <CloseBtn onClick={closeModal}>&times;</CloseBtn>
           <UserCommentScrollBox>
-            <UserComment>
-              <ProfileCommentImg src="https://item.kakaocdn.net/do/218bdb82c9a7456ee2080fe14a4642927154249a3890514a43687a85e6b6cc82"></ProfileCommentImg>
-              <div>
-                <p>닉네임{users.nickname}</p>
-                <p>댓글이에요</p>
-              </div>
-            </UserComment>
-            <UserComment>
-              <ProfileCommentImg src="https://item.kakaocdn.net/do/218bdb82c9a7456ee2080fe14a4642927154249a3890514a43687a85e6b6cc82"></ProfileCommentImg>
-              <div>
-                <p>닉네임{users.nickname}</p>
-                <p>댓글이에요</p>
-              </div>
-            </UserComment>
+            <Comments post_id={post.post_id} />
           </UserCommentScrollBox>
           <CommentInputDiv>
             <form>
-              <input type="text"></input>
-              <button type="submit">댓글등록</button>
+              <input type="text" onChange={handleChangeInput}></input>
+              <button type="submit" onClick={handleSubmitComment}>
+                댓글등록
+              </button>
             </form>
           </CommentInputDiv>
         </Comment>
@@ -161,6 +174,7 @@ const UserCommentScrollBox = styled.div`
     padding: 10px 0;
   }
 `;
+
 const UserComment = styled.div`
   display: flex;
   width: 80%;
