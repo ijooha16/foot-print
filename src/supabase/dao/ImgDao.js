@@ -7,23 +7,25 @@ import supabase from "../client";
 // return - supabase 내부의 실제 데이터 저장정보가 리턴됨
 
 async function uploadFile(file) {
+  const fileName = "public/" + file.name;
+  console.log("file > ", file);
   const { data, error } = await supabase.storage
-    .from("img_bucket/uploads")
-    .upload(file.name, file);
+    .from("img_bucket")
+    .upload(fileName, file);
+
   if (error) {
     alert("업로드 실패");
+    console.log("업로드실패 : ", error);
   } else {
     alert("업로드 성공");
-    console.log(data);
-    console.log(loadFile(data.path));
+    return await loadFile(fileName);
   }
 }
 
 async function loadFile(file_path) {
-  const { data } = supabase.storage
-    .from("img_bucket/uploads")
-    .getPublicUrl(file_path);
+  const { data } = supabase.storage.from("img_bucket").getPublicUrl(file_path);
+  console.log("loadFile: ", data);
   return data;
 }
 
-export { uploadFile };
+export { uploadFile, loadFile };

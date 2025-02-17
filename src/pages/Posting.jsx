@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import supabase from "../supabase/client";
 // import { SearchInput } from "../components/SearchInput";
 // import SigninLoginBtn from "../components/SigninLoginBtn";
@@ -6,11 +6,19 @@ import AddIcon from "../assets/icon_add_black.png";
 import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { loadFile, uploadFile } from "../supabase/dao/ImgDao";
+// import { AuthContext } from "../context/AuthProvider";
 
 const Posting = () => {
+  //페이지 이동후 스크롤 위치
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [posts, setPosts] = useState([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
+  // const { isSignin, user } = useContext(AuthContext);
+  // console.log(isSignin, user);
   //데이터 베이스에서 유저 이름 가져오기
 
   const nick_name = "사용자 닉네임";
@@ -39,9 +47,9 @@ const Posting = () => {
   // getUser();
 
   //데이터 갖다 쓰기
-  useEffect(() => {
-    getPosts();
-  }, []);
+  // useEffect(() => {
+  //   getPosts();
+  // }, []);
   // console.log(posts);
 
   const [formData, setFormData] = useState({
@@ -75,22 +83,24 @@ const Posting = () => {
       alert("여행지를 선택해주세요!");
       return;
     }
-    if (!formData.file) {
-      alert("이미지를 업로드 해주세요!");
-      return;
-    }
+    //이미지 선택 안했을때
+    // if (!formData.file) {
+    //   alert("이미지를 업로드 해주세요!");
+    //   return;
+    // }
+
     try {
+      const imgUrl = await uploadFile(formData.file);
+      console.log("imgUrl : ", imgUrl);
       const { data, error } = await supabase
         .from("posts")
         .insert([
           {
-            // post_id: crypto.randomUUID(),
-
             uid: sessionStorage.getItem("id"),
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
-            img_list: JSON.stringify({ img: "imgTEST" }),
+            img_list: "",
           },
         ])
         .select();
@@ -101,18 +111,16 @@ const Posting = () => {
       if (data) {
         setPosts(prevPosts => [...prevPosts, data[0]]);
       }
-      alert("게시글 등록 완료");
+      // alert("게시글 등록 완료");
       setFormData({
         title: "",
         travelLocation: "",
         file: null,
         content: "",
       });
-      navigate("/");
+      // navigate("/");
     } catch (error) {
       console.log("게시글 등록 오류 : ", error);
-      const uid = sessionStorage.getItem("id");
-      console.log("uid : ", uid);
     }
   };
 
