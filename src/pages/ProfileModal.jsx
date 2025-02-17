@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
-
+import supabase from "../supabase/client";
 import { AuthContext } from "../context/AuthProvider";
 import UsersAPI from "../supabase/dao/userDao";
+import { uploadFile } from "../supabase/dao/ImgDao";
 
 const ProfileModal = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,12 @@ const ProfileModal = () => {
 
   const { user } = useContext(AuthContext);
 
+  const [profileImg, setProfileImg] = useState("");
+  const [selectedImg, setSelectedImg] = useState(null);
+
+  const getSession = sessionStorage.getItem("id");
+
+  // 유저 정보 가져오기
   useEffect(() => {
     const fetchUserData = async () => {
       const data = await UsersAPI.getUserInfo();
@@ -32,17 +39,50 @@ const ProfileModal = () => {
     fetchUserData();
   }, [user]);
 
+  // 프로필 이미지 가져오기
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        if (!getSession) {
+          alert("저장된 이미지가 없습니다!");
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("users")
+          .select("profile_img")
+          .eq("uid", getSession)
+          .single();
+
+        if (error) throw error;
+
+        setProfileImg(data.profile_img);
+      } catch (error) {
+        console.error("유저 정보 가져오기 오류:", error.message);
+      }
+    };
+
+    fetchUserInfo();
+  }, [getSession]);
+
   const handleProfileUpdate = async e => {
     e.preventDefault();
 
     if (!user) return;
 
     try {
-      const { data, error } = await UsersAPI.updateUser(formData);
-
-      if (error) throw error;
+      const data = await UsersAPI.updateUser(formData);
 
       console.log("complete", data);
+
+      //업데이트 후 label에 반영
+      setFormData({
+        nickname: formData.nickname,
+        introduction: formData.introduction,
+        link: formData.link,
+        mbti: formData.mbti,
+      });
+
     } catch (error) {
       alert(error.message);
       console.error("업데이트 오류", error);
@@ -53,10 +93,50 @@ const ProfileModal = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // 이미지 선택하기
+  const handleImageChange = e => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImg(URL.createObjectURL(file));
+      uploadImage(file);
+    }
+  };
+
+  // 이미지 업로드하기
+  const uploadImage = async file => {
+    try {
+      console.log("파일 업로드 시작:", file.name);
+      const uploadedFileData = await uploadFile(file);
+
+      if (uploadedFileData) {
+        setProfileImg(uploadedFileData.publicURL);
+
+        const { data, error } = supabase
+          .from("users")
+          .update({ profile_img: uploadedFileData.publicURL })
+          .eq("uid", getSession);
+
+        if (error) throw error;
+
+        console.log("이미지 업데이트 성공", data);
+      }
+    } catch (error) {
+      console.error("이미지 업로드 오류:", error.message);
+    }
+  };
+
+  
+
   return (
     <ProfileBox>
-      <h2>프로필 수정하기</h2>
-      <div>이미지 선택</div>
+      <EditImage>
+        <input type="file" accept="image/*" onChange={handleImageChange} />
+        {selectedImg && (
+          <img src={selectedImg} alt="Selected Profile" width="100" />
+        )}
+        {profileImg && <img src={profileImg} alt="Profile" width="100" />}
+      </EditImage>
+
       <EditForm onSubmit={handleProfileUpdate}>
         <EditNickname>
           <label>{formData.nickname || "닉네임"}</label>
@@ -68,7 +148,6 @@ const ProfileModal = () => {
             onChange={handleChange}
             required
           />
-          <button type="submit">저장</button>
         </EditNickname>
 
         <EditIntro>
@@ -81,7 +160,6 @@ const ProfileModal = () => {
             onChange={handleChange}
             required
           />
-          <button type="submit">저장</button>
         </EditIntro>
 
         <EditLink>
@@ -94,7 +172,6 @@ const ProfileModal = () => {
             onChange={handleChange}
             required
           />
-          <button type="submit">저장</button>
         </EditLink>
 
         <EditMBTI>
@@ -107,8 +184,8 @@ const ProfileModal = () => {
             onChange={handleChange}
             required
           />
-          <button type="submit">저장</button>
         </EditMBTI>
+        <button type="submit">저장</button>
       </EditForm>
     </ProfileBox>
   );
@@ -122,11 +199,13 @@ const ProfileBox = styled.div`
   top: 25%;
   width: 826px;
   height: 600px;
-
   background-color: lightgrey;
   display: grid;
   grid-template-columns: 2fr 1fr;
   border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const EditForm = styled.form`
@@ -136,18 +215,27 @@ const EditForm = styled.form`
   gap: 1rem;
 `;
 
+const EditImage = styled.div`
+  width: 100%;
+  height: 100%;
+  margin-top: 2rem;
+  object-fit: cover;
+  border-radius: 10px;
+  text-align: center;
+`;
+
 const EditNickname = styled.div`
-  background-color: white;
+  text-align: center;
 `;
 
 const EditIntro = styled.div`
-  background-color: white;
+  text-align: center;
 `;
 
 const EditLink = styled.div`
-  background-color: white;
+  text-align: center;
 `;
 
 const EditMBTI = styled.div`
-  background-color: white;
+  text-align: center;
 `;
