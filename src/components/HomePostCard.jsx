@@ -6,6 +6,8 @@ import { HomeContext } from "../context/HomeContext";
 
 const HomePostCard = ({ post }) => {
   const { users, comments } = useContext(HomeContext);
+  const post_id = post.post_id;
+  const img_path = JSON.parse(post.img_list);
 
   // card 내 user 정보 나타내기
   const setUserProfile = post => {
@@ -13,11 +15,14 @@ const HomePostCard = ({ post }) => {
     if (!postWriter) return null;
 
     return (
-      <StCardTextWrap key={postWriter.uid}>
-        <StNickName>{postWriter.nickname}</StNickName>
-        <StMbti>{postWriter.mbti}</StMbti>
-        <div>{post.travel_location}</div>
-      </StCardTextWrap>
+      <>
+        <StProfileImg src={postWriter.profile_img} />
+        <StCardTextWrap key={postWriter.uid}>
+          <StNickName>{postWriter.nickname}</StNickName>
+          <StMbti>{postWriter.mbti}</StMbti>
+          <div>{post.travel_location}</div>
+        </StCardTextWrap>
+      </>
     );
   };
 
@@ -30,28 +35,27 @@ const HomePostCard = ({ post }) => {
     return <div key={postComment.post_id}>{postComment.content}</div>;
   };
 
-  //post.post_id === like 줄의 post_id 일치하면 꽉찬하트
+  // post.post_id === like 줄의 post_id 일치하면 꽉찬하트
 
   // 2. 현재 로그인한 사용자의 uid(getsession)와 posts의 uid를 비교
   // 3. 값이 없다면 빈하트(추가 가능), 있다면 빨간하트(삭제 가능)
 
+  console.log(img_path.publicUrl)
+  
   return (
     <>
       <StHomeCard>
         <StCardTop>
-          <StProfileImg src="https://azshuuuatgkxkkguganq.supabase.co/storage/v1/object/public/img_bucket/uploads/1733724254699-21.jpg" />
-          <div>{setUserProfile(post)}</div>
+          {setUserProfile(post)}
         </StCardTop>
-        <StPostImg src="https://cafe24.poxo.com/ec01/reptily/HOvhRhvOk+Cp2KY4JuusAnHIWtRdH5D7VFDjkM1HS5VrlB0/xpHAjGhEYnPJ0BG3Viz7C+cKZoA9jUZDtJSnqw==/_/web/product/big/202405/2aad75e7236aa0794c82bbc72262681c.jpg" />
+        <StPostImg src={img_path.publicUrl} />
         <StIcons>
           <img
             src={CommentIcon}
             alt="comment-img"
             style={{ width: "34px", height: "34px" }}
           />
-          {/* <HeartIcon
-            post_id={post_id}
-          /> */}
+          <HeartIcon post_id={post_id} />
         </StIcons>
         <StComents>{setComment(post)}</StComents>
       </StHomeCard>
