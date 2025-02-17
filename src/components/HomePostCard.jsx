@@ -83,6 +83,12 @@ const StHomeCard = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   gap: 20px;
+  @media (max-width: 800px) {
+    width: 100%;
+    > * {
+      width: 100% !important;
+    }
+  }
 `;
 
 const StCardTop = styled.div`

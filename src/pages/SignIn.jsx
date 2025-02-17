@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../supabase/client";
-import styled from "styled-components";
-import { ContentsBox, StBtn, LoginTxt, FormBox, SignupBtn } from "../shared/styleGuide";
+// import styled from "styled-components";
+import {
+  ContentsBox,
+  StBtn,
+  LoginTxt,
+  FormBox,
+  SignupBtn,
+} from "../shared/styleGuide";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -32,32 +38,26 @@ const SignIn = () => {
   return (
     <ContentsBox>
       <LoginTxt>Log-In</LoginTxt>
-        <FormBox onSubmit={handleSignin}>
-          <input
-            type="email"
-            value={email}
-            placeholder="아이디"
-            onChange={e => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            value={password}
-            placeholder="비밀번호"
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
-          <StBtn type="submit">로그인</StBtn>
-        </FormBox>
-        <SignupBtn onClick={navigateToSignUp}>회원가입</SignupBtn>
+      <FormBox onSubmit={handleSignin}>
+        <input
+          type="email"
+          value={email}
+          placeholder="아이디"
+          onChange={e => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          value={password}
+          placeholder="비밀번호"
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
+        <StBtn type="submit">로그인</StBtn>
+      </FormBox>
+      <SignupBtn onClick={navigateToSignUp}>회원가입</SignupBtn>
     </ContentsBox>
   );
 };
 
 export default SignIn;
-
-
-
-
-
-
