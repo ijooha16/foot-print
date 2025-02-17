@@ -3,6 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { SearchInput } from "../SearchInput";
 import { AuthContext } from "../../context/AuthProvider";
+import supabase from "../../supabase/client";
 
 const Layout = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -23,6 +24,8 @@ const Layout = () => {
 
   // 로그아웃
   const handleLogout = () => {
+    // supabase 로그아웃 (연결 끊기)
+    supabase.auth.signOut();
     sessionStorage.clear();
     setIsSignin(false);
   };
@@ -200,6 +203,7 @@ const StBtn = styled.button`
 `;
 
 const StMyBtnContainer = styled.div`
+  width: 280px;
   padding: 0;
   display: flex;
   justify-content: flex-end;
