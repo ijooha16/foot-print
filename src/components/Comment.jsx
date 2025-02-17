@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import CommentsDao from "../supabase/dao/commentDao";
 import styled from "styled-components";
-import CommentsAPI from "../supabase/dao/commentDao";
 import supabase from "../supabase/client";
 
 export default function Comments({ post_id }) {
   const [comments, setComments] = useState([]);
+
   useEffect(() => {
     async function loadComments() {
       const data = await CommentsDao.getComments(post_id);
@@ -13,7 +13,7 @@ export default function Comments({ post_id }) {
       console.log(data);
     }
     loadComments();
-  }, [post_id, comments]);
+  }, [post_id]);
 
   const deleteComments = async comment_id => {
     try {
@@ -23,14 +23,38 @@ export default function Comments({ post_id }) {
         .eq("comment_id", comment_id);
 
       if (error) throw error;
-      setComments(comments.filter(c => c.comment_id !== comment_id));
 
-      return true; // 삭제 성공 시 true 반환
+      // 성공적으로 삭제되면 상태 업데이트
+      setComments(prev => prev.filter(c => c.comment_id !== comment_id));
+
+      return true;
     } catch (error) {
       console.error("댓글 삭제 오류:", error.message);
       return false;
     }
   };
+
+
+  // const editCommentHandler = async (post_id) => {
+  //   try {
+  //     const { data, error } = await supabase
+  //       .from("posts")
+  //       .update({
+  //         uid: sessionStorage.getItem("id"),
+  //         title: formData.title,
+  //         travel_location: formData.travel_location,
+  //         content: formData.content,
+  //         img_list: JSON.stringify({ publicUrl: img_path.publicUrl }),
+  //       })
+  //       .eq("post_id", post_id);
+
+  //     if (error) throw error;
+  //     return data;
+  //   } catch (error) {
+  //     console.error("게시글 수정 오류:", error.message);
+  //     return null;
+  //   }
+  // };
 
   return (
     <div>
@@ -40,10 +64,10 @@ export default function Comments({ post_id }) {
           <p>{comment.users.nickname}</p>
           <p>{comment.content}</p>
           <ButtonDiv>
-            <button onClick={() => {}}>수정</button>
+            <button onClick={() => editCommentHandler()}>수정</button>
             <button
               onClick={() => {
-                deleteComments(comment.comment_id);
+                deleteComments(comment.comment_id)
               }}
             >
               삭제

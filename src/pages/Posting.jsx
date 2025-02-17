@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import supabase from "../supabase/client";
 // import { SearchInput } from "../components/SearchInput";
 // import SigninLoginBtn from "../components/SigninLoginBtn";
@@ -6,7 +6,7 @@ import AddIcon from "../assets/icon_add_black.png";
 import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { loadFile, uploadFile } from "../supabase/dao/ImgDao";
+import { uploadFile } from "../supabase/dao/ImgDao";
 // import { AuthContext } from "../context/AuthProvider";
 
 const Posting = () => {
