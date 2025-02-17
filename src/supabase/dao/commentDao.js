@@ -7,7 +7,14 @@ const CommentsAPI = {
     try {
       const { data, error } = await supabase
         .from("comments")
-        .select("*")
+        .select(
+          `
+          uid,
+          content,
+          comment_id,
+          users!inner(nickname,profile_img)
+          `,
+        )
         .eq("post_id", post_id);
 
       if (error) throw error;
