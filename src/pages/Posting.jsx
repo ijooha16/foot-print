@@ -15,25 +15,24 @@ const Posting = () => {
     window.scrollTo(0, 0);
   }, []);
   const [posts, setPosts] = useState([]);
-  // const navigate = useNavigate();
 
-  // const { isSignin, user } = useContext(AuthContext);
-  // console.log(isSignin, user);
+  const [selectedFile, setSelectedFile] = useState(null); //미리보기 이미지 상태
+  const navigate = useNavigate();
+
   //데이터 베이스에서 유저 이름 가져오기
-
   const nick_name = "사용자 닉네임";
 
   //데이터 가져오기
-  const getPosts = async () => {
-    try {
-      const { data, error } = await supabase.from("posts").select("*");
-      if (error) throw error;
-      setPosts(data);
-      //uid가 노출되면 안댐
-    } catch (error) {
-      console.log("데이터 가져오기 오류 : ", error);
-    }
-  };
+  // const getPosts = async () => {
+  //   try {
+  //     const { data, error } = await supabase.from("posts").select("*");
+  //     if (error) throw error;
+  //     setPosts(data);
+  //     //uid가 노출되면 안댐
+  //   } catch (error) {
+  //     console.log("데이터 가져오기 오류 : ", error);
+  //   }
+  // };
 
   // 로그인 사용자 정보 가져오기
   // const getUser = async () => {
@@ -59,9 +58,17 @@ const Posting = () => {
     content: "",
   });
 
+  //이미지 미리보기
+  const handlePrevImage = e => {
+    e.target.files;
+    const file = e.target.files[0];
+    const fileUrl = URL.createObjectURL(file);
+    setSelectedFile(fileUrl);
+  };
   //인풋값 입력
   const handleChangeInput = e => {
     const { name, value, type, files } = e.target;
+
     setFormData(prev => ({
       ...prev,
       [name]: type === "file" ? files[0] : value,
@@ -71,7 +78,14 @@ const Posting = () => {
   //작성완료버튼
   const handleSubmitPosting = async e => {
     e.preventDefault();
-    console.log("폼 데이터:", formData);
+    // console.log("폼 데이터:", formData);
+    //로그인확인
+    const userId = sessionStorage.getItem("id");
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      navigate("/sign-in");
+      return;
+    }
     //제목, 내용 모두 입력 얼리리턴
     if (!formData.title || !formData.content) {
       alert("제목과 내용을 모두 입력해주세요!");
@@ -83,42 +97,45 @@ const Posting = () => {
       alert("여행지를 선택해주세요!");
       return;
     }
-    //이미지 선택 안했을때
-    // if (!formData.file) {
-    //   alert("이미지를 업로드 해주세요!");
-    //   return;
-    // }
+    // 이미지 선택 안했을때
+    if (!formData.file) {
+      alert("이미지를 업로드 해주세요!");
+      return;
+    }
 
     try {
       const imgUrl = await uploadFile(formData.file);
-      console.log("imgUrl : ", imgUrl);
+      // console.log("imgUrl : ", imgUrl);
       const { data, error } = await supabase
         .from("posts")
         .insert([
           {
-            uid: sessionStorage.getItem("id"),
+            uid: userId,
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
-            img_list: "",
+            img_list: imgUrl,
           },
         ])
         .select();
 
       if (error) throw error;
-      console.log("완료버튼누른후 data : ", data);
+      // console.log("완료버튼누른후 data : ", data);
 
       if (data) {
         setPosts(prevPosts => [...prevPosts, data[0]]);
       }
       // alert("게시글 등록 완료");
+      // console.log("게시글 등록 완료");
       setFormData({
         title: "",
         travelLocation: "",
         file: null,
         content: "",
       });
-      // navigate("/");
+      // console.log("폼 데이터 초기화 완료");
+      navigate("/");
+      // console.log("네비게이션 실행됨");
     } catch (error) {
       console.log("게시글 등록 오류 : ", error);
     }
@@ -167,14 +184,20 @@ const Posting = () => {
             <UploadLabel htmlFor="fileUpload">
               {/* 아래 image는 업로드한 이미지를 의미합니다! 이미지를 추가하면 박스가 이미지로 바뀌어요.
               추후 수정 부탁드립니다. */}
-              {/* {image ? <PreviewImage src={image} alt="Preview" /> : <PlusIcon />} */}
-              <PlusIcon />
+              {selectedFile ? (
+                <PreviewImage src={selectedFile} alt="Preview" />
+              ) : (
+                <PlusIcon />
+              )}
             </UploadLabel>
             <input
               type="file"
               id="fileUpload"
               name="file"
-              onChange={handleChangeInput}
+              onChange={e => {
+                handlePrevImage(e);
+                handleChangeInput(e);
+              }}
             />
           </StInputFIle>
           <StInputContainer>
@@ -267,12 +290,12 @@ const PlusIcon = styled.div`
   background-size: contain;
 `;
 
-// const PreviewImage = styled.img`
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover;
-//   border-radius: 10px;
-// `;
+const PreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+`;
 
 const StInputRadioBox = styled.div`
   display: flex;

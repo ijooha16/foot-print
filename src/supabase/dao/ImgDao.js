@@ -8,14 +8,12 @@ import supabase from "../client";
 
 async function uploadFile(file) {
   const fileName = "public/" + file.name;
-  console.log("file > ", file);
   const { data, error } = await supabase.storage
     .from("img_bucket")
     .upload(fileName, file);
 
   if (error) {
     alert("업로드 실패");
-    console.log("업로드실패 : ", error);
   } else {
     alert("업로드 성공");
     return await loadFile(fileName);
