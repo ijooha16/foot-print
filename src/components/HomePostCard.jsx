@@ -3,11 +3,12 @@ import styled from "styled-components";
 import CommentIcon from "../assets/icon_comment.png";
 import HeartIcon from "../assets/icon_heart_empty_24.png";
 import { HomeContext } from "../context/HomeContext";
+import supabase from "../supabase/client";
 
 const HomePostCard = ({ post }) => {
   const { users, comments } = useContext(HomeContext);
-  // const [imageList, setImageList] = useState([]);
-
+  const getSession = sessionStorage.getItem("id");
+  const [like, setLike] = useState({ uid: getSession, post_id: 0 });
   // card 내 user 정보 나타내기
   const setUserProfile = post => {
     const postWriter = users.find(user => post.uid === user.uid);
@@ -33,7 +34,31 @@ const HomePostCard = ({ post }) => {
 
   // like 추가
   // 1. 하트 이미지 클릭 시 likes 테이블에 값 추가 <-> 삭제
-  // 2. 현재 로그인한 사용자의 uid(session 배열)와 posts의 uid를 비교
+  const addLike = async (e, post) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // like 깂 보내기
+    const { data, error } = await supabase
+      .from("likes")
+      .insert({ uid: getSession, post_id: post.post_id });
+
+    if (error) throw error;
+  };
+
+  // like 값 가져오기
+  const removeLike = async () => {
+    const likeInfo = await supabase
+      .from("likes")
+      .select("*")
+      .eq("uid", getSession);
+
+    console.log("likeInfo", likeInfo);
+
+    likeInfo.data;
+  };
+
+  // 2. 현재 로그인한 사용자의 uid(getsession)와 posts의 uid를 비교
   // 3. 값이 없다면 빈하트(추가 가능), 있다면 빨간하트(삭제 가능)
 
   return (
@@ -55,6 +80,7 @@ const HomePostCard = ({ post }) => {
             alt="heart-img"
             className="heart"
             style={{ width: "34px", height: "34px" }}
+            onClick={removeLike()}
           />
         </StIcons>
         <StComents>{setComment(post)}</StComents>
