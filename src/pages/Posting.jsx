@@ -5,9 +5,11 @@ import supabase from "../supabase/client";
 import AddIcon from "../assets/icon_add_black.png";
 import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
 import styled from "styled-components";
+import { useNavigate } from "react-router";
 
 const Posting = () => {
   const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
 
   //데이터 베이스에서 유저 이름 가져오기
 
@@ -77,7 +79,7 @@ const Posting = () => {
         .insert([
           {
             // post_id: crypto.randomUUID(),
-            uid: "23d8414d-5bbd-47c8-9c08-cd9630c3fa9f",
+            uid: sessionStorage.getItem("id"),
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
@@ -99,6 +101,7 @@ const Posting = () => {
     } catch (error) {
       console.log("게시글 등록 오류 : ", error);
     }
+    navigate("/");
   };
 
   return (
