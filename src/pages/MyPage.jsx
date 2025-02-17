@@ -3,41 +3,35 @@ import styled from "styled-components";
 import MypagePostCard from "../components/MypagePostCard.jsx";
 import EditIcon from "../assets/icon_edit_24.png";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthProvider.jsx";
 import { MyPageContext } from "../context/MyPageContext.jsx";
 
 const MyPage = () => {
-  const { users, posts } = useContext(MyPageContext);
-  // const { authUser } = useContext(AuthContext);
+  const { posts, users } = useContext(MyPageContext);
+  const getSession = sessionStorage.getItem("id");
 
-  // const myInfo = users.find(
-  //   u => u.uid === "0272c1b6-524c-4705-865c-c7d6866a9e40",
-  // );
-  // const myPost = posts.find(
-  //   post => post.uid === "0272c1b6-524c-4705-865c-c7d6866a9e40",
-  // );
+  console.log(posts, users);
+
+  const myInfo = users.find(u => u.uid === getSession);
+  const myPost = posts.filter(post => post.uid === getSession);
 
   return (
     <>
       <ContentsBox direction="row">
         <ProfileImg>img</ProfileImg>
         <MypageInfoBox>
-          <TitleText>{users.map(u => u.nick_name)}</TitleText>
-          <SubTitleText> {users.map(u => u.mbti)} </SubTitleText>
-          <NormalText> {users.map(u => u.email)}</NormalText>
-          <NormalText>{users.map(u => u.introduction)}</NormalText>
+          <TitleText>{myInfo.nickname}</TitleText>
+          <SubTitleText> {myInfo.mbti} </SubTitleText>
+          <NormalText> {myInfo.email}</NormalText>
+          <NormalText>{myInfo.introduction}</NormalText>
           <ProfileEditBtn></ProfileEditBtn>
         </MypageInfoBox>
       </ContentsBox>
       <MypagePostBox>
-        {posts.map(data => (
+        {myPost.map(data => (
           <Fragment key={data.post_id}>
             <MypagePostCard data={data} />
           </Fragment>
         ))}
-        <div
-          style={{ backgroundColor: "gray", width: "100px", height: "6000px" }}
-        ></div>
       </MypagePostBox>
     </>
   );
