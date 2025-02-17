@@ -2,25 +2,13 @@ import styled from "styled-components";
 import { Link, Outlet } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { SearchInput } from "../SearchInput";
-import supabase from "../../supabase/client";
 import { AuthContext } from "../../context/AuthProvider";
 
 const Layout = () => {
-  const { setIsSignin } = useContext(AuthContext);
-  const isSignin = false;
   const [scrolled, setScrolled] = useState(false);
+  const { isSignin, setIsSignin } = useContext(AuthContext);
 
   //로그인 상태 확인
-  useEffect(() => {
-    const getSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      // console.log("session", session);
-      setIsSignin(session?.user ?? null);
-    };
-    getSession();
-  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +21,13 @@ const Layout = () => {
     };
   }, []);
 
+  // 로그아웃
+  const handleLogout = () => {
+    sessionStorage.clear();
+    setIsSignin(false);
+  };
+
+  // console.log("로그아웃", getSession);
   return (
     <>
       <HeaderContainer scrolled={scrolled}>
@@ -49,7 +44,14 @@ const Layout = () => {
               >
                 <StBtn>마이페이지</StBtn>
               </Link>
-              <StBtn>로그아웃</StBtn>
+              <StBtn
+                onClick={() => {
+                  handleLogout();
+                  alert("로그아웃 되었습니다.");
+                }}
+              >
+                로그아웃
+              </StBtn>
             </StMyBtnContainer>
           </>
         ) : (

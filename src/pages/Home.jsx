@@ -7,8 +7,11 @@ import ShowModal from "./PostingModal";
 
 const Home = () => {
   const { posts, changePosts, setChangePosts } = useContext(HomeContext);
-  const isSignin = true;
   const [selectedPost, setSelectedPost] = useState(null);
+
+  // 로그인 여부
+  const getSession = sessionStorage.getItem("id");
+  // console.log("getSession", getSession);
 
   useEffect(() => {
     setChangePosts(posts);
@@ -63,7 +66,7 @@ const Home = () => {
           );
         })}
       </StCardWrap>
-      {isSignin === true ? <AddPostButton /> : null}
+      {getSession ? <AddPostButton /> : null}
       {selectedPost && (
         <ShowModal
           post={selectedPost}
