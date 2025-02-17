@@ -40,8 +40,8 @@ export default function AuthProvider({ children }) {
         const { data: userProfile } = await supabase
           .from("users")
           .select("*")
-          .eq("id", user.id);
-        setUserProfile(userProfile);
+          .eq("uid", user.id);
+        setUserProfile(userProfile[0]);
       };
       fetchUserProfile();
     } else {

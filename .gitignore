@@ -23,8 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-yarn.lock
-package.json
+
 .env
 package.json
 package-lock.json

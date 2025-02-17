@@ -7,6 +7,7 @@ import { MyPageContext } from "../context/MyPageContext.jsx";
 import supabase from "../supabase/client.js";
 import AddPostButton from "../components/AddPostButton.jsx";
 
+
 const MyPage = () => {
   const { posts, users } = useContext(MyPageContext);
   const getSession = sessionStorage.getItem("id");
