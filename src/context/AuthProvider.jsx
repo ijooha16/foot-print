@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import supabase from "../supabase/client.js";
 
 const AuthContext = createContext(null);
@@ -7,6 +7,16 @@ export default function AuthProvider({ children }) {
   const [isSignin, setIsSignin] = useState(false);
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+
+  const getSession = sessionStorage.getItem("id");
+  
+  useEffect(() => {
+    if (getSession) {
+      setIsSignin(true)
+    } else {
+      setIsSignin(false)
+    }
+  }, [getSession]);
 
   useEffect(() => {
     const {
@@ -30,8 +40,8 @@ export default function AuthProvider({ children }) {
         const { data: userProfile } = await supabase
           .from("users")
           .select("*")
-          .eq("id", user.id);
-        setUserProfile(userProfile);
+          .eq("uid", user.id);
+        setUserProfile(userProfile[0]);
       };
       fetchUserProfile();
     } else {

@@ -29,8 +29,8 @@ const SignIn = () => {
       sessionStorage.setItem("id", user.data.identities[0].id);
       navigate("/");
     } catch (error) {
-      alert(error.message);
-      console.error("로그인 오류", error);
+      alert("로그인 오류");
+      console.log(error.message);
     }
   };
 
