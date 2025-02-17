@@ -15,6 +15,17 @@ const Posting = () => {
     window.scrollTo(0, 0);
   }, []);
   const [posts, setPosts] = useState([]);
+  //데이터 넣기
+  supabase.from("posts").insert({ posts });
+
+  const [formData, setFormData] = useState({
+    post_id: "",
+    title: "",
+    travelLocation: "",
+    file: null,
+    content: "",
+  });
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const [selectedFile, setSelectedFile] = useState(null); //미리보기 이미지 상태
   const navigate = useNavigate();
@@ -67,6 +78,9 @@ const Posting = () => {
   };
   //인풋값 입력
   const handleChangeInput = e => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+
     const { name, value, type, files } = e.target;
 
     setFormData(prev => ({
