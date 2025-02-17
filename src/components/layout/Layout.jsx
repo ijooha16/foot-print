@@ -22,7 +22,7 @@ const Layout = () => {
 
   const handleLogout = () => {
     sessionStorage.clear();
-    setIsSignin(false)
+    setIsSignin(false);
   };
 
   return (
@@ -197,7 +197,7 @@ const StBtn = styled.button`
 `;
 
 const StMyBtnContainer = styled.div`
-width: 280px;
+  width: 280px;
   padding: 0;
   display: flex;
   justify-content: flex-end;
