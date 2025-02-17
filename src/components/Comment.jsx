@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import CommentsDao from "../supabase/dao/commentDao";
 import styled from "styled-components";
-import CommentsAPI from "../supabase/dao/commentDao";
 import supabase from "../supabase/client";
 
 export default function Comments({ post_id }) {
   const [comments, setComments] = useState([]);
+
   useEffect(() => {
     async function loadComments() {
       const data = await CommentsDao.getComments(post_id);
@@ -13,7 +13,7 @@ export default function Comments({ post_id }) {
       console.log(data);
     }
     loadComments();
-  }, [post_id, comments]);
+  }, [post_id]);
 
   const deleteComments = async comment_id => {
     try {
@@ -23,9 +23,11 @@ export default function Comments({ post_id }) {
         .eq("comment_id", comment_id);
 
       if (error) throw error;
-      setComments(comments.filter(c => c.comment_id !== comment_id));
 
-      return true; // 삭제 성공 시 true 반환
+      // 성공적으로 삭제되면 상태 업데이트
+      setComments(prev => prev.filter(c => c.comment_id !== comment_id));
+
+      return true;
     } catch (error) {
       console.error("댓글 삭제 오류:", error.message);
       return false;
@@ -43,7 +45,7 @@ export default function Comments({ post_id }) {
             <button onClick={() => {}}>수정</button>
             <button
               onClick={() => {
-                deleteComments(comment.comment_id);
+                deleteComments(comment.comment_id)
               }}
             >
               삭제
