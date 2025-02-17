@@ -19,8 +19,8 @@ const SignIn = () => {
       alert("로그인 되었습니다.");
       navigate("/");
     } catch (error) {
-      alert(error.message);
-      console.error("로그인 오류", error);
+      alert("로그인 오류");
+      console.log(error.message);
     }
   };
 

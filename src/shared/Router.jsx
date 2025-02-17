@@ -8,6 +8,7 @@ import Posting from "../pages/Posting.jsx";
 import SignIn from "../pages/SignIn.jsx";
 import SignUp from "../pages/SignUp.jsx";
 import Layout from "../components/layout/Layout.jsx";
+import ProfileModal from "../pages/ProfileModal.jsx";
 
 const Router = () => {
   const { isSignin } = useContext(AuthContext);
@@ -20,6 +21,7 @@ const Router = () => {
         <Route path="/posting" element={<Posting />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/profile" element={<ProfileModal/>} />
       </Routes>
     </BrowserRouter>
   );

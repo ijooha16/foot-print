@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider.jsx";
 import { MyPageContext } from "../context/MyPageContext.jsx";
 
+
 const MyPage = () => {
   const { users, posts } = useContext(MyPageContext);
   // const { authUser } = useContext(AuthContext);
