@@ -68,7 +68,7 @@ const StSearchForm = styled.form`
     margin-left: 10px;
 
     ::placeholder {
-      color: #DEDEDE;
+      color: #dedede;
     }
   }
 

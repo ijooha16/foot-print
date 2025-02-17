@@ -199,8 +199,6 @@ const StBtn = styled.button`
 
 const StMyBtnContainer = styled.div`
   padding: 0;
-  padding-right: 16px;
-  width: 280px;
   display: flex;
   justify-content: flex-end;
   gap: 20px;
