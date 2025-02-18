@@ -3,11 +3,11 @@ import HomePostCard from "../components/HomePostCard";
 import { useContext, useEffect, useState, useRef } from "react";
 import { HomeContext } from "../context/HomeContext";
 import AddPostButton from "../components/AddPostButton";
-import ShowModal from "./PostingModal";
+import ShowModal from "./PostingModal.jsx";
+import { AuthContext } from "../context/AuthProvider";
 
 const Home = () => {
   const { posts, changePosts, setChangePosts } = useContext(HomeContext);
-  const isSignin = true;
   const [selectedPost, setSelectedPost] = useState(null);
   const [displayedPosts, setDisplayedPosts] = useState([]);
   const [page, setPage] = useState(1);
@@ -15,8 +15,12 @@ const Home = () => {
   const observer = useRef(null);
   const postLimit = 5; // 한 번에 불러올 개수
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const { isSignin, setIsSignin, getSession } = useContext(AuthContext);
 
-
+  // 새로고침
+  useEffect(() => {
+    setIsSignin(!!getSession);
+  }, []);
 
   //초기화
   useEffect(() => {
@@ -44,7 +48,7 @@ const Home = () => {
       setPage(prev => prev + 1);
     }
 
-    setLoading(false);
+    setTimeout(() => setLoading(false), 500);
   };
 
   //스크롤 감지
@@ -52,7 +56,8 @@ const Home = () => {
     observer.current = new IntersectionObserver(entries => {
       if (
         entries[0].isIntersecting &&
-        displayedPosts.length < changePosts.length
+        displayedPosts.length < changePosts.length &&
+        !loading
       ) {
         fetchPosts();
       }
@@ -64,41 +69,50 @@ const Home = () => {
     }
 
     return () => observer.current?.disconnect();
-  }, [displayedPosts, changePosts]);
-
+  }, [displayedPosts, changePosts, loading]);
+  
   useEffect(() => {
-    setChangePosts(posts);
-  }, [posts]);
-
-  const showPosts = where => {
-    setSelectedCategory(where);
-    
-    if (where === "all") {
+    if (selectedCategory === "all") {
       setChangePosts([...posts]);
       return;
     }
-    if (where === "in") {
+    if (selectedCategory === "in") {
       const filterInPost = posts.filter(post => {
         return post.travel_location === "국내";
       });
       setChangePosts(filterInPost);
       return;
     }
-    if (where === "out") {
+    if (selectedCategory === "out") {
       const filterOutPost = posts.filter(post => {
         return post.travel_location === "국외";
       });
       setChangePosts(filterOutPost);
       return;
     }
-  };
+  }, [posts, selectedCategory]);
 
   return (
     <>
       <StCategoryContainer>
-        <StCategory selected={selectedCategory === "all"} onClick={() => showPosts("all")}>전체</StCategory>
-        <StCategory selected={selectedCategory === "in"} onClick={() => showPosts("in")}>국내</StCategory>
-        <StCategory selected={selectedCategory === "out"} onClick={() => showPosts("out")}>국외</StCategory>
+        <StCategory
+          selected={selectedCategory === "all"}
+          onClick={() => setSelectedCategory("all")}
+        >
+          전체
+        </StCategory>
+        <StCategory
+          selected={selectedCategory === "in"}
+          onClick={() => setSelectedCategory("in")}
+        >
+          국내
+        </StCategory>
+        <StCategory
+          selected={selectedCategory === "out"}
+          onClick={() => setSelectedCategory("out")}
+        >
+          국외
+        </StCategory>
       </StCategoryContainer>
       <PostContainer>
         {displayedPosts.map((post, index) => (
@@ -131,6 +145,13 @@ const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 800px) {
+    width: 100%;
+    padding: 0 20px;
+    > * {
+      width: 100%;
+    }
+  }
 `;
 
 const StCategoryContainer = styled.div`
@@ -142,9 +163,9 @@ const StCategoryContainer = styled.div`
 `;
 
 const StCategory = styled.div`
-  font-size: 18px; 
-  font-weight: ${props => props.selected ? '700' : '400'} ;
-  color: ${props => props.selected ? '#121212' : '#8b8b8b'};
+  font-size: 18px;
+  font-weight: ${props => (props.selected ? "700" : "400")};
+  color: ${props => (props.selected ? "#121212" : "#8b8b8b")};
   cursor: pointer;
   transform: ${props => (props.selected ? "scale(1.3)" : "scale(1)")};
 

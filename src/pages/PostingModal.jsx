@@ -3,10 +3,15 @@ import styled from "styled-components";
 import { HomeContext } from "../context/HomeContext";
 import Comments from "../components/Comment";
 import CommentsAPI from "../supabase/dao/commentDao";
-import PostsAPI from "../supabase/dao/postDao";
+import HeartIcon from "../components/HeartIcon";
+import supabase from "../supabase/client";
+import { useNavigate } from "react-router-dom";
 
 const ShowModal = ({ post, closeModal }) => {
   const { users, comments } = useContext(HomeContext);
+  const navigate = useNavigate();
+  const getSession = sessionStorage.getItem("id");
+  const [posts, setPosts] = useState();
   const [formData, setFormData] = useState({
     uid: sessionStorage.getItem("id"),
     content: "",
@@ -33,12 +38,82 @@ const ShowModal = ({ post, closeModal }) => {
     });
   };
 
-  const modifyPost = async () => {
-    console.log();
+  const removePostHandler = async post_id => {
+    try {
+      // 댓글 삭제
+      const { error: commentError } = await supabase
+        .from("comments")
+        .delete()
+        .eq("post_id", post_id);
+
+      if (commentError) {
+        console.error("댓글 삭제 오류:", commentError);
+        return;
+      }
+
+      console.log("댓글 삭제 완료:", post_id);
+
+      // 최신 상태를 유지하며 댓글 목록 업데이트
+      setFormData(comments.filter(c => c.post_id !== post_id));
+
+      // 좋아요 삭제
+      const { error: likeError } = await supabase
+        .from("likes")
+        .delete()
+        .eq("uid", getSession)
+        .eq("post_id", post_id);
+
+      if (likeError) {
+        console.error("좋아요 삭제 오류:", likeError);
+        return;
+      }
+
+      console.log("좋아요 삭제 완료:", post_id);
+
+      // 최신 상태를 유지하며 좋아요 목록 업데이트
+      // setFormData(prevComments => prevComments.filter(c => c.post_id !== post_id));
+
+      // 게시물 삭제
+      const { error: postError } = await supabase
+        .from("posts")
+        .delete()
+        .eq("post_id", post_id);
+
+      if (postError) {
+        console.error("게시물 삭제 오류:", postError);
+        return;
+      }
+
+      console.log("게시물 삭제 완료:", post_id);
+
+      // 최신 상태를 유지하며 게시물 목록 업데이트
+      setPosts(prevPosts => prevPosts.filter(e => e.post_id !== post_id));
+      navigate("/my-page");
+      closeModal();
+    } catch (error) {
+      console.error("삭제 중 오류 발생:", error);
+    }
   };
 
-  const deletePost = async () => {
-    await PostsAPI.deletePost(post.post_id);
+  const editPostHandler = async post_id => {
+    try {
+      const { data, error } = await supabase
+        .from("posts")
+        .update({
+          uid: sessionStorage.getItem("id"),
+          title: formData.title,
+          travel_location: formData.travel_location,
+          content: formData.content,
+          img_list: JSON.stringify({ publicUrl: img_path.publicUrl }),
+        })
+        .eq("post_id", post_id);
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error("게시글 수정 오류:", error.message);
+      return null;
+    }
   };
 
   return (
@@ -48,13 +123,15 @@ const ShowModal = ({ post, closeModal }) => {
           <PostTitle>{post.title}</PostTitle>
           <p>{users.nickname}</p>
           <ButtonDiv>
-            <button onClick={modifyPost}>수정</button>
-            <button onClick={deletePost}>삭제</button>
+            <button onClick={() => editPostHandler(post.post_id)}>수정</button>
+            <button onClick={() => removePostHandler(post.post_id)}>
+              삭제
+            </button>
           </ButtonDiv>
-          <img src={img_path.img}></img>
+          <ModalImg src={img_path.publicUrl}></ModalImg>
           <Icons>
             <p>{comments.content}</p>
-            <button>하트</button>
+            <HeartIcon post_id={post.post_id} />
           </Icons>
           <p>{post.content}</p>
         </Post>
@@ -83,6 +160,10 @@ export default ShowModal;
 
 const ButtonDiv = styled.div`
   margin-left: auto;
+`;
+
+const ModalImg = styled.img`
+  width: 400px;
 `;
 const EntireModal = styled.div`
   display: block;

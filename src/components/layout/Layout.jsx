@@ -6,21 +6,8 @@ import supabase from "../../supabase/client";
 import { AuthContext } from "../../context/AuthProvider";
 
 const Layout = () => {
-  const { setIsSignin } = useContext(AuthContext);
-  const isSignin = false;
+  const { isSignin, setIsSignin } = useContext(AuthContext);
   const [scrolled, setScrolled] = useState(false);
-
-  //로그인 상태 확인
-  useEffect(() => {
-    const getSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      // console.log("session", session);
-      setIsSignin(session?.user ?? null);
-    };
-    getSession();
-  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +19,12 @@ const Layout = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleLogout = () => {
+    supabase.auth.signOut();
+    sessionStorage.clear();
+    setIsSignin(false);
+  };
 
   return (
     <>
@@ -49,7 +42,14 @@ const Layout = () => {
               >
                 <StBtn>마이페이지</StBtn>
               </Link>
-              <StBtn>로그아웃</StBtn>
+              <StBtn
+                onClick={() => {
+                  handleLogout();
+                  alert("로그아웃 되었습니다.");
+                }}
+              >
+                로그아웃
+              </StBtn>
             </StMyBtnContainer>
           </>
         ) : (
@@ -198,6 +198,7 @@ const StBtn = styled.button`
 `;
 
 const StMyBtnContainer = styled.div`
+  width: 280px;
   padding: 0;
   display: flex;
   justify-content: flex-end;

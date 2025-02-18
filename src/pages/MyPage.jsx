@@ -1,49 +1,85 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import MypagePostCard from "../components/MypagePostCard.jsx";
 import EditIcon from "../assets/icon_edit_24.png";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthProvider.jsx";
 import { MyPageContext } from "../context/MyPageContext.jsx";
+import supabase from "../supabase/client.js";
+import AddPostButton from "../components/AddPostButton.jsx";
+import ShowModal from "./PostingModal";
 
 const MyPage = () => {
-  const { users, posts } = useContext(MyPageContext);
-  // const { authUser } = useContext(AuthContext);
+  const { posts, users } = useContext(MyPageContext);
+  const getSession = sessionStorage.getItem("id");
+  const [profileImg, setProfileImg] = useState("");
+  const [selectedPost, setSelectedPost] = useState(null);
 
-  // const myInfo = users.find(
-  //   u => u.uid === "0272c1b6-524c-4705-865c-c7d6866a9e40",
-  // );
-  // const myPost = posts.find(
-  //   post => post.uid === "0272c1b6-524c-4705-865c-c7d6866a9e40",
-  // );
+  // useEffect로 유저 정보 가져오기 실행
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        if (!getSession) {
+          alert("사용자 정보가 없습니다");
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("users")
+          .select("profile_img, nickname")
+          .eq("uid", getSession)
+          .single();
+
+        if (error) throw error;
+
+        setProfileImg(data.profile_img);
+      } catch (error) {
+        console.error("유저 정보 가져오기 오류:", error.message);
+      }
+    };
+
+    fetchUserInfo();
+  }, [getSession]);
+
+  const myInfo = users.find(u => u.uid === getSession) || {};
+  const myPost = posts.filter(post => post.uid === getSession);
 
   return (
     <>
       <ContentsBox direction="row">
-        <ProfileImg>img</ProfileImg>
+        <AddPostButton />
+        <ProfileImg img_url={profileImg}></ProfileImg>
         <MypageInfoBox>
-          <TitleText>{users.map(u => u.nick_name)}</TitleText>
-          <SubTitleText> {users.map(u => u.mbti)} </SubTitleText>
-          <NormalText> {users.map(u => u.email)}</NormalText>
-          <NormalText>{users.map(u => u.introduction)}</NormalText>
-          <ProfileEditBtn></ProfileEditBtn>
+          <TitleText>{myInfo.nickname || "닉네임을 설정해주세요!"}</TitleText>
+          <SubTitleText>{myInfo.mbti || "MBTI를 설정해주세요!"}</SubTitleText>
+          <NormalText>{myInfo.email || ""}</NormalText>
+          <NormalText>{myInfo.introduction || ""}</NormalText>
+          <ProfileEditBtn />
         </MypageInfoBox>
       </ContentsBox>
       <MypagePostBox>
-        {posts.map(data => (
-          <Fragment key={data.post_id}>
-            <MypagePostCard data={data} />
-          </Fragment>
+        {myPost.map(post => (
+          <MoveModal key={post.post_id} onClick={() => setSelectedPost(post)}>
+            <Fragment key={post.post_id}>
+              <MypagePostCard post={post} />
+            </Fragment>
+          </MoveModal>
         ))}
-        <div
-          style={{ backgroundColor: "gray", width: "100px", height: "6000px" }}
-        ></div>
+        {selectedPost && (
+          <ShowModal
+            post={selectedPost}
+            closeModal={() => setSelectedPost(null)}
+          />
+        )}
       </MypagePostBox>
     </>
   );
 };
 
 export default MyPage;
+
+const MoveModal = styled.div`
+  cursor: pointer;
+`;
 
 const ContentsBox = styled.div`
   width: ${props => (props.modal ? "920px" : "800px")};
@@ -70,10 +106,13 @@ const ProfileImg = styled.div`
   justify-content: center;
   align-items: center;
   background-color: lightgray;
+  background-image: url(${props => props.img_url});
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 const MypageInfoBox = styled.div`
-  width: 300px;
+  /* width: 300px; */
   margin-left: 10px;
   position: relative;
   display: flex;

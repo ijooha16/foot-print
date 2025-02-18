@@ -1,25 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import CommentIcon from "../assets/icon_comment.png";
-import HeartIcon from "../assets/icon_heart_fill.png";
+import HeartIcon from "./HeartIcon.jsx";
 import { HomeContext } from "../context/HomeContext";
-import supabase from "../supabase/client";
 
 const HomePostCard = ({ post }) => {
   const { users, comments } = useContext(HomeContext);
-  const [imageList, setImageList] = useState([]);
-
-  // 스토리지-버킷에서 이미지 가져오기
-  useEffect(() => {
-    const fetchImageList = async () => {
-      const { data, error } = await supabase.storage
-        .from("img_bucket") // 버킷명
-        .list("uploads"); // 버킷 내 파일명
-
-      setImageList(data);
-    };
-    fetchImageList();
-  }, []);
+  const post_id = post.post_id;
+  const img_path = JSON.parse(post.img_list);
 
   // card 내 user 정보 나타내기
   const setUserProfile = post => {
@@ -27,10 +15,14 @@ const HomePostCard = ({ post }) => {
     if (!postWriter) return null;
 
     return (
-      <StCardTextWrap key={postWriter.uid}>
-        <StNickName>{postWriter.nickname}</StNickName>
-        <StMbti>{postWriter.mbti}</StMbti>
-      </StCardTextWrap>
+      <>
+        <StProfileImg src={postWriter.profile_img} />
+        <StCardTextWrap key={postWriter.uid}>
+          <StNickName>{postWriter.nickname}</StNickName>
+          <StMbti>{postWriter.mbti}</StMbti>
+          <div>{post.travel_location}</div>
+        </StCardTextWrap>
+      </>
     );
   };
 
@@ -43,25 +35,25 @@ const HomePostCard = ({ post }) => {
     return <div key={postComment.post_id}>{postComment.content}</div>;
   };
 
+  // post.post_id === like 줄의 post_id 일치하면 꽉찬하트
+
+  // 2. 현재 로그인한 사용자의 uid(getsession)와 posts의 uid를 비교
+  // 3. 값이 없다면 빈하트(추가 가능), 있다면 빨간하트(삭제 가능)
+
   return (
     <>
       <StHomeCard>
         <StCardTop>
-          <StProfileImg />
-          <div>{setUserProfile(post)}</div>
+          {setUserProfile(post)}
         </StCardTop>
-        <StPostImg />
+        <StPostImg src={img_path.publicUrl} />
         <StIcons>
           <img
             src={CommentIcon}
-            alt="comment img"
+            alt="comment-img"
             style={{ width: "34px", height: "34px" }}
           />
-          <img
-            src={HeartIcon}
-            alt="heart img"
-            style={{ width: "34px", height: "34px" }}
-          />
+          <HeartIcon post_id={post_id} />
         </StIcons>
         <StComents>{setComment(post)}</StComents>
       </StHomeCard>
@@ -116,7 +108,7 @@ const StMbti = styled.h6`
 `;
 
 // img 변경해야 함
-const StProfileImg = styled.div`
+const StProfileImg = styled.img`
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -124,7 +116,7 @@ const StProfileImg = styled.div`
 `;
 
 // img 변경해야 함
-const StPostImg = styled.div`
+const StPostImg = styled.img`
   width: 640px;
   height: 520px;
   background-color: white;
