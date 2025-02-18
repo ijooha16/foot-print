@@ -50,12 +50,12 @@ const CommentsAPI = {
   },
 
   // 댓글 수정
-  updateComment: async (formData, comment_id) => {
+  updateComment: async (content, comment_id) => {
     try {
       const { data, error } = await supabase
         .from("comments")
         .update({
-          content: formData.content,
+          content: content,
         })
         .eq("comment_id", comment_id);
 
