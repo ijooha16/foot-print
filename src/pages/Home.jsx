@@ -3,7 +3,7 @@ import HomePostCard from "../components/HomePostCard";
 import { useContext, useEffect, useState, useRef } from "react";
 import { HomeContext } from "../context/HomeContext";
 import AddPostButton from "../components/AddPostButton";
-import ShowModal from "./PostingModal";
+import ShowModal from "./PostingModal.jsx";
 import { AuthContext } from "../context/AuthProvider";
 
 const Home = () => {
@@ -71,28 +71,26 @@ const Home = () => {
     return () => observer.current?.disconnect();
   }, [displayedPosts, changePosts, loading]);
 
-  const showPosts = where => {
-    setSelectedCategory(where);
-
-    if (where === "all") {
+  useEffect(() => {
+    if (selectedCategory === "all") {
       setChangePosts([...posts]);
       return;
     }
-    if (where === "in") {
+    if (selectedCategory === "in") {
       const filterInPost = posts.filter(post => {
         return post.travel_location === "국내";
       });
       setChangePosts(filterInPost);
       return;
     }
-    if (where === "out") {
+    if (selectedCategory === "out") {
       const filterOutPost = posts.filter(post => {
         return post.travel_location === "국외";
       });
       setChangePosts(filterOutPost);
       return;
     }
-  };
+  }, [posts, selectedCategory]);
 
   console.log("changePosts", changePosts);
   return (
@@ -100,19 +98,19 @@ const Home = () => {
       <StCategoryContainer>
         <StCategory
           selected={selectedCategory === "all"}
-          onClick={() => showPosts("all")}
+          onClick={() => setSelectedCategory("all")}
         >
           전체
         </StCategory>
         <StCategory
           selected={selectedCategory === "in"}
-          onClick={() => showPosts("in")}
+          onClick={() => setSelectedCategory("in")}
         >
           국내
         </StCategory>
         <StCategory
           selected={selectedCategory === "out"}
-          onClick={() => showPosts("out")}
+          onClick={() => setSelectedCategory("out")}
         >
           국외
         </StCategory>

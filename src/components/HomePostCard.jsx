@@ -5,8 +5,8 @@ import HeartIcon from "../assets/icon_heart_empty_24.png";
 import { HomeContext } from "../context/HomeContext";
 
 const HomePostCard = ({ post }) => {
-  const { posts, users, comments, changePosts } = useContext(HomeContext);
-  // post의 이미지 가져오기
+  const { users, comments } = useContext(HomeContext);
+  const post_id = post.post_id;
   const img_path = JSON.parse(post.img_list);
 
   // card 내 user 정보 나타내기
@@ -15,11 +15,14 @@ const HomePostCard = ({ post }) => {
     if (!postWriter) return null;
 
     return (
-      <StCardTextWrap key={postWriter.uid}>
-        <StNickName>{postWriter.nickname}</StNickName>
-        <StMbti>{postWriter.mbti}</StMbti>
-        <div>{post.travel_location}</div>
-      </StCardTextWrap>
+      <>
+        <StProfileImg src={postWriter.profile_img} />
+        <StCardTextWrap key={postWriter.uid}>
+          <StNickName>{postWriter.nickname}</StNickName>
+          <StMbti>{postWriter.mbti}</StMbti>
+          <div>{post.travel_location}</div>
+        </StCardTextWrap>
+      </>
     );
   };
 
@@ -32,27 +35,23 @@ const HomePostCard = ({ post }) => {
     return <div key={postComment.post_id}>{postComment.content}</div>;
   };
 
+  // post.post_id === like 줄의 post_id 일치하면 꽉찬하트
+
+  // 2. 현재 로그인한 사용자의 uid(getsession)와 posts의 uid를 비교
+  // 3. 값이 없다면 빈하트(추가 가능), 있다면 빨간하트(삭제 가능)
+
   return (
     <>
       <StHomeCard key={post.post_id}>
-        <StCardTop>
-          <StProfileImg src={post.users.profile_img} />
-          <div>{setUserProfile(post)}</div>
-        </StCardTop>
-        <StPostImg src={img_path.img} />
+        <StCardTop>{setUserProfile(post)}</StCardTop>
+        <StPostImg src={img_path.publicUrl} />
         <StIcons>
           <img
             src={CommentIcon}
             alt="comment-img"
             style={{ width: "34px", height: "34px" }}
           />
-          <img
-            src={HeartIcon}
-            alt="heart-img"
-            className="heart"
-            style={{ width: "34px", height: "34px" }}
-            // onClick={removeLike()}
-          />
+          <HeartIcon post_id={post_id} />
         </StIcons>
         <StComents>{setComment(post)}</StComents>
       </StHomeCard>

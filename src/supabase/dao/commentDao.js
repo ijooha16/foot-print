@@ -9,11 +9,11 @@ const CommentsAPI = {
         .from("comments")
         .select(
           `
-            uid,
-            content,
-            comment_id,
-            users!inner(nickname,profile_img)
-            `,
+          uid,
+          content,
+          comment_id,
+          users!inner(nickname,profile_img)
+          `,
         )
         .eq("post_id", post_id);
 

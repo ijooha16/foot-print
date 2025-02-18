@@ -22,7 +22,6 @@ const Layout = () => {
 
   // 로그아웃
   const handleLogout = () => {
-    // supabase 로그아웃 (연결 끊기)
     supabase.auth.signOut();
     sessionStorage.clear();
     setIsSignin(false);
