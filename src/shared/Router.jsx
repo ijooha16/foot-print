@@ -10,7 +10,6 @@ import SignUp from "../pages/SignUp.jsx";
 import Layout from "../components/layout/Layout.jsx";
 import ProfileModal from "../pages/ProfileModal.jsx";
 import PostingModal from "../pages/PostingModal.jsx";
-import Qwer from "../pages/Qwer.jsx";
 
 const Router = () => {
   //const { isSignin } = useContext(AuthContext);

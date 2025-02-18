@@ -95,25 +95,13 @@ const ShowModal = ({ post, closeModal }) => {
     }
   };
 
-  const editPostHandler = async post_id => {
-    try {
-      const { data, error } = await supabase
-        .from("posts")
-        .update({
-          uid: sessionStorage.getItem("id"),
-          title: formData.title,
-          travel_location: formData.travel_location,
-          content: formData.content,
-          img_list: JSON.stringify({ publicUrl: img_path.publicUrl }),
-        })
-        .eq("post_id", post_id);
-
-      if (error) throw error;
-      return data;
-    } catch (error) {
-      console.error("게시글 수정 오류:", error.message);
-      return null;
-    }
+  const editPostHandler = async post => {
+    sessionStorage.setItem("post_id", post.post_id);
+    sessionStorage.setItem("post_title", post.title);
+    sessionStorage.setItem("post_travel", post.travel_location);
+    sessionStorage.setItem("post_content", post.content);
+    console.log(post);
+    navigate("/posting");
   };
 
   return (
@@ -123,7 +111,7 @@ const ShowModal = ({ post, closeModal }) => {
           <PostTitle>{post.title}</PostTitle>
           <p>{users.nickname}</p>
           <ButtonDiv>
-            <button onClick={() => editPostHandler(post.post_id)}>수정</button>
+            <button onClick={() => editPostHandler(post)}>수정</button>
             <button onClick={() => removePostHandler(post.post_id)}>
               삭제
             </button>
