@@ -5,7 +5,7 @@ import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
 import styled from "styled-components";
 
 import { uploadFile } from "../supabase/dao/ImgDao";
-
+import { useNavigate } from "react-router-dom";
 
 const Posting = () => {
   //페이지 이동후 스크롤 위치
@@ -107,20 +107,17 @@ const Posting = () => {
     }
 
     try {
-
       const file_path = await uploadFile(formData.file);
       const { data, error } = await supabase
         .from("posts")
         .insert([
           {
-
             // post_id: crypto.randomUUID(),
             uid: sessionStorage.getItem("id"),
             title: formData.title,
             travel_location: formData.travelLocation,
             content: formData.content,
             img_list: JSON.stringify({ img: `${file_path.publicUrl}` }),
-
           },
         ])
         .select();

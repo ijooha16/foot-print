@@ -4,6 +4,7 @@ import { HomeContext } from "../context/HomeContext";
 import Comments from "../components/Comment";
 import CommentsAPI from "../supabase/dao/commentDao";
 import PostsAPI from "../supabase/dao/postDao";
+import HeartIcon from "../components/HeartIcon";
 
 const ShowModal = ({ post, closeModal }) => {
   const { users, comments } = useContext(HomeContext);
@@ -51,10 +52,10 @@ const ShowModal = ({ post, closeModal }) => {
             <button onClick={modifyPost}>수정</button>
             <button onClick={deletePost}>삭제</button>
           </ButtonDiv>
-          <img src={img_path.img}></img>
+          <ModalImg src={img_path.img}></ModalImg>
           <Icons>
             <p>{comments.content}</p>
-            <button>하트</button>
+            <HeartIcon />
           </Icons>
           <p>{post.content}</p>
         </Post>
@@ -83,6 +84,10 @@ export default ShowModal;
 
 const ButtonDiv = styled.div`
   margin-left: auto;
+`;
+
+const ModalImg = styled.img`
+  width: 400px;
 `;
 const EntireModal = styled.div`
   display: block;
