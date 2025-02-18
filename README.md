@@ -28,7 +28,7 @@ https://foot-print-six.vercel.app/
       <td align="center"><a href="https://github.com/JinchaeKim"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJpawpRdhnoCDb8uCO4yfxXqxznwv8R3vhjJQfXOEUV388956J0MX5iAHg_RpYPxRURAA&usqp=CAU" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 김진채 </b></sub></a><br></td>
       <td align="center"><a href="https://github.com/answq"><img src="https://i.pinimg.com/736x/45/fa/7d/45fa7d4eb0a080b9d368a008d2fa4743.jpg" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 문정빈 </b></sub></a><br></td>
       <td align="center"><a href="https://github.com/Eletsia"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4197uiCL0iuQBA7fQYRXuF688m0eiKw12vw&s" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 민정현 </b></sub></a><br></td>
-      <td align="center"><a href="https://github.com/ijooha16"><img src="https://img.animalplanet.co.kr/thumbnail/2022/10/13/2000/8rs85383z6uh773759t3.jpg" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 윤주하 </b></sub></a><br></td>
+      <td align="center"><a href="https://github.com/ijooha16"><img src="https://m.segye.com/content/image/2022/10/14/20221014514371.jpg" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 윤주하 </b></sub></a><br></td>
     </tr>
   </tbody>
 </table></markdown-accessiblity-table>
