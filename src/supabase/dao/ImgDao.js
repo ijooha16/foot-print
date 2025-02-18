@@ -17,17 +17,12 @@ async function uploadFile(file) {
   } else {
     alert("업로드 성공");
 
-    return await loadFile(data.path);
-
     return await loadFile(fileName);
-
   }
 }
 
 async function loadFile(file_path) {
-  const { data } = supabase.storage
-    .from("img_bucket/uploads")
-    .getPublicUrl(file_path);
+  const { data } = supabase.storage.from("img_bucket").getPublicUrl(file_path);
   console.log(data);
 
   return data;

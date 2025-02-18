@@ -29,19 +29,17 @@ const HeartIcon = ({ post_id }) => {
     fetchData();
   }, [post_id]);
 
-  console.log(getSession)
-  
   // like 추가
   // 1. 하트 이미지 클릭 시 likes 테이블에 값 추가 <-> 삭제
-  const addLike = async (e) => {
+  const addLike = async e => {
     e.preventDefault();
     e.stopPropagation();
-  
+
     const { data, error } = await supabase
       .from("likes")
-      .insert({ "uid": getSession, "post_id": post_id })
+      .insert({ uid: getSession, post_id: post_id })
       .select(); // insert 후 새로 추가된 데이터를 받아옴
-  
+
     if (error) {
       console.error("좋아요 추가 오류:", error);
     } else {
@@ -53,27 +51,27 @@ const HeartIcon = ({ post_id }) => {
     }
   };
 
-  const removeLike = async (e) => {
+  const removeLike = async e => {
     e.preventDefault();
     e.stopPropagation();
-  
+
     const { error } = await supabase
       .from("likes")
       .delete()
-      .eq("uid", getSession)  
+      .eq("uid", getSession)
       .eq("post_id", post_id);
-  
+
     if (error) {
       console.error("삭제 오류:", error);
     } else {
       console.log("삭제 완료:", post_id);
-  
+
       // Supabase에서 최신 데이터를 다시 가져와 업데이트
       const { data: updatedLikes } = await supabase
         .from("likes")
         .select("*")
         .eq("uid", getSession);
-  
+
       setLikesArr(updatedLikes || []); // 최신 좋아요 리스트로 상태 업데이트
       setLikesCheck(false);
     }
