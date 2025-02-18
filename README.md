@@ -25,8 +25,8 @@ https://foot-print-six.vercel.app/
   <tbody>
     <tr>
       <td align="center"><a href="https://github.com/hyerin-kang"><img src="https://avatars.githubusercontent.com/u/177802509?s=400&u=5648da33bc4c69b03203550d2d0b8b121358e472&v=4" width="100px;" height="100px;"  alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 강혜린 </b></sub></a><br></td>
-      <td align="center"><a href="https://github.com/JinchaeKim"><img src="https://files.slack.com/files-tmb/T06B9PCLY1E-F08EG4BLF7A-ff52074b99/1733724254699-21_720.jpg" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 김진채 </b></sub></a><br></td>
-      <td align="center"><a href="https://github.com/answq"><img src="https://files.slack.com/files-tmb/T06B9PCLY1E-F08E5SSCV0R-1411c1266c/image_480.png" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 문정빈 </b></sub></a><br></td>
+      <td align="center"><a href="https://github.com/JinchaeKim"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJpawpRdhnoCDb8uCO4yfxXqxznwv8R3vhjJQfXOEUV388956J0MX5iAHg_RpYPxRURAA&usqp=CAU" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 김진채 </b></sub></a><br></td>
+      <td align="center"><a href="https://github.com/answq"><img src="[https://files.slack.com/files-tmb/T06B9PCLY1E-F08E5SSCV0R-1411c1266c/image_480.png](https://i.pinimg.com/736x/45/fa/7d/45fa7d4eb0a080b9d368a008d2fa4743.jpg)" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 문정빈 </b></sub></a><br></td>
       <td align="center"><a href="https://github.com/Eletsia"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4197uiCL0iuQBA7fQYRXuF688m0eiKw12vw&s" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 민정현 </b></sub></a><br></td>
       <td align="center"><a href="https://github.com/ijooha16"><img src="https://img.animalplanet.co.kr/thumbnail/2022/10/13/2000/8rs85383z6uh773759t3.jpg" width="100px;" height="100px;" alt="" style="object-fit: cover; max-width: 100%;"><br><sub><b> 윤주하 </b></sub></a><br></td>
     </tr>
@@ -134,7 +134,8 @@ Authentication 에서 제공하는 api를 이용하여 아래 회원 가입, 로
 >
 > - 게시물이 한 번에 5개씩 로드되고, 아래로 **무한 스크롤** 할 수 있습니다.
 
-![alt text](image.png)
+<img width="2065" alt="image" src="https://github.com/user-attachments/assets/d9077deb-d096-4f2b-ab4a-f2c4379fdcfd" />
+
 
 
 <br/>
