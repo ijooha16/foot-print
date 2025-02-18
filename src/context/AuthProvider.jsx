@@ -1,31 +1,56 @@
-import { createContext, useState, useEffect } from "react";
-import supabase from "../supabase/client";
+import { createContext, useState, useEffect, useContext } from "react";
+import supabase from "../supabase/client.js";
 
 const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isSignin, setIsSignin] = useState(false);
+  const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+
+  const getSession = sessionStorage.getItem("id");
+  
+  useEffect(() => {
+    if (getSession) {
+      setIsSignin(true)
+    } else {
+      setIsSignin(false)
+    }
+  }, [getSession]);
 
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log(event, session);
-
+    } = supabase.auth.onAuthStateChange((_, session) => {
       if (session) {
-        setIsLogin(true);
+        setIsSignin(true);
+        setUser(session.user);
       } else {
-        setIsLogin(false);
+        setIsSignin(false);
+        setUser(null);
       }
     });
 
-    // 만일 이 코드가 전역상태로서 쓰인다면, 필요한 코드가 아니지만
-    // 일부를 감싸는 컴포넌트에서 사용될 경우 구독해제가 필요하기 때문에 넣었어요!
     return () => subscription.unsubscribe();
-  }, []); // DA의 빈 배열이 의미하는 것을 생각해보세요
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      const fetchUserProfile = async () => {
+        const { data: userProfile } = await supabase
+          .from("users")
+          .select("*")
+          .eq("uid", user.id);
+        setUserProfile(userProfile[0]);
+      };
+      fetchUserProfile();
+    } else {
+      setUserProfile(null);
+    }
+  }, [user]);
 
   return (
-    <AuthContext.Provider value={{ isLogin, setIsLogin }}>
+    <AuthContext.Provider value={{ isSignin, setIsSignin, user, userProfile }}>
       {children}
     </AuthContext.Provider>
   );

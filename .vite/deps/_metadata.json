@@ -1,34 +1,85 @@
 {
-  "hash": "b27a75d1",
-  "configHash": "3c0c96ef",
-  "lockfileHash": "954c04f0",
-  "browserHash": "a2de1f19",
+  "hash": "f8f44a78",
+  "configHash": "45f79a0d",
+  "lockfileHash": "847eab2d",
+  "browserHash": "03ac1011",
   "optimized": {
     "react": {
       "src": "../../node_modules/react/index.js",
       "file": "react.js",
-      "fileHash": "3bfeb338",
+      "fileHash": "40104b2e",
       "needsInterop": true
+    },
+    "react-dom": {
+      "src": "../../node_modules/react-dom/index.js",
+      "file": "react-dom.js",
+      "fileHash": "00f1efb3",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "2ca833e5",
+      "needsInterop": true
+    },
+    "react/jsx-runtime": {
+      "src": "../../node_modules/react/jsx-runtime.js",
+      "file": "react_jsx-runtime.js",
+      "fileHash": "19eaf460",
+      "needsInterop": true
+    },
+    "@supabase/supabase-js": {
+      "src": "../../node_modules/@supabase/supabase-js/dist/module/index.js",
+      "file": "@supabase_supabase-js.js",
+      "fileHash": "ed151ca2",
+      "needsInterop": false
     },
     "react-dom/client": {
       "src": "../../node_modules/react-dom/client.js",
       "file": "react-dom_client.js",
-      "fileHash": "55439469",
+      "fileHash": "0121c611",
       "needsInterop": true
     },
     "react-router-dom": {
       "src": "../../node_modules/react-router-dom/dist/index.mjs",
       "file": "react-router-dom.js",
-      "fileHash": "ab18ca3f",
+      "fileHash": "b13158cd",
+      "needsInterop": false
+    },
+    "styled-components": {
+      "src": "../../node_modules/styled-components/dist/styled-components.browser.esm.js",
+      "file": "styled-components.js",
+      "fileHash": "dbe89185",
+      "needsInterop": false
+    },
+    "react-router": {
+      "src": "../../node_modules/react-router/dist/development/index.mjs",
+      "file": "react-router.js",
+      "fileHash": "c7a38177",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-K5LUDHM4": {
-      "file": "chunk-K5LUDHM4.js"
+    "browser-J6IYAAS7": {
+      "file": "browser-J6IYAAS7.js"
     },
-    "chunk-6JKWCWVM": {
-      "file": "chunk-6JKWCWVM.js"
+    "browser-2YNC6QW7": {
+      "file": "browser-2YNC6QW7.js"
+    },
+    "chunk-7W32CK3N": {
+      "file": "chunk-7W32CK3N.js"
+    },
+    "chunk-DFF67CX6": {
+      "file": "chunk-DFF67CX6.js"
+    },
+    "chunk-XVPNPNLI": {
+      "file": "chunk-XVPNPNLI.js"
+    },
+    "chunk-W24JOBID": {
+      "file": "chunk-W24JOBID.js"
+    },
+    "chunk-EWTE5DHJ": {
+      "file": "chunk-EWTE5DHJ.js"
     }
   }
 }

@@ -1,58 +1,85 @@
 import { Fragment, useEffect, useState } from "react";
-import supabase from "../supabase/client";
 import styled from "styled-components";
-import MypagePostCard from "../components/MypagePostCard";
-import EditIcon from '../assets/icon_edit_24.png'
+import MypagePostCard from "../components/MypagePostCard.jsx";
+import EditIcon from "../assets/icon_edit_24.png";
+import { useContext } from "react";
+import { MyPageContext } from "../context/MyPageContext.jsx";
+import supabase from "../supabase/client.js";
+import AddPostButton from "../components/AddPostButton.jsx";
+import ShowModal from "./PostingModal";
 
 const MyPage = () => {
-  const [posts, setPosts] = useState([]);
+  const { posts, users } = useContext(MyPageContext);
+  const getSession = sessionStorage.getItem("id");
+  const [profileImg, setProfileImg] = useState("");
+  const [selectedPost, setSelectedPost] = useState(null);
 
-  //데이터 갖다 쓰기
+  // useEffect로 유저 정보 가져오기 실행
   useEffect(() => {
-    const getPosts = async () => {
+    const fetchUserInfo = async () => {
       try {
-        const { data, error } = await supabase.from("posts").select("*");
+        if (!getSession) {
+          alert("사용자 정보가 없습니다");
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from("users")
+          .select("profile_img, nickname")
+          .eq("uid", getSession)
+          .single();
+
         if (error) throw error;
-        setPosts(data);
+
+        setProfileImg(data.profile_img);
       } catch (error) {
-        console.log(error);
+        console.error("유저 정보 가져오기 오류:", error.message);
       }
     };
-    getPosts();
-  }, []);
 
-  //데이터 넣기
-  supabase.from("posts").insert({ posts });
+    fetchUserInfo();
+  }, [getSession]);
+
+  const myInfo = users.find(u => u.uid === getSession) || {};
+  const myPost = posts.filter(post => post.uid === getSession);
 
   return (
     <>
-      MyPage {posts.map(e => e.title)}
       <ContentsBox direction="row">
-        <ProfileImg>img</ProfileImg>
+        <AddPostButton />
+        <ProfileImg img_url={profileImg}></ProfileImg>
         <MypageInfoBox>
-          <TitleText>닉네임</TitleText>
-          <SubTitleText> MBTI </SubTitleText>
-          <NormalText> ijooha16@gmail.com </NormalText>
-          <NormalText>
-            {" "}
-            자기소개 어쩌구 저쩌구 ㅇ냔얼니ㅏㄹ다ㅜ핀아ㅓㄹ!
-          </NormalText>
-          <NormalText> blabla</NormalText>
-          <ProfileEditBtn></ProfileEditBtn>
+          <TitleText>{myInfo.nickname || "닉네임을 설정해주세요!"}</TitleText>
+          <SubTitleText>{myInfo.mbti || "MBTI를 설정해주세요!"}</SubTitleText>
+          <NormalText>{myInfo.email || ""}</NormalText>
+          <NormalText>{myInfo.introduction || ""}</NormalText>
+          <ProfileEditBtn />
         </MypageInfoBox>
       </ContentsBox>
       <MypagePostBox>
-        {posts.map(data => (
-          <Fragment key={data.id}>
-            <MypagePostCard data={data} />
-          </Fragment>
+        {myPost.map(post => (
+          <MoveModal key={post.post_id} onClick={() => setSelectedPost(post)}>
+            <Fragment key={post.post_id}>
+              <MypagePostCard post={post} />
+            </Fragment>
+          </MoveModal>
         ))}
+        {selectedPost && (
+          <ShowModal
+            post={selectedPost}
+            closeModal={() => setSelectedPost(null)}
+          />
+        )}
       </MypagePostBox>
     </>
   );
 };
 
 export default MyPage;
+
+const MoveModal = styled.div`
+  cursor: pointer;
+`;
 
 const ContentsBox = styled.div`
   width: ${props => (props.modal ? "920px" : "800px")};
@@ -79,9 +106,13 @@ const ProfileImg = styled.div`
   justify-content: center;
   align-items: center;
   background-color: lightgray;
+  background-image: url(${props => props.img_url});
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 const MypageInfoBox = styled.div`
+  /* width: 300px; */
   margin-left: 10px;
   position: relative;
   display: flex;
@@ -109,7 +140,7 @@ const NormalText = styled.p`
   font-size: 16px;
 `;
 
-const ProfileEditBtn = styled.button`
+const ProfileEditBtn = styled.a`
   width: 24px;
   height: 24px;
   margin: 0;
@@ -121,6 +152,7 @@ const ProfileEditBtn = styled.button`
   background-image: url(${EditIcon});
   background-position: fit;
   background-color: transparent;
+  cursor: pointer;
 `;
 
 const MypagePostBox = styled.div`
