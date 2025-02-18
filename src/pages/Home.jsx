@@ -3,7 +3,7 @@ import HomePostCard from "../components/HomePostCard";
 import { useContext, useEffect, useState, useRef } from "react";
 import { HomeContext } from "../context/HomeContext";
 import AddPostButton from "../components/AddPostButton";
-import ShowModal from "./PostingModal";
+import ShowModal from "./PostingModal.jsx";
 import { AuthContext } from "../context/AuthProvider";
 
 const Home = () => {

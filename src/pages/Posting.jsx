@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import supabase from "../supabase/client";
 import AddIcon from "../assets/icon_add_black.png";
 import { StBtn, ContentsBox, LoginTxt } from "../shared/styleGuide";
@@ -6,6 +6,11 @@ import styled from "styled-components";
 
 import { uploadFile } from "../supabase/dao/ImgDao";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
+=======
+import { uploadFile } from "../supabase/dao/ImgDao";
+// import { AuthContext } from "../context/AuthProvider";
+>>>>>>> dev
 
 const Posting = () => {
   //페이지 이동후 스크롤 위치

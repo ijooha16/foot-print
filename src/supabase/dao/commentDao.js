@@ -9,11 +9,19 @@ const CommentsAPI = {
         .from("comments")
         .select(
           `
+<<<<<<< HEAD
             uid,
             content,
             comment_id,
             users!inner(nickname,profile_img)
             `,
+=======
+          uid,
+          content,
+          comment_id,
+          users!inner(nickname,profile_img)
+          `,
+>>>>>>> dev
         )
         .eq("post_id", post_id);
 

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-const MypagePostCard = ({ data }) => {
-  // const imgUrl = data.img_list.images;
-  const imgUrl = JSON.parse(data.img_list);
+const MypagePostCard = ({ post }) => {
+  // const imgUrl = post.img_list.images;
+  const imgUrl = JSON.parse(post.img_list);
 
   return (
     <PostBox style={{ backgroundImage: `url(${imgUrl.publicUrl})` }}>
-      <Title>{data.title}</Title>
+      <Title>{post.title}</Title>
     </PostBox>
   );
 };
