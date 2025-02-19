@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CommentsDao from "../supabase/dao/commentDao";
 import styled from "styled-components";
 import supabase from "../supabase/client";
+import CommentsAPI from "../supabase/dao/commentDao";
 
 export default function Comments({ post_id }) {
   const [comments, setComments] = useState([]);
@@ -51,27 +52,6 @@ export default function Comments({ post_id }) {
     }
   };
 
-  // const editCommentHandler = async (post_id) => {
-  //   try {
-  //     const { data, error } = await supabase
-  //       .from("posts")
-  //       .update({
-  //         uid: sessionStorage.getItem("id"),
-  //         title: formData.title,
-  //         travel_location: formData.travel_location,
-  //         content: formData.content,
-  //         img_list: JSON.stringify({ publicUrl: img_path.publicUrl }),
-  //       })
-  //       .eq("post_id", post_id);
-
-  //     if (error) throw error;
-  //     return data;
-  //   } catch (error) {
-  //     console.error("게시글 수정 오류:", error.message);
-  //     return null;
-  //   }
-  // };
-
   return (
     <div>
       {comments.map(comment => (
@@ -80,7 +60,14 @@ export default function Comments({ post_id }) {
           <p>{comment.users.nickname}</p>
           <p>{comment.content}</p>
           <ButtonDiv>
-            <button onClick={() => editCommentHandler()}>수정</button>
+            <button
+              onClick={e => {
+                let text = prompt("수정할 내용을 입력하세요", comment.content);
+                CommentsAPI.updateComment(text, comment.comment_id);
+              }}
+            >
+              수정
+            </button>
             <button
               onClick={() => {
                 deleteComments(comment.comment_id);
