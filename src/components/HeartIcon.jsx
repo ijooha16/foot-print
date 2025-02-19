@@ -1,4 +1,4 @@
-import supabase from "../supabase/client";
+import supabase from "../supabase/client.js";
 import HeartIcon_empty from "../assets/icon_heart_empty_24.png";
 import HeartIcon_fill from "../assets/icon_heart_fill_24.png";
 import { useEffect, useState } from "react";

@@ -24,7 +24,7 @@ dist-ssr
 *.sw?
 
 
-.env
+.env.local
 package.json
 package-lock.json
 node_modules
