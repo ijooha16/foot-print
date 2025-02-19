@@ -18,9 +18,6 @@ async function uploadFile(file) {
     alert("업로드 성공");
 
     return await loadFile(data.path);
-
-    return await loadFile(fileName);
-
   }
 }
 

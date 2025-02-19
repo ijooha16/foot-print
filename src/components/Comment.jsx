@@ -15,22 +15,22 @@ export default function Comments({ post_id }) {
     loadComments();
   }, [post_id, comments]);
 
-  const deleteComments = async comment_id => {
-    try {
-      const { error } = await supabase
-        .from("comments")
-        .delete()
-        .eq("comment_id", comment_id);
+  // const deleteComments = async comment_id => {
+  //   try {
+  //     const { error } = await supabase
+  //       .from("comments")
+  //       .delete()
+  //       .eq("comment_id", comment_id);
 
-      if (error) throw error;
-      setComments(comments.filter(c => c.comment_id !== comment_id));
+  //     if (error) throw error;
+  //     setComments(comments.filter(c => c.comment_id !== comment_id));
 
-      return true; // 삭제 성공 시 true 반환
-    } catch (error) {
-      console.error("댓글 삭제 오류:", error.message);
-      return false;
-    }
-  };
+  //     return true; // 삭제 성공 시 true 반환
+  //   } catch (error) {
+  //     console.error("댓글 삭제 오류:", error.message);
+  //     return false;
+  //   }
+  // };
 
   const deleteComments = async comment_id => {
     try {

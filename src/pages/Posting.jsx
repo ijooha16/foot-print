@@ -6,7 +6,6 @@ import styled from "styled-components";
 
 import { uploadFile } from "../supabase/dao/ImgDao";
 import { useNavigate } from "react-router-dom";
-import { uploadFile } from "../supabase/dao/ImgDao";
 // import { AuthContext } from "../context/AuthProvider";
 
 const Posting = () => {
